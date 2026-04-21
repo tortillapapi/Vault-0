@@ -1,0 +1,22 @@
+# Obsidian client state (synced via Obsidian Sync, not git)
+.obsidian/
+
+# Obsidian trash
+.trash/
+
+# macOS metadata
+.DS_Store
+._*
+.AppleDouble
+.LSOverride
+
+# Windows metadata
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux / misc
+*~
+.fuse_hidden*
+.directory
+.nfs*
