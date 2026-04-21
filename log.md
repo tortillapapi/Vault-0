@@ -20,6 +20,13 @@
 - Closes out mid-review-pending status on prior 2026-04-21 entry
 - Orchestration loop CC → Grunt → Mid → CC validated end-to-end
 
+## [2026-04-21] schema | v0.1 → v0.2 — added system tree
+
+## [2026-04-21] ingest | System tree bootstrap
+- Pages touched: 40 (37 under `system/`, plus `WIKI_SCHEMA.md`, `index.md`, and `log.md`)
+- Scope: skills mirror, cheatsheets, templates, configs, workflows, decisions, glossary, and system catalog wiring
+- Tier chain: main (gpt-5.4) → grunt (Kimi K2.5) → main (gpt-5.4)
+
 ---
 
 *Entries are appended by the Grunt tier during ingests, by CC during lint*

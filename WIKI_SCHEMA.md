@@ -1,9 +1,9 @@
 ---
 title: Wiki Schema
 type: schema
-version: 0.1
+version: 0.2
 created: 2026-04-19
-last_updated: 2026-04-19
+last_updated: 2026-04-21
 ---
 
 # WIKI_SCHEMA.md
@@ -160,6 +160,19 @@ Required sections:
 - `## Comparison Table` — structured side-by-side
 - `## Analysis` — 2-4 paragraphs of synthesis
 - `## Sources`
+
+## System Tree (v0.2)
+
+`vault/system/` holds internal ops knowledge: the operating manual for CC
+and OC. It is a readable mirror + synthesis of files under `/root/`. It is
+not part of the external-knowledge wiki tree (`vault/wiki/`) and uses its
+own frontmatter schema (see `system/README.md`).
+
+Hard rules for `system/`:
+- Mirrored pages MUST record `source_path` and `last_synced`.
+- Upstream-change detection is by comparing `last_synced` to the source file's mtime.
+- Never hand-edit mirrored pages. Re-sync via a fresh task.
+- Synthesized pages (decision logs, workflows) record `derived_from:`.
 
 ## Wikilink Conventions
 
