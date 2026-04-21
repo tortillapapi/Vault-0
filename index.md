@@ -2,15 +2,16 @@
 
 *LLM-maintained catalog of everything in the wiki. Updated on every ingest.*
 
-*Last updated: 2026-04-19*
+*Last updated: 2026-04-21*
 
 ## Entities
 
-*No entities yet. First entity pages will be created during initial ingest.*
+- [[eiffel-tower]] — landmark tower in Paris (1 source)
+- [[paris]] — capital city of France (1 source)
 
 ## Concepts
 
-*No concepts yet.*
+- [[rayleigh-scattering]] — scattering of light by small particles, explains blue sky
 
 ## Topics
 
@@ -18,7 +19,7 @@
 
 ## Sources
 
-*No sources ingested yet.*
+- [[test-source]] — 2026-04-19 — Test Source — System Smoke Test
 
 ## Comparisons
 

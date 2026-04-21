@@ -8,6 +8,12 @@
 - Vault directory structure initialized
 - Ready for first ingest
 
+## [2026-04-21] ingest | Test Source — System Smoke Test
+- Source: raw/clips/test-source.md
+- Pages touched: 6 (4 created, index + log updated)
+- Contradictions: none
+- Tier: grunt (Kimi K2.5) → mid-review pending
+
 ---
 
 *Entries are appended by the Grunt tier during ingests, by CC during lint*
