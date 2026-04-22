@@ -1,9 +1,9 @@
 ---
 title: Wiki Schema
 type: schema
-version: 0.2
+version: 0.3
 created: 2026-04-19
-last_updated: 2026-04-21
+last_updated: 2026-04-22
 ---
 
 # WIKI_SCHEMA.md
@@ -17,6 +17,7 @@ document over time as patterns emerge.
 ```
 obsidian-vault/
 ├── WIKI_SCHEMA.md          ← this file
+├── core-index.md           ← always-load manifest (≤40 lines)
 ├── index.md                ← content catalog
 ├── log.md                  ← chronological record
 ├── raw/                    ← IMMUTABLE sources
@@ -53,6 +54,10 @@ sources:
   - source-slug-1
 tags: []
 aliases: []        # other names this entity goes by
+priority: core | reference | archive   # required
+domain_tags: []    # controlled vocabulary — see tag taxonomy below
+last_accessed: YYYY-MM-DD   # updated by CC when page is read
+access_count: 0    # incremented by CC when page is read
 ---
 ```
 
@@ -78,6 +83,10 @@ last_updated: YYYY-MM-DD
 sources:
   - source-slug-1
 tags: []
+priority: core | reference | archive   # required
+domain_tags: []    # controlled vocabulary — see tag taxonomy below
+last_accessed: YYYY-MM-DD   # updated by CC when page is read
+access_count: 0    # incremented by CC when page is read
 ---
 ```
 
@@ -103,6 +112,10 @@ last_updated: YYYY-MM-DD
 sources: []          # grows over time
 tags: []
 thesis_version: 1    # increments on major rewrites
+priority: core | reference | archive   # required
+domain_tags: []    # controlled vocabulary — see tag taxonomy below
+last_accessed: YYYY-MM-DD   # updated by CC when page is read
+access_count: 0    # incremented by CC when page is read
 ---
 ```
 
@@ -130,6 +143,10 @@ date_ingested: YYYY-MM-DD
 raw_path: raw/<subpath>/<filename>
 url:                          # if applicable
 tags: []
+priority: core | reference | archive   # required
+domain_tags: []    # controlled vocabulary — see tag taxonomy below
+last_accessed: YYYY-MM-DD   # updated by CC when page is read
+access_count: 0    # incremented by CC when page is read
 ---
 ```
 
@@ -153,6 +170,10 @@ compares:
   - entity-slug-2
 sources: []
 tags: []
+priority: core | reference | archive   # required
+domain_tags: []    # controlled vocabulary — see tag taxonomy below
+last_accessed: YYYY-MM-DD   # updated by CC when page is read
+access_count: 0    # incremented by CC when page is read
 ---
 ```
 
@@ -160,6 +181,34 @@ Required sections:
 - `## Comparison Table` — structured side-by-side
 - `## Analysis` — 2-4 paragraphs of synthesis
 - `## Sources`
+
+## Tag Taxonomy
+
+Controlled vocabulary for `domain_tags`:
+
+- `pipeline` — Gmail ingest, parsers, ingest job, tiered parse flow
+- `parser` — email-parser agent, GLM, mid review, confidence, noise filter
+- `dashboard` — Flask app, review queue, seed UI, port 5001
+- `billing` — API costs, Vertex AI, GCP credits, AI Studio
+- `wiki-ops` — vault schema, index, log, grunt/mid/lead workflows
+- `oc-system` — OpenClaw config, agents, auth profiles, systemd services
+- `obsidian` — vault sync, git push, Obsidian Git plugin
+- `decisions` — architectural choices and their rationale
+
+## Session Loading Protocol
+
+CC loads pages in this order at session start:
+1. Always: `core-index.md` (≤ 40 lines, all priority:core pointers)
+2. On demand: full `index.md` when doing a broad query or ingest planning
+3. By domain: when working on X, load pages where domain_tags contains X
+4. By priority: never proactively load priority:archive pages — only on explicit request
+
+CC updates `last_accessed` and increments `access_count` in frontmatter
+whenever it reads a page during a session. Grunt updates these fields in
+batch during wiki maintenance passes.
+
+Core-index is the authoritative always-load manifest. When a page is promoted
+to priority:core, add it to core-index. When demoted, remove it.
 
 ## System Tree (v0.2)
 

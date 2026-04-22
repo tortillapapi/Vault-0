@@ -7,6 +7,10 @@ last_updated: 2026-04-21
 sources:
   - test-source
 tags: []
+priority: archive
+domain_tags: []
+last_accessed: 2026-04-22
+access_count: 0
 ---
 
 ## Definition

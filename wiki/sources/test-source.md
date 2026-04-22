@@ -10,6 +10,10 @@ raw_path: raw/clips/test-source.md
 url:
 tags:
   - smoke-test
+priority: archive
+domain_tags: []
+last_accessed: 2026-04-22
+access_count: 0
 ---
 
 ## Summary

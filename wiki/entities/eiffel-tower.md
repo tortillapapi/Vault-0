@@ -9,6 +9,10 @@ sources:
   - test-source
 tags: []
 aliases: []
+priority: archive
+domain_tags: []
+last_accessed: 2026-04-22
+access_count: 0
 ---
 
 ## Overview

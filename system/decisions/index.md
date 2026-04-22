@@ -1,5 +1,9 @@
 ---
 last_synced: 2026-04-21
+priority: reference
+domain_tags: [decisions]
+last_accessed: 2026-04-22
+access_count: 0
 ---
 
 # Decisions Index
@@ -11,6 +15,7 @@ Chronological decision summaries grouped by project cluster.
 - [[decisions/2026-04-tier-agents|2026-04-tier-agents]] — creation of lead and mid tiers plus grunt-role clarification.
 - [[decisions/2026-04-notion-integration|2026-04-notion-integration]] — Notion skill creation, CLAUDE.md discovery, and grunt-ref cleanup.
 - [[decisions/2026-04-wiki-smoke-test|2026-04-wiki-smoke-test]] — vault hygiene, smoke ingest, review, and close-out decisions.
+- [[decisions/2026-04-inventory-pipeline-ops|2026-04-inventory-pipeline-ops]] — tiered parser, noise filter, dashboard, and billing decisions from 2026-04-22.
 
 ## Numbering Notes
 Spec numbers 07–09 were never assigned. Numbering jumped from 06 to 10 when

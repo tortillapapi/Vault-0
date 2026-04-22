@@ -13,6 +13,10 @@ derived_from:
   - /root/tasks/12-configure-grunt-main.done
 dates: 2026-04-19 to 2026-04-19
 tags: [ops, decisions, agents, tiers]
+priority: reference
+domain_tags: [oc-system]
+last_accessed: 2026-04-22
+access_count: 0
 ---
 
 ## Context

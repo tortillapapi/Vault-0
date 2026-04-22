@@ -15,6 +15,10 @@ derived_from:
   - /root/reviews/ingest-test-source-signoff.md
 dates: 2026-04-21 to 2026-04-21
 tags: [ops, decisions, wiki, smoke-test]
+priority: archive
+domain_tags: [wiki-ops]
+last_accessed: 2026-04-22
+access_count: 0
 ---
 
 ## Context

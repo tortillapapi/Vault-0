@@ -17,6 +17,10 @@ derived_from:
   - /root/tasks/05-rewire-gemini-client.done
 dates: 2026-04-17 to 2026-04-17
 tags: [ops, decisions, pipeline, gemini, email]
+priority: core
+domain_tags: [pipeline, parser, oc-system]
+last_accessed: 2026-04-22
+access_count: 0
 ---
 
 ## Context

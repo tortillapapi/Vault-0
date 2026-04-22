@@ -10,6 +10,10 @@ derived_from:
   - /root/.claude/projects/-root/memory/reference_agent_dispatch.md
   - /root/obsidian-vault/WIKI_SCHEMA.md
 tags: [ops, glossary, system]
+priority: reference
+domain_tags: [wiki-ops, oc-system]
+last_accessed: 2026-04-22
+access_count: 0
 ---
 
 ## Purpose

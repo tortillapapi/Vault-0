@@ -27,6 +27,19 @@
 - Scope: skills mirror, cheatsheets, templates, configs, workflows, decisions, glossary, and system catalog wiring
 - Tier chain: main (gpt-5.4) → grunt (Kimi K2.5) → main (gpt-5.4)
 
+## [2026-04-22] decision | Inventory pipeline operations — tiered parser + dashboard
+- Decision doc: system/decisions/2026-04-inventory-pipeline-ops.md
+- Topic page: wiki/topics/inventory-tracker-pipeline.md
+- Covers: Gemini → GLM-5.1/GPT-5.3 model switch, noise filter, feedback loop, dashboard build
+- Tier: grunt (direct write, CC-authored content)
+
+## [2026-04-22] schema | v0.2 → v0.3 — semantic memory: priority tiers + domain tags + core-index
+- Added priority field (core/reference/archive) to all page types
+- Added domain_tags taxonomy and session loading protocol to WIKI_SCHEMA.md
+- Created core-index.md (always-load manifest, ≤ 40 lines)
+- Retroactively tagged all existing pages
+- context.include updated to auto-load core-index.md
+
 ---
 
 *Entries are appended by the Grunt tier during ingests, by CC during lint*

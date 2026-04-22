@@ -17,7 +17,7 @@
 
 ## Topics
 
-*No topics yet.*
+- [[inventory-tracker-pipeline]] — automated Gmail ingestion pipeline for purchase/order/shipping emails with tiered parser and human review queue
 
 ## Sources
 
