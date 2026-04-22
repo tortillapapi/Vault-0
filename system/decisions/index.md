@@ -1,3 +1,7 @@
+---
+last_synced: 2026-04-21
+---
+
 # Decisions Index
 
 Chronological decision summaries grouped by project cluster.
@@ -7,3 +11,8 @@ Chronological decision summaries grouped by project cluster.
 - [[decisions/2026-04-tier-agents|2026-04-tier-agents]] — creation of lead and mid tiers plus grunt-role clarification.
 - [[decisions/2026-04-notion-integration|2026-04-notion-integration]] — Notion skill creation, CLAUDE.md discovery, and grunt-ref cleanup.
 - [[decisions/2026-04-wiki-smoke-test|2026-04-wiki-smoke-test]] — vault hygiene, smoke ingest, review, and close-out decisions.
+
+## Numbering Notes
+Spec numbers 07–09 were never assigned. Numbering jumped from 06 to 10 when
+the tier-agent work began, to visually separate the two project clusters.
+There are no missing artifacts.
