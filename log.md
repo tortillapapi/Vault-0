@@ -120,6 +120,13 @@
 - v2 backlog noted as LOW priority — no auto-suggestions
 - Tier: grunt (3 file writes)
 
+## [2026-04-28] [cc] schedule | Vault auto-pull timer (every 6h)
+- Spec 47: vault-pull.timer + vault-pull.service installed on VPS
+- Pull-only: git pull --rebase, never commits/pushes, aborts on conflict
+- Cadence: OnBootSec=10min, OnUnitActiveSec=6h
+- Closes the "stale read" gap when CC/Codex sessions just query the vault
+- Tier: grunt-eng (script + units), grunt (this log)
+
 ---
 
 *Entries are appended by the Grunt tier during ingests, by CC during lint*
