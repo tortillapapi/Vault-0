@@ -133,6 +133,13 @@
   is a free knob to tune
 - Tier: grunt-eng (sed edit + daemon-reload), grunt (this log)
 
+## [2026-04-28] [cc] wrap | Session 2026-04-28 arc closed (specs 42-49)
+- Arc: orders dashboard build/deploy/fix/v1.0 + vault sync infrastructure
+- Handoff: /root/reviews/session-2026-04-28-handoff.md
+- Discipline rules #7 (vault commits) + #8 (Notion mirror) added to CLAUDE.md / AGENTS.md
+- Trio (Mac/GitHub/VPS) in sync; vault-pull.timer running every 1h
+- Tier: lead (synthesis + verification), grunt (index bump + log)
+
 ---
 
 *Entries are appended by the Grunt tier during ingests, by CC during lint*

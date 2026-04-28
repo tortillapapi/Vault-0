@@ -1,6 +1,6 @@
 ---
 type: core-index
-last_updated: 2026-04-27
+last_updated: 2026-04-28
 ---
 
 # Core Index — Always-Load Pages
