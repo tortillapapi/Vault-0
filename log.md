@@ -40,6 +40,86 @@
 - Retroactively tagged all existing pages
 - context.include updated to auto-load core-index.md
 
+## [2026-04-22] update | inventory-tracker-pipeline — hardening pass
+- Added: systemd TimeoutStartSec=900, retailer normalizer, orders upsert, Gmail after:2025/10/01 filter
+- Fixed: mid agent empty-response JSONDecodeError
+- Topic page updated: wiki/topics/inventory-tracker-pipeline.md (v2)
+- Tier: grunt (CC-authored content)
+
+## [2026-04-22] [cc] update | re-review agent (Qwen 3.6+)
+- Spec 35 implemented: dedicated `re-review` agent on opencode-go/qwen3.6-plus
+- Replaces GPT-5.3-Codex in the inventory-tracker mid-review pass
+- Goal: stop draining OpenAI Codex quota on repetitive email parsing
+- Tier: grunt-eng (CC-authored content)
+
+## [2026-04-26] [cc] shutdown | inventory-tracker pipeline disabled
+- Spec 36 executed: stopped + disabled `inventory-tracker-ingest.timer`,
+  `inventory-tracker-ingest.service`, `inventory-dashboard.service`
+- Unit files removed; daemon-reload run
+- Reason: pipeline superseded by Gemini-native parsing system
+- Tier: grunt (mechanical systemd ops)
+
+## [2026-04-27] [cc] archive | inventory-tracker workspace archived
+- Spec 37 executed: moved `/root/.openclaw/workspace/inventory-tracker/` →
+  `/root/archive/inventory-tracker-old-2026-04/workspace/`
+- Copied related specs/tasks/reviews into the same archive
+- OAuth credentials preserved at `/root/secrets/gmail-oauth/` for future Gemini system
+- Cleanup timer scheduled for 2026-05-27
+- Tier: grunt (file moves only)
+
+## [2026-04-27] [cc] schema | peer-orchestrator unification (CC + Codex)
+- Spec 38 executed by OC main self-orchestration
+- New: `/root/AGENTS.md` (Codex's CLAUDE.md analogue, 216 lines)
+- New: `system/workflows/peer-orchestrator-protocol.md` (103 lines)
+- Updated: `/root/CLAUDE.md` with Peer Orchestrator section
+- Skills mirrored: 11 CC skills now have YAML frontmatter and are
+  symlinked into `/root/.codex/skills/<name>/SKILL.md`
+- Tier chain: main (gpt-5.4) → mid (gpt-5.3-codex) → grunt + grunt-eng
+
+## [2026-04-27] [cc] cleanup | OC workspace archived legacy bridge + inventory remnants
+- Spec 40 executed
+- Moved: top-level bridge docs (8), inventory/sheets files (5), 2 old
+  session handoffs, reports/, scripts/, systemd/, tmp/, specs/, tasks/,
+  handoff/2026-04-19, handoff/2026-04-21
+- Destination: /root/archive/oc-workspace-2026-04/
+- Live OC infra untouched (.git, .openclaw, bin, skills, vault, identity files)
+- Tier: grunt (file moves), mid (verification)
+
+## [2026-04-27] [cc] wrap | phase-4 wrap-up — arc closed
+- Spec 41 executed
+- Arc covered: spec 36 (shutdown), 37 (archive), 38 (peer-orchestrator),
+  39 (wiki refresh), 40 (workspace cleanup)
+- Handoff: /root/reviews/session-2026-04-27-handoff.md
+- System verified in clean steady state
+- Tier: lead (synthesis), grunt (log append)
+
+## [2026-04-27] [cc] feature | Orders Dashboard live (spec 42)
+- Flask + SQLite + Chart.js dashboard on http://srv1535917.hstgr.cloud:5002/d/<token>/
+- Source: Orders — Master sheet (All tab) via Sheets API (Vertex SA, readonly scope)
+- systemd: orders-dashboard.service + orders-pull.timer (hourly)
+- Auth: token-in-URL, secret at /root/secrets/orders-dashboard/url-token.txt
+- Tier chain: grunt-eng (build) → mid (review) → grunt (docs)
+
+## [2026-04-27] [cc] schedule | Orders Dashboard 7-day spot-check armed (spec 43)
+- One-shot systemd timer: orders-dashboard-7day-check.timer
+- Fires: 2026-05-04 18:00 UTC
+- On healthy: Telegram ✅ summary
+- On problem: Telegram ⚠️ + writes /root/tasks/42-orders-dashboard-7day-check.blocked
+- Script: /root/orders-dashboard/scripts/seven-day-check.sh
+- Tier: grunt-eng (script + units), grunt (docs)
+
+## [2026-04-27] [cc] fix | Orders Dashboard spend totals corrected (spec 44)
+- Price column from source sheet is the line total, not unit price
+- Removed erroneous * quantity from get_retailer_totals, get_monthly_totals, overview scorecard
+- Service restarted; verified via SUM(price) sanity query + live overview
+- Tier: grunt-eng (3 surgical edits + restart + verify), grunt (this log entry)
+
+## [2026-04-27] [cc] release | Orders Dashboard v1.0
+- Stamped /root/orders-dashboard/VERSION = 1.0
+- Wiki topic page updated with Version section
+- v2 backlog noted as LOW priority — no auto-suggestions
+- Tier: grunt (3 file writes)
+
 ---
 
 *Entries are appended by the Grunt tier during ingests, by CC during lint*

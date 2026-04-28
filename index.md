@@ -4,7 +4,7 @@
 
 *LLM-maintained catalog of everything in the wiki. Updated on every ingest.*
 
-*Last updated: 2026-04-21*
+*Last updated: 2026-04-27*
 
 ## Entities
 

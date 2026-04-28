@@ -24,6 +24,7 @@ Catalog of internal ops knowledge mirrored and synthesized under `system/`.
 - [[workflows/wiki-operations|wiki-operations]] — ingest, query, and lint loop overview.
 - [[workflows/session-resume-protocol|session-resume-protocol]] — exact resume protocol with wiki add-ons.
 - [[workflows/lessons-learned|lessons-learned]] — mirrored operating lessons from real runs.
+- [[workflows/google-tasks-notion-n8n-sync-handoff|google-tasks-notion-n8n-sync-handoff]] — live handoff for the hourly Google Tasks and Notion Task Database sync in n8n.
 - [[workflows/index|workflows index]] — workflow summary list.
 
 ## Templates

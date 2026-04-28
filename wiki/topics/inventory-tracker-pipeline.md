@@ -5,12 +5,14 @@ slug: inventory-tracker-pipeline
 created: 2026-04-22
 last_updated: 2026-04-22
 tags: [ops, gmail, pipeline, inventory, parser]
-thesis_version: 1
-priority: core
+thesis_version: 2
+priority: archive
 domain_tags: [pipeline, parser, dashboard]
 last_accessed: 2026-04-22
 access_count: 0
 ---
+
+> **ARCHIVED 2026-04-27** — Pipeline shut down per spec 36, code archived per spec 37.
 
 ## Current Thesis
 
@@ -20,12 +22,18 @@ The pipeline operates on a tiered parsing architecture with confidence-based rou
 
 The system includes a feedback loop: dashboard actions (confirm, reject, correct) write to a parser_feedback table, and the top 5 confirmed examples are prepended as few-shot context on every LLM call. This allows the parser to improve automatically with use without requiring manual retraining.
 
+Pipeline hardening was added in session P3 (2026-04-22): a systemd timeout guard (900s) prevents hung ingest runs; a retailer normalization module canonicalizes retailer names to lowercase slugs before DB writes; a date filter (`after:2025/10/01`) skips pre-October 2025 email; and high-confidence order parses now upsert directly into the `orders` + `order_items` tables. A mid-agent empty-response bug (json.loads on empty string) was also fixed.
+
 ## Supporting Evidence
 
 - Tiered parser reduces costs to zero by using OC-bundled models (GLM-5.1 + GPT-5.3-codex)
 - Noise filter eliminates ~60% of inbox volume before any LLM call
 - Feedback loop provides continuous improvement without dedicated training cycles
 - Dashboard at http://srv1535917.hstgr.cloud:5001 provides operational visibility
+- `after:2025/10/01` Gmail filter eliminates pre-backlog email from processing
+- Retailer normalizer maps variants ("Fanatics.com", "fanatics") to canonical slug
+- Orders table now auto-populated on `message_type=order` + `confidence >= 0.7`
+- systemd `TimeoutStartSec=900` prevents indefinite hung runs
 
 ## Open Questions
 
@@ -41,6 +49,7 @@ The system includes a feedback loop: dashboard actions (confirm, reject, correct
 ## History
 
 - **v1 (2026-04-22)** — Initial topic creation. Tiered parser, noise filter, dashboard, and feedback loop operational.
+- **v2 (2026-04-22)** — Pipeline hardening: systemd timeout, retailer normalizer, orders upsert, date filter, mid empty-response fix.
 
 ## Related
 
@@ -51,3 +60,4 @@ The system includes a feedback loop: dashboard actions (confirm, reject, correct
 
 - /root/reviews/session-2026-04-22-p2-handoff.md
 - /root/reviews/session-2026-04-22-handoff.md
+- /root/reviews/session-2026-04-22-p3-handoff.md
