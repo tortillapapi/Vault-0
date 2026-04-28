@@ -127,6 +127,12 @@
 - Closes the "stale read" gap when CC/Codex sessions just query the vault
 - Tier: grunt-eng (script + units), grunt (this log)
 
+## [2026-04-28] [cc] config | Vault auto-pull cadence changed 6h → 1h (spec 48)
+- /etc/systemd/system/vault-pull.timer: OnUnitActiveSec=6h → 1h
+- Reasoning: stale-window concern; per-pull risk is ~zero so frequency
+  is a free knob to tune
+- Tier: grunt-eng (sed edit + daemon-reload), grunt (this log)
+
 ---
 
 *Entries are appended by the Grunt tier during ingests, by CC during lint*
