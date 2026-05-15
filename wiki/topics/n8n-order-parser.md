@@ -50,17 +50,37 @@ Exclusions:
 - `*@toasttab.com`
 - `*@chownow.com`
 
-Status ladder:
-`Purchase → Packing → Shipped → Out for Delivery → Delivered`; `Cancelled` can overwrite any prior status. The parser normalizes order-number matches by stripping `#`, whitespace, and dashes.
+Subject gate:
+- Accepts only order-like subjects (`order`, `confirmation`, `shipped`, `delivered`, `receipt`, `purchase`, `tracking`, `invoice`, `dispatched`, `out for delivery`, `arrived`).
+- Rejects promo/newsletter subjects (`deal`, `% off`, `save $`, `sale`, `weekly`, `newsletter`, `promo`, `limited time`, `new arrival`, etc.) before body classification.
 
-Item name extraction is regex-first. Boilerplate/marketing fragments are post-validated and rejected before writing to Sheets. If regex cannot determine a valid item name, it calls OpenCode-Go `qwen3.6-plus` through the configured n8n Header Auth credential and expects strict JSON: `{ "item_name": "..." }` or `{ "item_name": null }`.
+Status ladder:
+`Purchase → Packing → Shipped → Out for Delivery → Delivered`; `Cancelled` can overwrite any prior status, but Cancelled rows without a validated order number are dropped. The parser normalizes order-number matches by stripping `#`, whitespace, and dashes, and rejects English stopwords / non-4-digit junk.
+
+Item name extraction is regex-first. Boilerplate/marketing/sentence fragments are post-validated and rejected before writing to Sheets. If regex cannot determine a valid item name, it calls OpenCode-Go `qwen3.6-plus` through the configured n8n Header Auth credential and expects strict JSON: `{ "item_name": "..." }` or `{ "item_name": null }`.
+
+## Retailer Hard Exclusions
+
+| Retailer | Match |
+|---|---|
+| Weedmaps | `weedmaps`, `budzilla`; weedmaps/budzilla sender domains |
+| Uber Eats | `uber eats`, `ubereats`, `uber receipts`; Uber Eats sender/domain patterns |
+| TikTok Shop | `tiktok shop`, `tiktokshop`; TikTok Shop sender/domain patterns |
+| J. Crew | `j. crew`, `jcrew`, `j.crew`; jcrew.com |
+| Panda Express | `panda express`, `pandaexpress`; pandaexpress.com |
+| Abercrombie family | `abercrombie`, `hollister`, `gilly hicks`; Abercrombie/Hollister domains |
+| Amazon Pharmacy only | exact `amazon pharmacy` phrase or pharmacy Amazon sender; does **not** match regular Amazon |
+| Domino's | `domino's`, `dominos`, `domino`; dominos.com |
+| Musely | `musely`; musely.com |
+| Charles Tyrwhitt | `charles tyrwhitt`, `tyrwhitt`; ctshirts.com / tyrwhitt.com |
 
 ## Known Limitations
 
-Direct restaurant emails may still leak through as purchase rows. Spec 50.1 intentionally only expanded sender-domain exclusions for food-delivery platforms; direct restaurant senders like HINODEYA remain observable data for a later tuning pass if they prove noisy.
+Direct restaurant emails may still leak through as purchase rows unless they are blocked by the subject gate or later retailer-specific tuning. Lids.com promotional emails are handled by path (b): promo subject rejection plus a safety drop for Lids.com `Delivered` rows where both Item Name and Order Number are blank. A future spec could add a dedicated Lids.com shipping template extractor if needed.
 
 ## Tuning History
 
+- **Spec 50.2 — 2026-05-15:** added subject-line promo gate, hardened order-number validation, extended sentence-fragment rejection, dropped Cancelled rows without order numbers, added 10 retailer hard-exclusions, filtered item-name-only partial rows in master merge, and backfilled bad rows. Root cause: master merge propagated pre-existing malformed per-account rows because it accepted any row with any populated cell. Reports: `/root/.openclaw/workspace/phase1-test-report-v3.md`, `/root/.openclaw/workspace/phase3-backfill-summary.md`.
 - **Spec 50.1 — 2026-05-15:** tightened Item Name prompt and post-validation, rejected boilerplate/marketing fragments, tightened order-number extraction with digit + stopword checks, and expanded food-delivery sender exclusions. Re-test report: `/root/.openclaw/workspace/phase1-test-report-v2.md`.
 
 ## Logs + Operations
@@ -69,6 +89,8 @@ Direct restaurant emails may still leak through as purchase rows. Spec 50.1 inte
 - Container logs: `docker logs n8n-n8n-1`
 - Test report: `/root/.openclaw/workspace/phase1-test-report.md`
 - Quality re-test report: `/root/.openclaw/workspace/phase1-test-report-v2.md`
+- Refinement re-test report: `/root/.openclaw/workspace/phase1-test-report-v3.md`
+- Backfill summary: `/root/.openclaw/workspace/phase3-backfill-summary.md`
 - Config: `/root/n8n/local-files/order-parser/config.json`
 - Workflow artifacts: `/root/n8n/local-files/order-parser/workflow-*.json`
 
@@ -78,8 +100,10 @@ Direct restaurant emails may still leak through as purchase rows. Spec 50.1 inte
 - `/root/specs/50-n8n-order-parser.md`
 - `/root/specs/50-n8n-order-parser-amendment.md`
 - `/root/specs/50_1-order-parser-quality-fixes.md`
+- `/root/specs/50_2-order-parser-refinement.md`
 
 ## Version
 
+- **v1.2** — refinement + backfill shipped 2026-05-15 under Spec 50.2.
 - **v1.1** — quality pass shipped 2026-05-15 under Spec 50.1.
 - **v1.0** — shipped 2026-05-15 under Spec 50.

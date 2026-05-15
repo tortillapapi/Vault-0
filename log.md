@@ -3,6 +3,18 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \[` for grep-friendly parsing.*
 
+## [2026-05-15] [cc] fix | Order parser refinement pass (spec 50.2)
+- Subject-line gate added (reject promo subjects)
+- order_last4 hardened (4-digit requirement + stopword filter v2)
+- Item Name sentence-fragment rejector extended
+- Cancelled-with-no-order# rows now dropped
+- Item-Name-only partial-row bug fixed (root cause: master merge propagated malformed source rows)
+- 10 retailer hard-exclusions added (Weedmaps, Uber Eats, TikTok Shop, J. Crew, Panda Express, Abercrombie family, Amazon Pharmacy only, Domino's, Musely, Charles Tyrwhitt)
+- Lids.com handling: path (b), drop blank Delivered rows and rely on promo subject gate
+- Backfill: 46 rows removed from per-account + master sheets
+- All three workflows reactivated after gates passed
+- Tier: lead-equivalent self (gates + reactivation), mid-equivalent self (parser + investigation), grunt-eng-equivalent self (backfill), grunt-equivalent self (docs)
+
 ## [2026-05-15] [cc] fix | Order parser quality pass (spec 50.1)
 - Tightened LLM Item Name prompt + post-validation
 - Tightened order-number regex (min len 4, must have digit, stopword filter)
