@@ -75,6 +75,10 @@ Filters available:
 - Item category
 - Order status
 
+## Source Change Pending
+
+Spec 50 shipped the replacement n8n Order Parser and new `Purchase Log - Master` sheet on 2026-05-15. This dashboard still reads the old Gemini Orders Master Sync source. Do **not** assume dashboard data reflects the new n8n parser until Spec 51 repoints and verifies the dashboard ingestion against the new master sheet column order.
+
 ## Maintenance
 
 **Token rotation:**
@@ -98,7 +102,8 @@ Filters available:
 
 ## Related
 
-- [[docs/gemini-orders-master-sync]] — upstream sync system
+- [[docs/gemini-orders-master-sync]] — previous upstream sync system
+- [[n8n-order-parser]] — replacement parser shipped in Spec 50
 - [[decisions/gemini-orders-architecture]] — design decisions for master sync
 
 ## Sources
@@ -108,6 +113,7 @@ Filters available:
 
 ## Version
 
+- **v1.1** — updated 2026-05-15 with source-change pending note for Spec 51.
 - **v1.0** — released 2026-04-27. Stable, actionable. Specs 42, 43, 44.
 - v2 backlog is explicitly LOW priority per user
   (see /root/.claude/projects/-root/memory/project_order_dashboard.md).

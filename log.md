@@ -3,6 +3,13 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \[` for grep-friendly parsing.*
 
+## [2026-05-15] [cc] build | n8n purchase-order parser shipped (spec 50)
+- Two per-account workflows: mramirez021111 + themetalman13
+- Master-merge workflow unions both into "Purchase Log - Master"
+- Daily 09:00 PT per-account, 09:15 PT merge
+- Replaces disabled Gemini scheduled task
+- Tier: lead (workflow A + activation), mid-equivalent self-review (clone B + master merge), grunt-equivalent docs
+
 ## [2026-04-19] schema | initial schema v0.1
 - WIKI_SCHEMA.md created
 - Vault directory structure initialized

@@ -1,6 +1,6 @@
 ---
 type: core-index
-last_updated: 2026-04-28
+last_updated: 2026-05-15
 ---
 
 # Core Index — Always-Load Pages
@@ -14,6 +14,8 @@ last_updated: 2026-04-28
 
 ## Active Services
 - openclaw-gateway — always running
+- n8n Order Parser — daily Gmail order parsing; see [[wiki/topics/n8n-order-parser]]
+- Orders Dashboard — still reads old Gemini master until Spec 51; see [[wiki/topics/orders-dashboard]]
 - cleanup-inventory-tracker.timer — scheduled 2026-05-27, archives the decommissioned inventory-tracker workspace permanently
 
 ## Historical (kept for reference, not active)
