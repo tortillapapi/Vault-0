@@ -3,6 +3,13 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \[` for grep-friendly parsing.*
 
+## [2026-05-15] [cc] fix | Order parser quality pass (spec 50.1)
+- Tightened LLM Item Name prompt + post-validation
+- Tightened order-number regex (min len 4, must have digit, stopword filter)
+- Extended sender exclusions to 8 food-delivery platforms
+- All three workflows reactivated after re-test passed
+- Tier: mid-equivalent self (fixes + re-test), lead (reactivation), grunt-equivalent self (docs)
+
 ## [2026-05-15] [cc] build | n8n purchase-order parser shipped (spec 50)
 - Two per-account workflows: mramirez021111 + themetalman13
 - Master-merge workflow unions both into "Purchase Log - Master"

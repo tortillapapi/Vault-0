@@ -41,17 +41,34 @@ Exclusions:
 - `*@ubereats.com`
 - `*@dutch.com`
 - `*@weedmaps.com`
+- `*@doordash.com`
+- `*@grubhub.com`
+- `*@postmates.com`
+- `*@caviar.com`
+- `*@seamless.com`
+- `*@slicelife.com`
+- `*@toasttab.com`
+- `*@chownow.com`
 
 Status ladder:
 `Purchase → Packing → Shipped → Out for Delivery → Delivered`; `Cancelled` can overwrite any prior status. The parser normalizes order-number matches by stripping `#`, whitespace, and dashes.
 
-Item name extraction is regex-first. If regex cannot determine an item name, it calls OpenCode-Go `qwen3.6-plus` through the configured n8n Header Auth credential and expects strict JSON: `{ "item_name": "..." }` or `{ "item_name": null }`.
+Item name extraction is regex-first. Boilerplate/marketing fragments are post-validated and rejected before writing to Sheets. If regex cannot determine a valid item name, it calls OpenCode-Go `qwen3.6-plus` through the configured n8n Header Auth credential and expects strict JSON: `{ "item_name": "..." }` or `{ "item_name": null }`.
+
+## Known Limitations
+
+Direct restaurant emails may still leak through as purchase rows. Spec 50.1 intentionally only expanded sender-domain exclusions for food-delivery platforms; direct restaurant senders like HINODEYA remain observable data for a later tuning pass if they prove noisy.
+
+## Tuning History
+
+- **Spec 50.1 — 2026-05-15:** tightened Item Name prompt and post-validation, rejected boilerplate/marketing fragments, tightened order-number extraction with digit + stopword checks, and expanded food-delivery sender exclusions. Re-test report: `/root/.openclaw/workspace/phase1-test-report-v2.md`.
 
 ## Logs + Operations
 
 - n8n UI executions panel: `http://127.0.0.1:5678`
 - Container logs: `docker logs n8n-n8n-1`
 - Test report: `/root/.openclaw/workspace/phase1-test-report.md`
+- Quality re-test report: `/root/.openclaw/workspace/phase1-test-report-v2.md`
 - Config: `/root/n8n/local-files/order-parser/config.json`
 - Workflow artifacts: `/root/n8n/local-files/order-parser/workflow-*.json`
 
@@ -60,7 +77,9 @@ Item name extraction is regex-first. If regex cannot determine an item name, it 
 - [[orders-dashboard]] — still reads the old Gemini Orders Master Sync source until Spec 51 repoints it.
 - `/root/specs/50-n8n-order-parser.md`
 - `/root/specs/50-n8n-order-parser-amendment.md`
+- `/root/specs/50_1-order-parser-quality-fixes.md`
 
 ## Version
 
+- **v1.1** — quality pass shipped 2026-05-15 under Spec 50.1.
 - **v1.0** — shipped 2026-05-15 under Spec 50.
