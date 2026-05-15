@@ -3,6 +3,15 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \[` for grep-friendly parsing.*
 
+## [2026-05-15] [cc] ops | Order parser orphan-row cleanup
+- 32 orphan rows discovered in Account B source sheet (themetalman13)
+- Pattern: text in column 9 (Last Updated), all key columns blank
+- Origin: legacy pre-50.x parser write path (not currently reproducible)
+- User manually deleted from Account B source sheet (+ additional cleanup, 108 → 23 rows)
+- CC rebuilt Master via direct master invocation (94 → 60 rows, 0 orphans)
+- Known-limitations note added to wiki topic; filter broadening deferred
+- Tier: cc (investigation), user (manual delete), grunt (docs)
+
 ## [2026-05-15] [cc] fix | Order parser refinement pass (spec 50.2)
 - Subject-line gate added (reject promo subjects)
 - order_last4 hardened (4-digit requirement + stopword filter v2)

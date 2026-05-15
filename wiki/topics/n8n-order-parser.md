@@ -78,6 +78,16 @@ Item name extraction is regex-first. Boilerplate/marketing/sentence fragments ar
 
 Direct restaurant emails may still leak through as purchase rows unless they are blocked by the subject gate or later retailer-specific tuning. Lids.com promotional emails are handled by path (b): promo subject rejection plus a safety drop for Lids.com `Delivered` rows where both Item Name and Order Number are blank. A future spec could add a dedicated Lids.com shipping template extractor if needed.
 
+- **Master-merge orphan-row filter is narrow.** The
+  `isItemNameOnlyPartialRow` filter (added in spec 50.2) only triggers
+  when column 1 (Item Name, `r[0]`) is truthy. Legacy rows with text
+  in column 9 (`Last Updated`) and all other key columns blank slip
+  through. No current parser write path produces this shape, so risk
+  is dormant. If new orphan rows appear in the future, broaden the
+  filter to `!r[0] && !r[1] && !r[6]` (drop rows with no Item Name,
+  no Retailer, AND no Order Number — i.e. no identifying data).
+  Discovered + 32 instances cleaned 2026-05-15 (see log).
+
 ## Tuning History
 
 - **Spec 50.2 — 2026-05-15:** added subject-line promo gate, hardened order-number validation, extended sentence-fragment rejection, dropped Cancelled rows without order numbers, added 10 retailer hard-exclusions, filtered item-name-only partial rows in master merge, and backfilled bad rows. Root cause: master merge propagated pre-existing malformed per-account rows because it accepted any row with any populated cell. Reports: `/root/.openclaw/workspace/phase1-test-report-v3.md`, `/root/.openclaw/workspace/phase3-backfill-summary.md`.
