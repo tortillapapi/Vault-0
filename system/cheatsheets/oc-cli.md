@@ -66,8 +66,8 @@ openclaw agent --agent <id> --local --message "prompt" --json
 
 ### Available agents
 - `main` — openai/gpt-5.5 (default top-tier: complex coding, multi-file work; identity "Alfred", legacy "Grunt")
-- `lead` — openai-codex/gpt-5.4 (complex tasks, `--thinking high`)
-- `mid` — openai-codex/gpt-5.3-codex (medium tasks, `--thinking medium`)
+- `lead` — openai/gpt-5.4 (complex tasks, `--thinking high`)
+- `mid` — openai/gpt-5.3-codex (medium tasks, `--thinking medium`)
 - `grunt-eng` — opencode-go/glm-5.1 (grunt-level coding/engineering, 200k ctx)
 - `grunt` — opencode-go/kimi-k2.5 (non-code grunt: log edits, doc updates, formatting, ingest prep; 256k ctx; sessionKey `agent:grunt:main`)
 - `re-review` — opencode-go/qwen3.6-plus (second-opinion re-parse for low-confidence email-parser output)
