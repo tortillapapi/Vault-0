@@ -3,12 +3,12 @@ type: topic
 title: n8n Order Parser
 slug: n8n-order-parser
 created: 2026-05-15
-last_updated: 2026-05-15
+last_updated: 2026-05-21
 tags: [ops, n8n, gmail, orders, sheets]
 thesis_version: 1
 priority: core
 domain_tags: [automation, pipeline, orders]
-last_accessed: 2026-05-15
+last_accessed: 2026-05-21
 access_count: 0
 ---
 
@@ -82,14 +82,36 @@ Direct restaurant emails may still leak through as purchase rows unless they are
   `isItemNameOnlyPartialRow` filter (added in spec 50.2) only triggers
   when column 1 (Item Name, `r[0]`) is truthy. Legacy rows with text
   in column 9 (`Last Updated`) and all other key columns blank slip
-  through. No current parser write path produces this shape, so risk
-  is dormant. If new orphan rows appear in the future, broaden the
-  filter to `!r[0] && !r[1] && !r[6]` (drop rows with no Item Name,
-  no Retailer, AND no Order Number — i.e. no identifying data).
-  Discovered + 32 instances cleaned 2026-05-15 (see log).
+  through. The column-9-only orphan shape recurred on 2026-05-21 via
+  the old `appendRows` auto-append against a sheet with blank rows.
+  This is now fixed at the source (explicit-index write in `appendRows`).
+  The `isItemNameOnlyPartialRow` filter remains as defense-in-depth.
+  If new orphan rows appear in the future, broaden the filter to
+  `!r[0] && !r[1] && !r[6]` (drop rows with no Item Name, no Retailer,
+  AND no Order Number).
+- **eBay "Packing" item-name mis-extraction.** The item-name regex can
+  grab an `ID/Order number/Seller` block from eBay "Packing" emails
+  instead of the actual product name. The LLM fallback usually rescues
+  the correct name, but regex-first extraction remains brittle for
+  eBay's terse packing notices.
+- **2-day scan window.** The parser scans only `in:inbox newer_than:2d`,
+  so outage gaps older than 2 days need a manual `OP_GMAIL_QUERY`
+  backfill via `listMessages` env override.
 
 ## Tuning History
 
+- **Spec 50.3 — 2026-05-21 (outage recovery):** Three workflows had auto-deactivated
+  after a May 15–16 `MODULE_NOT_FOUND` error and were never re-enabled — root cause of
+  the "no updates since May 16" outage. Re-activated all three. Code fixes in
+  `order_parser.js`: (a) rows with a valid order number are kept (blank/LLM name) instead
+  of dropped when item-name validation fails — new `itemNameRejectedKeptForOrder` counter;
+  (b) `TODAY` now derives from `config.tz` (removed hardcoded `config.today`); (c)
+  `listMessages` honors `OP_GMAIL_QUERY` env override for one-off wide backfills;
+  (d) added `'order is confirmed'` to Purchase status keywords (eBay confirmation emails);
+  (e) **`appendRows` rewritten** to write at an explicit computed row index instead of
+  Sheets `values:append` auto-detection, which misplaced rows when blank rows existed.
+  Backfilled/repaired eBay orders 49802–49805 and cleaned 10 marketing-noise rows +
+  duplicates from the per-account sheets. See `/root/reviews/session-2026-05-21-handoff.md`.
 - **Spec 50.2 — 2026-05-15:** added subject-line promo gate, hardened order-number validation, extended sentence-fragment rejection, dropped Cancelled rows without order numbers, added 10 retailer hard-exclusions, filtered item-name-only partial rows in master merge, and backfilled bad rows. Root cause: master merge propagated pre-existing malformed per-account rows because it accepted any row with any populated cell. Reports: `/root/.openclaw/workspace/phase1-test-report-v3.md`, `/root/.openclaw/workspace/phase3-backfill-summary.md`.
 - **Spec 50.1 — 2026-05-15:** tightened Item Name prompt and post-validation, rejected boilerplate/marketing fragments, tightened order-number extraction with digit + stopword checks, and expanded food-delivery sender exclusions. Re-test report: `/root/.openclaw/workspace/phase1-test-report-v2.md`.
 
@@ -103,6 +125,7 @@ Direct restaurant emails may still leak through as purchase rows unless they are
 - Backfill summary: `/root/.openclaw/workspace/phase3-backfill-summary.md`
 - Config: `/root/n8n/local-files/order-parser/config.json`
 - Workflow artifacts: `/root/n8n/local-files/order-parser/workflow-*.json`
+- themetalman13 Drive OAuth credential: `4cxUhHDUa7KKbBm4` (used for per-account sheet access)
 
 ## Related
 
@@ -111,9 +134,11 @@ Direct restaurant emails may still leak through as purchase rows unless they are
 - `/root/specs/50-n8n-order-parser-amendment.md`
 - `/root/specs/50_1-order-parser-quality-fixes.md`
 - `/root/specs/50_2-order-parser-refinement.md`
+- `/root/specs/50_3-order-parser-outage-recovery.md`
 
 ## Version
 
+- **v1.3** — outage recovery + appendRows fix, 2026-05-21 under Spec 50.3.
 - **v1.2** — refinement + backfill shipped 2026-05-15 under Spec 50.2.
 - **v1.1** — quality pass shipped 2026-05-15 under Spec 50.1.
 - **v1.0** — shipped 2026-05-15 under Spec 50.

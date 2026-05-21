@@ -3,6 +3,10 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \[` for grep-friendly parsing.*
 
+## [2026-05-21] [cc] update | n8n-order-parser topic page updated for Spec 50.3
+- outage recovery + appendRows fix
+- Tier: grunt (docs)
+
 ## [2026-05-15] [cc] ops | Order parser orphan-row cleanup
 - 32 orphan rows discovered in Account B source sheet (themetalman13)
 - Pattern: text in column 9 (Last Updated), all key columns blank
