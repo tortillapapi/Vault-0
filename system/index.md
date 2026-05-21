@@ -34,10 +34,20 @@ Catalog of internal ops knowledge mirrored and synthesized under `system/`.
 - [[templates/review-template|review-template]] — review report and review-done template.
 - [[templates/index|templates index]] — template summary list.
 
+## Resources
+
+- [[resources/registry|registry]] — master map of every resource all agents can access.
+
+## Projects
+
+- [[projects/n8n-order-parser|n8n-order-parser]] — order automation state.
+- [[projects/orders-dashboard|orders-dashboard]] — orders dashboard state.
+
 ## Cheatsheets
 
 - [[cheatsheets/oc-cli|oc-cli]] — OpenClaw CLI quick reference.
 - [[cheatsheets/obsidian-conventions|obsidian-conventions]] — naming, linking, and frontmatter rules.
+- [[cheatsheets/operating-rules|operating-rules]] — standing operating rules from feedback.
 - [[cheatsheets/index|cheatsheets index]] — cheatsheet summary list.
 
 ## Configs

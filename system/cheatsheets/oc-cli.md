@@ -3,7 +3,7 @@ type: system-cheatsheet
 title: OpenClaw CLI Cheatsheet
 slug: oc-cli
 source_path: /root/.claude/projects/-root/memory/reference_oc_cli_cheatsheet.md
-last_synced: 2026-04-21
+last_synced: 2026-05-21
 maintainer: cc-oc-orchestrator
 tags: [ops, cheatsheet, cli]
 ---
@@ -65,11 +65,12 @@ openclaw agent --agent <id> --local --message "prompt" --json
 ```
 
 ### Available agents
-- `main` — openai-codex/gpt-5.4 (default top-tier: complex coding, multi-file work; identity "Grunt" is legacy naming)
+- `main` — openai/gpt-5.5 (default top-tier: complex coding, multi-file work; identity "Alfred", legacy "Grunt")
 - `lead` — openai-codex/gpt-5.4 (complex tasks, `--thinking high`)
 - `mid` — openai-codex/gpt-5.3-codex (medium tasks, `--thinking medium`)
 - `grunt-eng` — opencode-go/glm-5.1 (grunt-level coding/engineering, 200k ctx)
 - `grunt` — opencode-go/kimi-k2.5 (non-code grunt: log edits, doc updates, formatting, ingest prep; 256k ctx; sessionKey `agent:grunt:main`)
+- `re-review` — opencode-go/qwen3.6-plus (second-opinion re-parse for low-confidence email-parser output)
 - `email-parser` — google/gemini-2.5-flash (email parsing only)
 
 ### NEVER use `openclaw agent --deliver` for simple message relay. Use `message send`.

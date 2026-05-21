@@ -179,6 +179,12 @@
 - Trio (Mac/GitHub/VPS) in sync; vault-pull.timer running every 1h
 - Tier: lead (synthesis + verification), grunt (index bump + log)
 
+## [2026-05-21] [cc] ingest | Spec 51 — shared knowledge registry
+- New: system/resources/ (registry + index), system/projects/ (n8n-order-parser + orders-dashboard + index)
+- New: system/cheatsheets/operating-rules.md (standing feedback rules)
+- Refreshed: system/configs/openclaw-agents.md (main→gpt-5.5, +re-review), system/cheatsheets/oc-cli.md, system/index.md
+- Tier: grunt (file writes), mid (verification), main (commit)
+
 ---
 
 *Entries are appended by the Grunt tier during ingests, by CC during lint*
