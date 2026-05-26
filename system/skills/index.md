@@ -13,6 +13,7 @@ Mirrored reference documentation for CC orchestrator skills used across the vaul
 - [[parallel-tasks]] — Execute multiple independent OpenClaw tasks simultaneously.
 - [[review-oc-work]] — Review code and files created by OpenClaw execution against specs.
 - [[task-spec-template]] — Standard templates for writing task specs and execution prompts.
+- [[verify-oc-completion]] — Independently verify an OC .done claim against filesystem/git/service ground truth; emit PASS/PARTIAL/FAIL.
 - [[wiki-ingest-orchestrator]] — Plan and orchestrate ingestion of new sources into the wiki.
 - [[wiki-lint]] — Periodic health-check of the wiki to surface cross-cutting issues.
 - [[wiki-query-planner]] — Translate user questions into wiki search + read + synthesize plans.
