@@ -26,6 +26,16 @@ and consult the `n8n-parser-triage` skill (`/root/.claude/skills/n8n-parser-tria
 for likely cause (credential expiry is the usual one).
 
 ## 2. Recall — were any real orders MISSED? (independent of the parser)
+Run the credential block exactly as written; do not improvise jq paths.
+```bash
+# Read order-parser credential IDs (tolerant; never aborts the run)
+CONFIG_PATH="$HOME/n8n/local-files/order-parser/config.json"
+gmail_a=$(jq -r '.credentials.gmail_a // empty' "$CONFIG_PATH" 2>/dev/null || true)
+gmail_b=$(jq -r '.credentials.gmail_b // empty' "$CONFIG_PATH" 2>/dev/null || true)
+sheets_a=$(jq -r '.credentials.sheets_a // empty' "$CONFIG_PATH" 2>/dev/null || true)
+sheets_b=$(jq -r '.credentials.sheets_b // empty' "$CONFIG_PATH" 2>/dev/null || true)
+```
+
 For each account (`account_a`, `account_b`):
 1. List the day's inbox candidates: `/root/scripts/gmail-orders-list.sh <account> 'in:inbox newer_than:1d' --json`
 2. **Judge independently** which messages are genuine order events (order

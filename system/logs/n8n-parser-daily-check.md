@@ -8,3 +8,10 @@
 - Recall: 0 order emails | 0 matched | MISSES: none
 - Precision: 13 recent rows | 12 confirmed | FALSE POSITIVES: UPS …8250 2026-05-18
 - Verdict: ANOMALIES
+
+## 2026-05-26 (cron 07:52 UTC)
+- Workflows: account_a=error | account_b=error | master=error
+- Recall: 1 order email | 0 matched | MISSES: Ashburn Proxies 2026-05-26 (order-last4 unavailable; auth token redacted)
+- Precision: 13 recent rows | 12 confirmed | FALSE POSITIVES: UPS …8250 2026-05-18
+- Triage: latest errors all failed at `n8n export:credentials`; workflows are active, healthz OK, direct credential export and sheet-read probes now pass, so the failure is not currently reproducible as a Sheets OAuth read failure.
+- Verdict: ANOMALIES
