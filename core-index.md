@@ -1,6 +1,6 @@
 ---
 type: core-index
-last_updated: 2026-05-15
+last_updated: 2026-05-26
 ---
 
 # Core Index — Always-Load Pages
@@ -14,7 +14,7 @@ last_updated: 2026-05-15
 
 ## Active Services
 - openclaw-gateway — always running
-- n8n Order Parser — daily Gmail order parsing; see [[wiki/topics/n8n-order-parser]]
+- n8n Order Parser — daily Gmail order parsing; now at `https://n8n.rareforceone.cloud` (Caddy proxy). Recovered 2026-05-26 from ~11-day OAuth outage (consent screen now Published). Daily accuracy audit cron runs 16:30 UTC through 2026-06-01 → log `system/logs/n8n-parser-daily-check.md`. See [[wiki/topics/n8n-order-parser]]
 - Orders Dashboard — still reads old Gemini master until Spec 51; see [[wiki/topics/orders-dashboard]]
 - cleanup-inventory-tracker.timer — scheduled 2026-05-27, archives the decommissioned inventory-tracker workspace permanently
 
@@ -28,6 +28,7 @@ last_updated: 2026-05-15
 - Codex orchestrator file: /root/AGENTS.md
 - Peer protocol: /root/obsidian-vault/system/workflows/peer-orchestrator-protocol.md
 - Specs/tasks/reviews: /root/specs/, /root/tasks/, /root/reviews/ (shared)
+- Ops helper scripts: /root/scripts/ (sheets-read.sh, gmail-orders-list.sh, verify-done-files.sh)
 - Archived inventory-tracker: /root/archive/inventory-tracker-old-2026-04/
 
 ## OC Agent Roster

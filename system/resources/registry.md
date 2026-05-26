@@ -2,7 +2,7 @@
 type: system-resource
 title: Resource Registry
 slug: registry
-last_synced: 2026-05-21
+last_synced: 2026-05-26
 maintainer: cc-oc-orchestrator
 tags: [ops, resources, registry, shared-brain]
 ---
@@ -62,9 +62,17 @@ native pointer.
 ## Live systems on the VPS
 | System | Where | Notes |
 |---|---|---|
-| n8n | Docker `n8n-n8n-1`, localhost:5678 | order-parser automation — see `system/projects/n8n-order-parser` |
+| n8n | Docker `n8n-n8n-1`, localhost:5678; public `https://n8n.rareforceone.cloud` (Caddy proxy, spec 52) | order-parser automation — see `system/projects/n8n-order-parser`. OAuth redirect must be `https://n8n.rareforceone.cloud/rest/oauth2-credential/callback`; consent screen is Published (no 7-day token expiry) |
 | Orders Dashboard | port 5002 | Flask/SQLite, v1.0 — see `system/projects/orders-dashboard` |
 | OpenClaw gateway | plain process (not systemd) | check with `pgrep -af`, not `systemctl` |
+
+## Ops helper scripts & scheduled jobs (VPS, not in vault)
+| Resource | Location / handle | Purpose |
+|---|---|---|
+| `sheets-read.sh` | `/root/scripts/` | read-only Google Sheets read, reuses n8n OAuth (spec 60) |
+| `gmail-orders-list.sh` | `/root/scripts/` | read-only inbox order-candidate lister (spec 61) |
+| `verify-done-files.sh` | `/root/scripts/` | verify a `.done` marker's FILES_CHANGED vs git/fs ground truth (spec 59) |
+| n8n parser daily audit | OC cron `n8n-parser-daily-audit` (id `b769b0b5…`) | `lead`, 16:30 UTC daily through 2026-06-01 (self-expiring); runbook `system/runbooks/n8n-parser-daily-audit.md`; log `system/logs/n8n-parser-daily-check.md` |
 
 ## Planned
 | Agent | Status | Onboarding |
