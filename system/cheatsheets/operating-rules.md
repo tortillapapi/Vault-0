@@ -2,7 +2,7 @@
 type: system-cheatsheet
 title: Operating Rules (standing feedback)
 slug: operating-rules
-last_synced: 2026-05-21
+last_synced: 2026-05-26
 maintainer: cc-oc-orchestrator
 source: CC auto-memory (feedback entries)
 tags: [ops, rules, feedback, shared-brain]
@@ -25,15 +25,20 @@ Codex, and OpenClaw equally (and Hermes once installed).
   whole spec to `main` with pre-approved handoffs + a `.progress` file instead of
   CC driving each phase (~10k tokens / ~3× faster). Not for single-phase work or
   phases needing CC judgment between them.
-- **Kimi (`grunt`) has a weak clock.** Its `.done` timestamps can be months off.
-  Hardcode dates in the task prompt and tell it to copy verbatim, or verify with
-  `stat -c %y`.
+- **`grunt` now runs DeepSeek V4 Pro (OpenCode Go), not Kimi.** The old Kimi
+  weak-clock caveat no longer applies to `grunt`. Still hardcode dates in task
+  prompts as a general habit and verify `.done` timestamps with `stat -c %y`
+  when audit accuracy matters.
 - **Verification checks must match unique content text**, not numeric prefixes or
   assumed file/process structure. Use `pgrep -af <name>` not `systemctl is-active`
   unless the target is confirmed a systemd unit (OpenClaw runs many plain
   processes). Prefer `>= N` over `== N` for counts that can grow.
 - **Check systemd state before dispatching run-type tasks** on any project with a
   `systemd/` dir — a live timer can silently race your work.
+- **Two-stage review chain over grunt work.** Grunt-tier output (`grunt`,
+  `grunt-eng`) goes through `re-review` (Qwen3.6) for first-pass QA, then `mid`
+  (GPT-5.5, medium) as a second review, before the orchestrator approves. Applies
+  to all grunt work, not just the email parser.
 
 ## Session hygiene
 - **Manage OC main's context proactively.** Don't ask every session, but check
