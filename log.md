@@ -217,6 +217,12 @@ grep "^## \[.*\] ingest" log.md
 grep "^## \[2026-04-19\]" log.md
 ```
 
+## [2026-05-26] [codex] config | Spec 67 — Telegram PA profile
+- Added OpenClaw agent `pa` with workspace `/root/.openclaw/workspace-pa`
+- Added Telegram account `pa` bound only to agent `pa`; default Alfred Telegram behavior preserved
+- Gateway restarted via `openclaw gateway restart`; verification saved in `/root/reviews/67-telegram-pa-profile-verification.md`
+- Tier: mid
+
 ## [2026-05-26] [cc] lint | Spec 57 — governance mirror re-sync after trims
 - Updated: system/governance/{cc-claude-md,codex-agents-md,openclaw-agents-md}.md + index.md
 - Reflects line cuts from specs 55 (CC+Codex de-dup) and 56 (OC trim)

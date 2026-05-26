@@ -54,7 +54,8 @@ native pointer.
 ## Live external services (per-agent connections — credentials, not files)
 | Service | Reached via | Notes |
 |---|---|---|
-| Telegram | `openclaw message send` (chat ID 1207164084) | use `message send`, never `agent --deliver` |
+| Telegram default | `openclaw message send` (chat ID 1207164084) | Alfred/default bot; use `message send`, never `agent --deliver` |
+| Telegram PA | Telegram account `pa` bound to OpenClaw agent `pa` | Separate token file and allowlisted DM access for personal-assistant workflows; no wildcard binding |
 | Gmail / Calendar / Drive | MCP connectors (CC) + n8n OAuth creds | Drive enough for now; Calendar/Docs deprioritized |
 | Notion | MCP connector + `notion/` mirror | mirror is sink, not source |
 | Web | search/fetch tools (CC) | — |
@@ -64,7 +65,7 @@ native pointer.
 |---|---|---|
 | n8n | Docker `n8n-n8n-1`, localhost:5678; public `https://n8n.rareforceone.cloud` (Caddy proxy, spec 52) | order-parser automation — see `system/projects/n8n-order-parser`. OAuth redirect must be `https://n8n.rareforceone.cloud/rest/oauth2-credential/callback`; consent screen is Published (no 7-day token expiry) |
 | Orders Dashboard | port 5002 | Flask/SQLite, v1.0 — see `system/projects/orders-dashboard` |
-| OpenClaw gateway | plain process (not systemd) | check with `pgrep -af`, not `systemctl` |
+| OpenClaw gateway | systemd user service `openclaw-gateway.service` | `openclaw gateway status` is authoritative; currently runs `/usr/bin/node /usr/lib/node_modules/openclaw/dist/index.js gateway --port 18789` |
 
 ## Ops helper scripts & scheduled jobs (VPS, not in vault)
 | Resource | Location / handle | Purpose |

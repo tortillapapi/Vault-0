@@ -25,13 +25,15 @@ Use this table to choose the right OpenClaw agent before dispatching work. It su
 | `grunt` | `opencode-go/deepseek-v4-pro` | default | `agent:grunt:main` | grunt | Non-code grunt work, long-context document transforms, file ops, formatting, ingest prep. |
 | `re-review` | `opencode-go/qwen3.6-plus` | default | `agent:re-review:main` | specialist | First-pass QA re-review over ALL grunt-agent output (not just email parsing). |
 | `email-parser` | `google/gemini-2.5-flash` | default | `agent:email-parser:main` | specialist | Email parsing only. |
+| `pa` | `openai/gpt-5.5` | medium | `agent:pa:main` / `telegram:pa` | specialist | Dedicated Telegram personal-assistant profile for reminders, calendar triage, follow-up, lightweight organization, and task capture. |
 
 ## Dispatch Notes
 
-- **Live roster is authoritative via `openclaw agents list --json`; this table last verified 2026-05-21.**
+- **Live roster is authoritative via `openclaw agents list --bindings --json`; this table last verified 2026-05-26.**
 - Use `openclaw agent --agent <id> --local --thinking <level> --message "..." --json` for CLI dispatches.
 - Prefer `grunt` for large-context mechanical work and `grunt-eng` for small code tasks.
 - Use `message send` instead of `agent --deliver` when the job is simple message relay.
+- `pa` is bound only to Telegram account `pa`; the default Telegram account remains routed to `main` by default routing.
 
 ## Review Chain
 Grunt-tier output (`grunt`, `grunt-eng`) is QA'd in two stages before the
