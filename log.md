@@ -206,3 +206,8 @@ grep "^## \[.*\] ingest" log.md
 # Activity on a specific date
 grep "^## \[2026-04-19\]" log.md
 ```
+
+## [2026-05-26] [cc] lint | Spec 57 — governance mirror re-sync after trims
+- Updated: system/governance/{cc-claude-md,codex-agents-md,openclaw-agents-md}.md + index.md
+- Reflects line cuts from specs 55 (CC+Codex de-dup) and 56 (OC trim)
+- Tier: grunt
