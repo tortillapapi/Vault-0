@@ -185,6 +185,11 @@
 - Refreshed: system/configs/openclaw-agents.md (main→gpt-5.5, +re-review), system/cheatsheets/oc-cli.md, system/index.md
 - Tier: grunt (file writes), mid (verification), main (commit)
 
+## [2026-05-26] [cc] ingest | Spec 54 — governance file mirror
+- New: system/governance/ (index + 5 mirror pages of CC/Codex/OpenClaw governance files)
+- Purpose: in-Obsidian visibility + line-budget audit of always-loaded instruction/memory files
+- Tier: grunt (reads, writes, log, commit)
+
 ---
 
 *Entries are appended by the Grunt tier during ingests, by CC during lint*

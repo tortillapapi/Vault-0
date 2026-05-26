@@ -43,6 +43,10 @@ Catalog of internal ops knowledge mirrored and synthesized under `system/`.
 - [[projects/n8n-order-parser|n8n-order-parser]] — order automation state.
 - [[projects/orders-dashboard|orders-dashboard]] — orders dashboard state.
 
+## Governance
+
+- [[governance/index|governance]] — read-only mirror of always-loaded instruction/memory files (CC, Codex, OC) with line-budget audit.
+
 ## Cheatsheets
 
 - [[cheatsheets/oc-cli|oc-cli]] — OpenClaw CLI quick reference.
