@@ -52,3 +52,10 @@ Codex, and OpenClaw equally (and Hermes once installed).
 - **Every vault-touching spec ends with git commit + push** (`git pull --rebase`
   first; never force-push / reset --hard / checkout --theirs). Local-only edits
   drift the VPS/GitHub/Mac trio apart.
+- **Back up `/root` config files before hand-editing — they are not
+  git-versioned.** Before editing/trimming any non-vault config or instruction
+  file under `/root` (`/root/CLAUDE.md`, `/root/AGENTS.md`,
+  `/root/.openclaw/workspace/AGENTS.md`), make a dated backup first
+  (`cp file file.bak-YYYY-MM-DD`) as a spec Phase 0. `/root` has no version
+  history, so the `.bak` is the only rollback. (Vault files are exempt — they
+  are git-versioned; see the vault commit+push rule.)

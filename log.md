@@ -211,3 +211,13 @@ grep "^## \[2026-04-19\]" log.md
 - Updated: system/governance/{cc-claude-md,codex-agents-md,openclaw-agents-md}.md + index.md
 - Reflects line cuts from specs 55 (CC+Codex de-dup) and 56 (OC trim)
 - Tier: grunt
+
+## [2026-05-26] [cc] maint | Specs 54–57 — governance mirror + trim
+- New: system/governance/ mirror + audit dashboard (spec 54)
+- Trimmed always-loaded governance files (specs 55/56): CC CLAUDE.md 224→115,
+  Codex AGENTS.md 239→146, OC workspace AGENTS.md 232→105 (~47% cut). Wiki block
+  de-duplicated to skill/system pointers; stale inline agent roster removed.
+- Dated .bak backups beside each (/root not git-versioned).
+- Mirror re-synced, dashboard all 🟢 (spec 57).
+- New operating rule: back up /root configs before editing (spec 58).
+- Tier: grunt (edits/log/commit), mid (trim review)
