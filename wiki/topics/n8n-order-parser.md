@@ -3,7 +3,7 @@ type: topic
 title: n8n Order Parser
 slug: n8n-order-parser
 created: 2026-05-15
-last_updated: 2026-05-21
+last_updated: 2026-05-26
 tags: [ops, n8n, gmail, orders, sheets]
 thesis_version: 1
 priority: core
@@ -136,8 +136,36 @@ Direct restaurant emails may still leak through as purchase rows unless they are
 - `/root/specs/50_2-order-parser-refinement.md`
 - `/root/specs/50_3-order-parser-outage-recovery.md`
 
+## 2026-05-26 — OAuth outage recovery & hardening
+
+n8n is now reachable at `https://n8n.rareforceone.cloud` (Caddy HTTPS proxy, spec 52), in addition to the local `http://127.0.0.1:5678` admin interface. The OAuth redirect URI used by all four Google credentials is `https://n8n.rareforceone.cloud/rest/oauth2-credential/callback` and must be registered in the corresponding Google Cloud OAuth client(s).
+
+### The outage
+
+A ~11-day silent outage ran from ~2026-05-15 through 2026-05-26. All three workflows showed `active=true` in the n8n UI, yet every scheduled execution errored. Root cause was two-fold:
+
+1. **Consent screen in "Testing" mode.** The Google OAuth consent screen was still in "Testing" (not "Published"), which expires refresh tokens every 7 days. When the tokens expired, all four Google credentials (`gmail_a`, `gmail_b`, `sheets_a`, `sheets_b`) were simultaneously revoked.
+2. **`redirect_uri_mismatch`.** After the Caddy HTTPS proxy went live, the n8n OAuth callback URL changed from the old `http://localhost:5678/...` to the new `https://n8n.rareforceone.cloud/...`. This new URI was not yet registered in Google Cloud, so attempting to re-authorize any credential immediately failed with `redirect_uri_mismatch`.
+
+### The fix
+
+1. Re-authorized all four Google credentials inside n8n.
+2. **Published the consent screen** in Google Cloud Console (permanent — stops the weekly refresh-token expiry).
+3. Ran a 14-day backfill with `OP_GMAIL_QUERY='in:inbox newer_than:14d'` across both per-account parsers and the master merge.
+
+### Operational lesson
+
+- **`active=true` ≠ succeeding.** A workflow can be active and still fail on every run. Verify via the executions API per workflow (`/api/v1/executions?workflowId=<id>`), not just the UI toggle.
+
+### New helpers & audit
+
+- **`/root/scripts/sheets-read.sh`** — read-only Google Sheets diagnostic (reuses n8n OAuth creds).
+- **`/root/scripts/gmail-orders-list.sh`** — read-only Gmail order list diagnostic (reuses n8n OAuth creds).
+- A **daily accuracy-audit cron** runs through 2026-06-01 to spot silent regressions. See `system/logs/n8n-parser-daily-check.md`.
+
 ## Version
 
+- **v1.4** — OAuth outage recovery + Caddy HTTPS + published consent screen, 2026-05-26 under Spec 62.
 - **v1.3** — outage recovery + appendRows fix, 2026-05-21 under Spec 50.3.
 - **v1.2** — refinement + backfill shipped 2026-05-15 under Spec 50.2.
 - **v1.1** — quality pass shipped 2026-05-15 under Spec 50.1.
