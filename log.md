@@ -3,6 +3,16 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \[` for grep-friendly parsing.*
 
+## [2026-05-26] [cc] ops | Order-parser OAuth outage recovery + audit tooling
+- ~11-day silent outage (since ~May 15): all runs errored while workflows showed `active=true`
+- Root cause: n8n moved behind Caddy HTTPS proxy (`https://n8n.rareforceone.cloud`) → `redirect_uri_mismatch`; consent screen in "Testing" → 7-day refresh-token expiry revoked all 4 Google creds (gmail_a/b, sheets_a/b)
+- Fix: re-authed all 4 + **Published** the consent screen (permanent); 14-day backfill run
+- New CC skills: n8n-parser-triage, dashboard-healthcheck, oc-dispatch-preflight, verify-oc-completion (+ mirrors in system/skills/)
+- New /root/scripts helpers via OC: sheets-read.sh (spec 60), verify-done-files.sh (spec 59), gmail-orders-list.sh (spec 61)
+- Daily accuracy-audit cron (OC lead, 16:30 UTC through 2026-06-01, self-expiring) → runbook system/runbooks/n8n-parser-daily-audit.md, log system/logs/n8n-parser-daily-check.md; chain validated end-to-end
+- Open finding from validation run: precision flagged a UPS row (…8250, 2026-05-18) as a possible false positive — for review
+- Tier: cc (orchestration), mid (helper scripts), lead (audit cron)
+
 ## [2026-05-21] [cc] update | n8n-order-parser topic page updated for Spec 50.3
 - outage recovery + appendRows fix
 - Tier: grunt (docs)
