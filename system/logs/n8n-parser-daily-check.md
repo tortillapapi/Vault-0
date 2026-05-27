@@ -22,3 +22,10 @@
 - Precision: 0 recent rows | 0 confirmed | FALSE POSITIVES: none
 - Triage: latest errors all failed at `n8n export:credentials`; workflows are active, healthz OK, direct credential export and read-only sheet probes pass, so the failure is not currently reproducible from read-only triage.
 - Verdict: ANOMALIES
+
+## 2026-05-27
+- Workflows: account_a=error | account_b=error | master=error
+- Recall: 5 order emails | 5 matched | MISSES: none
+- Precision: 0 recent rows | 0 confirmed | FALSE POSITIVES: none
+- Triage: latest errors all failed at `n8n export:credentials`; workflows are active, healthz OK, direct credential export and read-only Gmail/Sheets probes pass, so the likely cause is the workflow task-runner credential export path, not a currently failing Google Sheets read credential.
+- Verdict: ANOMALIES
