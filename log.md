@@ -255,3 +255,16 @@ grep "^## \[2026-04-19\]" log.md
   the timer's first unattended run (Telegram).
 - Open follow-up: fully decouple Google auth from n8n so the container is not a dependency.
 - Tier: CC orchestration + review; OC mid executed specs 75/76/77.
+
+## [2026-05-28] [codex] maint | Order-parser Google auth fully decoupled from n8n
+- Created parser-owned minimized credential file:
+  `/root/secrets/order-parser/credentials.json` (`0600`).
+- Updated production parser path to read that file directly; removed `n8n export:credentials`
+  from `/root/n8n/local-files/order-parser/order_parser.js`, `/root/scripts/sheets-read.sh`,
+  and `/root/scripts/gmail-orders-list.sh`.
+- Updated `/root/scripts/run-order-parser.sh` to use host Node directly and removed the Docker
+  dependency from `order-parser.service`.
+- Verified direct auth for both Gmail accounts, account/master sheet headers, Opencode key,
+  host Node master dry-run, no-match account dry-runs, and Codex checker snapshot path.
+- Result: n8n parser workflows remain retired; n8n is no longer the parser runtime,
+  scheduler, or Google credential source.

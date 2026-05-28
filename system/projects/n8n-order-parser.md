@@ -2,32 +2,43 @@
 type: system-project
 title: n8n Order Parser
 slug: n8n-order-parser
-last_synced: 2026-05-21
+last_synced: 2026-05-28
 maintainer: cc-oc-orchestrator
-tags: [project, n8n, gmail, sheets]
+tags: [project, order-parser, gmail, sheets, systemd]
 ---
 
 # n8n Order Parser
 
-n8n runs on this VPS in Docker (`n8n-n8n-1`, localhost:5678, Postgres backend),
-powering the Gmail→Google Sheets order automation.
+The Gmail to Google Sheets order parser now runs directly on the VPS via systemd.
+n8n is no longer the parser runtime, scheduler, or Google credential source.
 
-## Workflows (Schedule Trigger, daily 09:00 America/Los_Angeles)
+## Current Runtime
+- Timer: `order-parser.timer`
+- Service: `order-parser.service`
+- Schedule: daily `09:00 America/Los_Angeles`
+- Runner: `/root/scripts/run-order-parser.sh`
+- Parser: `/root/n8n/local-files/order-parser/order_parser.js`
+- Order: account A -> account B -> master
+- Config: `/root/n8n/local-files/order-parser/config.json`
+- Parser-owned credentials: `/root/secrets/order-parser/credentials.json` (`0600`)
+
+The runner uses host Node (`/usr/bin/node`) and does not call Docker or n8n.
+
+## Retired n8n Workflows
+The old n8n workflows are intentionally deactivated, not deleted:
 - `Mcbqgukfgdafk57U` — Order Parser — mramirez021111 (account_a, Inbox A)
-- `EAKfdR3Csk0zdT6H` — Order Parser — themetalman13 (account_b = themetalman13@gmail.com, the **eBay** inbox / Inbox B)
+- `EAKfdR3Csk0zdT6H` — Order Parser — themetalman13 (account_b = themetalman13@gmail.com, the eBay inbox / Inbox B)
 - `XY3vs7olrtnnlBDv` — Order Parser — Master Merge
 
-Each is a schedule trigger + Code node running the self-authenticating script
-`/files/order-parser/order_parser.js <mode> <acct>` (host path
-`/root/n8n/local-files/order-parser/`). Config: `config.json` in that dir
-(credential IDs, sheet IDs, account map).
+Inactive n8n parser workflows are expected. Monitoring should use
+`/root/scripts/parser-run-status.sh`, not n8n execution history, as the run-status signal.
 
 ## Gotchas
-- Script must live on the persistent `/files` bind mount; only `/home/node/.n8n`
-  and `/files` survive container recreate (bare `node account b` → MODULE_NOT_FOUND).
+- The parser must run from the host path unless `ORDER_PARSER_BASE_DIR` is explicitly set.
+- Google auth lives in `/root/secrets/order-parser/credentials.json`; do not reintroduce
+  `n8n export:credentials` into the production parser path.
 - After repeated run errors n8n **auto-deactivates** trigger workflows and does NOT
-  re-enable after a fix — POST `/workflows/{id}/activate` (cause of the May 2026
-  outage: bug fixed May 17 but workflows stayed off).
+  re-enable after a fix. This is historical context only; those workflows are now retired.
 - `config.json` has a hardcoded `"today"` value stamped into the sheet "Last
   Updated" column — goes stale; verify/auto-set.
 - `appendRows` now writes at an explicit computed row index (`readSheet` length+1,
@@ -35,17 +46,28 @@ Each is a schedule trigger + Code node running the self-authenticating script
   Keep sheets free of blank rows.
 - `listMessages` scans only `in:inbox newer_than:2d` — gaps older than 2 days need
   a widened query for one-off backfills.
-- `n8n execute --id` CLI fails while the server is up (port 5679 conflict); run via
-  `docker exec` instead.
-- Read-only access to account_b creds: `n8n export:credentials --all --decrypted`,
-  refresh gmail_b `Yvzzuu9y1BQeII6o` / sheets_b `4kOviLlBVYEXPtmK`.
-- themetalman13 Drive cred `4cxUhHDUa7KKbBm4` (OAuth client `...5`) works; complete
-  consent at exactly `http://localhost:5678`.
+- `n8n execute --id` and n8n Code/ExecuteCommand nodes are not supported paths for this
+  parser. Do not attempt to restore n8n execution without a fresh architecture decision.
+- Read-only helpers `/root/scripts/sheets-read.sh` and `/root/scripts/gmail-orders-list.sh`
+  now use parser-owned credentials directly.
 
-## State (2026-05-21)
-Drop logic patched: rows with a valid order number are KEPT even if item-name
-validation fails (`itemNameRejectedKeptForOrder`). Backfilled eBay 49802/49804/49805.
-**Open:** (1) eBay "Packing" item-name mis-extraction; (2) false-positive "Cancelled"
-classification of marketing emails; (3) classify() misses "order is confirmed"
-(49803). Calendar/Docs scopes deprioritized — Drive is enough.
-Full handoff: `/root/reviews/session-2026-05-21-handoff.md`.
+## State (2026-05-28)
+- Spec 76 moved scheduling from n8n to `order-parser.timer`.
+- Spec 77 re-pointed monitoring to `order-parser.service` status.
+- Codex decoupled Google auth/runtime from n8n:
+  - one-time minimized credential export to `/root/secrets/order-parser/credentials.json`
+  - parser reads that file directly
+  - runner uses host Node
+  - `order-parser.service` no longer depends on Docker
+- Verification passed:
+  - `order_parser.js authcheck`
+  - `sheets-read.sh` headers for account A, account B, and master
+  - `gmail-orders-list.sh` auth for both accounts
+  - host Node master dry-run
+  - no-match account dry-runs
+  - final grep showed no n8n credential export, Docker exec, or Docker service dependency
+    in the production parser path
+
+Open parser-quality items from May 21 still apply unless separately closed:
+eBay "Packing" item-name mis-extraction, false-positive "Cancelled" classification of
+marketing emails, and some classify() keyword misses.
