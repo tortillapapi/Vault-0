@@ -237,3 +237,21 @@ grep "^## \[2026-04-19\]" log.md
 - Mirror re-synced, dashboard all 🟢 (spec 57).
 - New operating rule: back up /root configs before editing (spec 58).
 - Tier: grunt (edits/log/commit), mid (trim review)
+
+## [2026-05-28] [cc] maint | Specs 69–77 — order-parser migrated off n8n onto a systemd timer
+- Root cause CLOSED: n8n 2.17.7 cannot run this parser. Code nodes execute in the keyless
+  `@n8n/task-runner` so `n8n export:credentials --decrypted` fails; the `executeCommand`
+  node is UNRECOGNIZED in this build (spec 75 restart → "Activation … did fail" for all 3
+  workflows). Both n8n execution paths are dead.
+- Spec 76: parser now runs via systemd `order-parser.{service,timer}` (daily 09:00
+  America/Los_Angeles, TimeoutStartSec=600) → `/root/scripts/run-order-parser.sh` →
+  `docker exec n8n-n8n-1 node order_parser.js` for account a→b→master. Guarded canary
+  passed (idempotent; 0 dup/blank rows). The 3 n8n parser workflows were DEACTIVATED
+  (not deleted). n8n is now only the credential store.
+- Spec 77: re-pointed all monitoring off n8n executions onto the systemd run status. New
+  `/root/scripts/parser-run-status.sh`; updated the Codex snapshot + both review prompts +
+  audit runbook section 1 (commit 3be2758). n8n-inactive is now expected, not an alarm.
+- One-shot OC cron `parser-timer-first-run-verify` set for 2026-05-29 16:20 UTC to confirm
+  the timer's first unattended run (Telegram).
+- Open follow-up: fully decouple Google auth from n8n so the container is not a dependency.
+- Tier: CC orchestration + review; OC mid executed specs 75/76/77.
