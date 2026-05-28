@@ -2,15 +2,18 @@
 
 **Run by:** OC `lead` agent via cron `n8n-parser-daily-audit`, daily 16:30 UTC.
 **Self-contained** — the agent has no memory between runs; everything needed is here.
-**Active window:** 2026-05-26 → 2026-06-01 inclusive, then self-expire.
+**Active window:** ongoing watchdog — runs until the parser is verified stable, then retire manually (no auto-expiry).
 
-## 0. Self-expiry guard (do this FIRST)
-Get today's UTC date: `date -u +%F`. If it is **after 2026-06-01**, disable this
-job and exit immediately:
-```
-openclaw cron list --json | jq -r '.[]|select(.name=="n8n-parser-daily-audit")|.id' | xargs -r -I{} openclaw cron disable {}
-```
-Otherwise continue.
+## Execution rules (MANDATORY — read before running anything)
+- NEVER use `set -e` / `set -euo pipefail` anywhere in this run.
+- Every shell probe MUST end with `|| true` so one failure cannot abort the audit.
+- If any step fails, RECORD it as a finding (in the log + alert) and CONTINUE to
+  the next section. The audit must always reach the "write log" + "alert" steps.
+- Do NOT improvise credential reads, remediation shell, or jq paths. Use ONLY the
+  exact commands written in this runbook.
+- This run DIAGNOSES and REPORTS only. It NEVER remediates (no re-auth, no
+  re-activate, no container restart, no editing config). Remediation is a
+  separate orchestrator task.
 
 ## 1. Did the workflows run? (execution status)
 ```
@@ -21,9 +24,11 @@ for wf in "Mcbqgukfgdafk57U:account_a" "EAKfdR3Csk0zdT6H:account_b" "XY3vs7olrtn
    | jq -r --arg l "$label" '.data[0]|"\($l)\t\(.startedAt)\t\(.status)"'
 done
 ```
-For any `status=error`, pull the message (`includeData=true`, `.data.resultData.error.message`)
-and consult the `n8n-parser-triage` skill (`/root/.claude/skills/n8n-parser-triage.md`)
-for likely cause (credential expiry is the usual one).
+For any `status=error`, capture the error message verbatim (includeData=true,
+`.data.resultData.error.message`) and record it in the log + alert. Do NOT run
+any remediation or credential shell here — name the likely cause in one line by
+reference to the `n8n-parser-triage` skill, but DIAGNOSE ONLY. Fixing is a
+separate orchestrator task.
 
 ## 2. Recall — were any real orders MISSED? (independent of the parser)
 Run the credential block exactly as written; do not improvise jq paths.
