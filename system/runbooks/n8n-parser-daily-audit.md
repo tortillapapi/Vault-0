@@ -15,20 +15,25 @@
   re-activate, no container restart, no editing config). Remediation is a
   separate orchestrator task.
 
-## 1. Did the workflows run? (execution status)
+## 1. Did the parser run? (systemd execution status)
 ```
-KEY=$(cat /root/secrets/n8n/api-key.txt)
-for wf in "Mcbqgukfgdafk57U:account_a" "EAKfdR3Csk0zdT6H:account_b" "XY3vs7olrtnnlBDv:master"; do
-  id="${wf%%:*}"; label="${wf##*:}"
-  curl -s -H "X-N8N-API-KEY: $KEY" "http://127.0.0.1:5678/api/v1/executions?workflowId=$id&limit=1&includeData=false" \
-   | jq -r --arg l "$label" '.data[0]|"\($l)\t\(.startedAt)\t\(.status)"'
-done
+/root/scripts/parser-run-status.sh || true
+systemctl show order-parser.service -p Result -p ExecMainStatus -p ActiveState || true
+TODAY_PT=$(TZ=America/Los_Angeles date +%F)
+SINCE_UTC=$(date -u -d "TZ=\"America/Los_Angeles\" $TODAY_PT 00:00:00" +'%F %T' 2>/dev/null || date -u +'%F 00:00:00')
+journalctl -u order-parser.service --since "$SINCE_UTC" --no-pager || true
 ```
-For any `status=error`, capture the error message verbatim (includeData=true,
-`.data.resultData.error.message`) and record it in the log + alert. Do NOT run
-any remediation or credential shell here — name the likely cause in one line by
-reference to the `n8n-parser-triage` skill, but DIAGNOSE ONLY. Fixing is a
-separate orchestrator task.
+Parser execution now runs via the systemd timer `order-parser.timer` at 09:00
+America/Los_Angeles. The n8n parser workflows are intentionally disabled and
+must not be treated as inactive-run failures.
+
+Pass criteria: `Result=success`, `ExecMainStatus=0`, `ran_today_pt=true`, and
+each account (`account_a`, `account_b`, `master`) has `START` -> `END` with no
+`FAILED` in the service journal. For any parser systemd failure, missed run, or
+account failure, capture the helper output / journal lines verbatim and record
+it in the log + alert. Do NOT run any remediation or credential shell here —
+name the likely cause in one line by reference to the `n8n-parser-triage` skill,
+but DIAGNOSE ONLY. Fixing is a separate orchestrator task.
 
 ## 2. Recall — were any real orders MISSED? (independent of the parser)
 Run the credential block exactly as written; do not improvise jq paths.
