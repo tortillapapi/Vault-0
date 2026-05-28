@@ -29,3 +29,11 @@
 - Precision: 0 recent rows | 0 confirmed | FALSE POSITIVES: none
 - Triage: latest errors all failed at `n8n export:credentials`; workflows are active, healthz OK, direct credential export and read-only Gmail/Sheets probes pass, so the likely cause is the workflow task-runner credential export path, not a currently failing Google Sheets read credential.
 - Verdict: ANOMALIES
+
+## 2026-05-28
+- Workflows: account_a=error | account_b=error | master=error
+- Recall: 4 order emails | 3 matched | MISSES: J.Crew ...5974 2026-05-27
+- Precision: 11 recent rows | 2 confirmed | FALSE POSITIVES: none
+- Errors: account_a/account_b/master all failed at `n8n export:credentials --all --decrypted --output=/tmp/order-parser-creds-*.json` via `node /files/order-parser/order_parser.js`.
+- Triage: likely workflow task-runner credential export path failure, consistent with prior `n8n-parser-triage` findings; diagnose only, no remediation run.
+- Verdict: ANOMALIES
