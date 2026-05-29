@@ -268,3 +268,30 @@ grep "^## \[2026-04-19\]" log.md
   host Node master dry-run, no-match account dry-runs, and Codex checker snapshot path.
 - Result: n8n parser workflows remain retired; n8n is no longer the parser runtime,
   scheduler, or Google credential source.
+
+## [2026-05-29] [cc] fix | Specs 79–81 — bundled multi-order email accuracy (account_b eBay)
+- Trigger: user's 5 Eevee-GX SM233 orders arrived in ONE eBay "Your order is confirmed"
+  email (msgId 19e6d7a034712107, 2026-05-28). Parser only ever captured one order per
+  email → 03304/03305 dropped (fixed last session, spec 79). This session hardened the
+  multi-order path further after the user spot-checked the data.
+- Spec 80: `validateItemName` now rejects eBay layout boilerplate (`ID:<digits>` /
+  `order number` fragments) → reason `ebay_layout_boilerplate`; recovered real titles
+  for 03304/03305 via the existing LLM fallback.
+- Spec 81 (the substantive one): found + fixed TWO real bugs in the spec-79 segmenter.
+  (A) Off-by-one — blocks were bounded STARTING at each order number, but in this email
+  layout item name+price PRECEDE the order number, so every multi-order row was shifted
+  one item. Re-bounded blocks to END at each order number (start_i = end_{i-1}).
+  (B) Totals-footer bleed — the last block ran to end-of-body and grabbed "Total charged
+  to $644.36" as 03307's price; the re-bound also fixes this (last block stops at the
+  final order number). Also added eBay multi-unit qty pattern `(N x $unit)` so 03303
+  correctly shows qty 3.
+- Corrected 5 live cells on account_b from the authoritative email (CC-verified on the
+  sheet, not just the .done): 03303 qty→3; 03304 name→"…Full Art Promo"/$80.00;
+  03305 name→"…SM Promo"/$74.99; 03306 $85→$95.00; 03307 $644.36→$85.00. Master rebuilt.
+- Parser code + sheet state only — NO vault commit for the parser work itself (this log
+  entry is the only vault write). Backups: order_parser.js.bak-20260528-spec80,
+  .bak-20260529-spec81. Single-order path untouched; regression dry-run clean.
+- Known accuracy gaps logged for later (user wants accuracy+uptime first, name-matching
+  later): qty still defaults to 1 when no explicit cue; multi-order item names lean on
+  the LLM and aren't independently cross-checked.
+- Tier: CC orchestration + verification; OC main (gpt-5.5) executed specs 80/81.
