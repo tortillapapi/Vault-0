@@ -37,3 +37,9 @@
 - Errors: account_a/account_b/master all failed at `n8n export:credentials --all --decrypted --output=/tmp/order-parser-creds-*.json` via `node /files/order-parser/order_parser.js`.
 - Triage: likely workflow task-runner credential export path failure, consistent with prior `n8n-parser-triage` findings; diagnose only, no remediation run.
 - Verdict: ANOMALIES
+
+## 2026-05-29
+- Workflows: account_a=ok | account_b=ok | master=ok
+- Recall: 9 order emails | 9 matched | MISSES: none
+- Precision: 9 recent rows | 9 confirmed | FALSE POSITIVES: none
+- Verdict: OK
