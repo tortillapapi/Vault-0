@@ -295,3 +295,24 @@ grep "^## \[2026-04-19\]" log.md
   later): qty still defaults to 1 when no explicit cue; multi-order item names lean on
   the LLM and aren't independently cross-checked.
 - Tier: CC orchestration + verification; OC main (gpt-5.5) executed specs 80/81.
+
+## [2026-05-29] [cc] fix | Specs 82–84 — item-name fidelity, msgId column, gated cleanup
+- Reviewed first unattended systemd-timer run (16:00 UTC, clean; watchdog flipped to OK
+  after the 11-day outage streak).
+- Spec 82 (DONE/verified): item-name fidelity — cleaner LLM excerpt + Alibaba extractor
+  + honest placeholder `(item name unavailable)`; multi-item emails annotated
+  `(+N more items)` (no fabrication). Backup order_parser.js.bak-20260529-spec82.
+- Spec 83 (CONDITIONAL): added account-sheet-only column J "Source Msg ID" (Gmail msgId
+  per row) — prerequisite for durable self-heal (re-fetch any row by id past the 2-day
+  window). Schema correct, master left 9-col (dashboard safe), header checks pass,
+  idempotent, no dup rows. Defect: Phase-2 backfill mis-assigned one msgId across 3
+  unrelated account_a orders (low impact, col J unused yet). Backup ...-spec83.
+- Spec 84 (DRAFTED, gated): verify-by-refetch cleanup + tighten backfill matcher; held
+  until the 05-30 run is verified clean.
+- Archived 3 stale task markers (50-anthropic, 60-resolved, 50_4 403) to tasks/archive/.
+- `/schedule` is REMOTE (cloud, no VPS access) → used a LOCAL systemd transient timer
+  `spec84-gated-dispatch.timer` (Sat 05-30 16:30 UTC, Persistent) to verify the run then
+  conditionally dispatch spec 84 + Telegram the outcome.
+- Parser code + sheets are NOT vault; signoffs live in reviews/. This log entry is the
+  only vault write.
+- Tier: CC orchestration + verification; OC main executed specs 82/83.
