@@ -49,3 +49,9 @@
 - Recall: 6 order emails | 5 matched | MISSES: Amazon order-last4 unavailable 2026-05-30 (Rolling Cones delivery)
 - Precision: 7 recent rows | 7 confirmed | FALSE POSITIVES: none
 - Verdict: ANOMALIES
+
+## 2026-05-31
+- Workflows: account_a=ok | account_b=ok | master=ok
+- Recall: 4 order emails | 4 matched | MISSES: none
+- Precision: 4 recent rows | 4 confirmed | FALSE POSITIVES: none
+- Verdict: OK
