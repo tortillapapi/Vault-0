@@ -316,3 +316,32 @@ grep "^## \[2026-04-19\]" log.md
 - Parser code + sheets are NOT vault; signoffs live in reviews/. This log entry is the
   only vault write.
 - Tier: CC orchestration + verification; OC main executed specs 82/83.
+
+## [2026-06-01] [cc] verify+fix | Spec 84 confirm + Spec 89 daily-run msgId guard + OC main reset
+- Spec 84 (gated dispatch) confirmed: 05-30 16:30 timer ran clean → dispatched spec 84;
+  OC wrote .done; one-shot unit self-cleaned. Verified against LIVE sheet (not the .done):
+  cleared cells stayed blank, legit Eevee bundle preserved, master/A:I intact.
+- Found a RECURRENCE in the daily-run path: msgId 19e79f952eb6531c stamped on both Target
+  #8199 and Amazon 111-0134108-2665821. Root cause (confirmed by re-fetching the email):
+  Amazon "Ordered: …" emails use repeated `&#8199;` HTML figure-space spacer entities; the
+  short-hash matcher read `#8199` inside `&#8199;` as Target order #8199 and overwrote J.
+  Spec 84's substring containment missed it (the substring was literally present).
+- Spec 89 (DONE/verified): guard in order_parser.js — (1) `isHtmlEntityHashMatch` skips
+  `#NNNN` shaped like `&#NNNN;`; (2) matches tagged strong/short_hash + subjectAnchored +
+  weak; (3) `orderMatchCorroboration` requires subject-anchor OR retailer/sender consistency
+  before a weak short-# token may overwrite an EXISTING row (daily-run hit + cleanup audit).
+  Cleared account_a J2 (#8199); kept #37457105 via retailer corroboration (no over-block).
+  Backup order_parser.js.bak-20260601T224619Z-spec89. Invariant holds: only genuine
+  same-retailer bundles share a msgId. Row counts unchanged (a17/b31); exactly one J cell
+  changed. Verified by CC: node --check, 8/8 unit test on real fns, live-sheet diff.
+- Dispatch lesson: `openclaw agent --local` returned empty stdout + nonzero exit DESPITE
+  success; OC `main`'s codex app-server processed the first dispatch async after the CLI
+  returned — likely the true author of the spec-89 implementation. Don't infer failure
+  from empty output; don't reroute prematurely (double-execution risk). New memory saved.
+- OC `main` session reset: `agent:main:main` was bloated (168k tokens, May-26 checkpoints).
+  Backed up sessions.json, removed only that key, quarantined the 13MB `2fb4742c…` lineage
+  to `.openclaw/_session-quarantine/main-mainlocal-20260601T231628Z/`. Fresh session
+  5020da67 on gpt-5.5 verified responsive (~60k baseline). Telegram session preserved.
+- Parser code + sheets are NOT vault; signoff in reviews/89-parser-daily-run-msgid-guard-
+  signoff.md (+ diagnosis, decisions). This log entry is the only vault write.
+- Tier: CC orchestration + heavy independent verification; OC main/lead (gpt-5.5) executed.
