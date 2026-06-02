@@ -65,6 +65,7 @@ native pointer.
 |---|---|---|
 | n8n | Docker `n8n-n8n-1`, localhost:5678; public `https://n8n.rareforceone.cloud` (Caddy proxy, spec 52) | order-parser automation — see `system/projects/n8n-order-parser`. OAuth redirect must be `https://n8n.rareforceone.cloud/rest/oauth2-credential/callback`; consent screen is Published (no 7-day token expiry) |
 | Orders Dashboard | port 5002 | Flask/SQLite, v1.0 — see `system/projects/orders-dashboard` |
+| Mission Control | `127.0.0.1:5003` | Flask read-only cockpit over agents/tasks/blockers/schedules/search; token-protected (token at `/root/secrets/mission-control/url-token.txt`, mode 0600); no write actions, no public route yet — see `system/projects/mission-control` |
 | OpenClaw gateway | systemd user service `openclaw-gateway.service` | `openclaw gateway status` is authoritative; currently runs `/usr/bin/node /usr/lib/node_modules/openclaw/dist/index.js gateway --port 18789` |
 
 ## Ops helper scripts & scheduled jobs (VPS, not in vault)

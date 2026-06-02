@@ -345,3 +345,11 @@ grep "^## \[2026-04-19\]" log.md
 - Parser code + sheets are NOT vault; signoff in reviews/89-parser-daily-run-msgid-guard-
   signoff.md (+ diagnosis, decisions). This log entry is the only vault write.
 - Tier: CC orchestration + heavy independent verification; OC main/lead (gpt-5.5) executed.
+
+## [2026-06-02] [cc] feature | Mission Control MVP
+- Mission Control MVP shipped: Flask read-only cockpit over agents/tasks/blockers/schedules/search.
+- Binds `127.0.0.1:5003`, token-protected (token at `/root/secrets/mission-control/url-token.txt`, mode 0600).
+- Local-only; no write actions; no public route yet. Vault remains canonical; MC derives views.
+- Specs 85–86 (codex-led scaffold + MVP pages), spec 87 (service hardening + smoke test), spec 88 (vault docs).
+- CC closed out the review chain + dispatched 87/88 while codex was quota-limited (quota reset ~03:39Z).
+- See `system/projects/mission-control.md` for paths, data sources, and future backlog.
