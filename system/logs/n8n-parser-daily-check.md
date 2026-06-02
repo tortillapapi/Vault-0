@@ -61,3 +61,9 @@
 - Recall: 4 order emails | 4 matched | MISSES: none
 - Precision: 6 recent rows | 6 confirmed | FALSE POSITIVES: none
 - Verdict: OK
+## 2026-06-02
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 4 order emails | 4 matched | MISSES: none
+- Precision: 6 recent rows | 4 confirmed | FALSE POSITIVES: Pokemon Center ...2122 2026-06-02; Capital One Shopping Support ...8317 2026-06-01
+- Verdict: ANOMALIES
+
