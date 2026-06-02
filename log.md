@@ -3,6 +3,14 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \[` for grep-friendly parsing.*
 
+## [2026-06-02] [cc] ops | Task reconciliation + Hermes onboarded as 3rd peer orchestrator
+- Closed stale tasks (user-approved): **67-telegram-pa-profile → done** (pa agent confirmed live; only the old vault-commit step had blocked it); **50_4-order-parser-verify-and-extend → superseded** by specs 70-89; **51-n8n-remote-access → superseded** by spec 52 (Caddy HTTPS). Original blockers kept as `.blocked.resolved`.
+- **67-master-live-mirror** left BLOCKED — awaiting user manual "Allow access" on Master L1/L3; user unsure the sheet is still in use.
+- **Hermes** (Nous Hermes harness) added as a third peer orchestrator alongside CC + Codex. It had been loading `/root/AGENTS.md` and impersonating Codex; fixed by authoring `/root/.hermes.md` (Hermes prioritizes `.hermes.md` and skips `AGENTS.md`). Added `owner: hermes` + `[hermes]` log tag to the peer protocol; `/root/.hermes/` marked private.
+- Hermes runs `gpt-5.5` via `openai-codex` on a **separate ChatGPT account** from Codex (no quota contention). Source-of-truth: Hermes kanban is private working memory; shared `/root/specs|tasks|reviews` stay canonical.
+- Pending next: **68-telegram-pa-smoke-test**.
+- Tier: cc (orchestration only)
+
 ## [2026-05-26] [cc] ops | Order-parser OAuth outage recovery + audit tooling
 - ~11-day silent outage (since ~May 15): all runs errored while workflows showed `active=true`
 - Root cause: n8n moved behind Caddy HTTPS proxy (`https://n8n.rareforceone.cloud`) → `redirect_uri_mismatch`; consent screen in "Testing" → 7-day refresh-token expiry revoked all 4 Google creds (gmail_a/b, sheets_a/b)

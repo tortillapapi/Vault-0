@@ -1,10 +1,12 @@
 # Peer Orchestrator Protocol
 
-_Last updated: 2026-04-27_
+_Last updated: 2026-06-02_
 
 ## Overview
 
-A peer orchestrator is an operator CLI that can author specs, dispatch work to OpenClaw, and review completion markers using the same shared conventions. On this VPS, the two peer orchestrators are Claude Code (CC) and Codex CLI.
+A peer orchestrator is an operator CLI that can author specs, dispatch work to OpenClaw, and review completion markers using the same shared conventions. On this VPS, the peer orchestrators are Claude Code (CC), Codex CLI, and **Hermes** (Nous Hermes harness, added 2026-06-02). All three share the conventions in this protocol.
+
+Each orchestrator loads its own guidance file from `/root`: CC → `CLAUDE.md`, Codex → `AGENTS.md`, Hermes → `.hermes.md`. (Hermes prioritizes `.hermes.md` and does **not** load `AGENTS.md` when it is present, so Hermes does not inherit Codex's identity.)
 
 ## Shared Resources
 
@@ -22,6 +24,7 @@ The following paths are private sidecars. Orchestrators MUST NOT read each other
 
 - CC private state: `/root/.claude/projects/-root/memory/` and `~/.claude.json`.
 - Codex private state: `/root/.codex/memories/`, `/root/.codex/sessions/`, and `/root/.codex/history.jsonl`.
+- Hermes private state: `/root/.hermes/` (config, `kanban.db`, `state.db`, `sessions/`, `memories/`). Hermes's kanban is private working memory only — project state must live in the shared `/root/specs`, `/root/tasks`, `/root/reviews`.
 - Rule: shared knowledge belongs in `/root/obsidian-vault/system/`, not in another orchestrator's private directory.
 
 ## Spec Frontmatter
@@ -31,11 +34,11 @@ Specs MAY include an optional `owner:` field to indicate which orchestrator shou
 ```yaml
 ---
 spec: 39-foo
-owner: codex   # or cc; omit for unowned
+owner: codex   # cc | codex | hermes; omit for unowned
 ---
 ```
 
-Before starting a spec, an orchestrator MUST check frontmatter. If the owner is the other orchestrator, do not start work unless the user explicitly reassigns it.
+Valid `owner:` values are `cc`, `codex`, and `hermes`. Before starting a spec, an orchestrator MUST check frontmatter. If the owner is another orchestrator, do not start work unless the user explicitly reassigns it.
 
 ## Log Discipline
 
@@ -46,6 +49,7 @@ Examples:
 ```markdown
 ## 2026-04-27 ingest | [cc] Added Foo source
 ## 2026-04-27 decision | [codex] Adopted peer owner frontmatter
+## 2026-06-02 config | [hermes] Tuned fallback providers
 ```
 
 Existing untagged entries are historical and SHOULD be treated as CC-authored unless evidence says otherwise. Do not rewrite old log entries just to add tags.
@@ -54,7 +58,7 @@ Existing untagged entries are historical and SHOULD be treated as CC-authored un
 
 At the start of a session, both orchestrators MUST:
 
-1. Run the resume protocol defined in their local guidance file: CC uses `/root/CLAUDE.md`; Codex uses `/root/AGENTS.md`.
+1. Run the resume protocol defined in their local guidance file: CC uses `/root/CLAUDE.md`; Codex uses `/root/AGENTS.md`; Hermes uses `/root/.hermes.md`.
 2. Check `/root/tasks/` for `.blocked` files older than 24 hours and surface them in the resume/status block.
 3. Read the last 20 entries of `/root/obsidian-vault/log.md` for cross-orchestrator awareness before planning shared work.
 4. Apply `/root/context/` lessons when starting new orchestration work.
@@ -92,7 +96,7 @@ An ACCEPT review means the corresponding `.done` file satisfies the spec. A REJE
 
 ## Anti-Collision Rules
 
-The user SHOULD run only one orchestrator at a time per project, or ensure CC and Codex are working on different specs.
+The user SHOULD run only one orchestrator at a time per project, or ensure CC, Codex, and Hermes are working on different specs.
 
 Before dispatching work for a spec, an orchestrator MUST check for a corresponding `.progress` file. If that file has recent activity (mtime less than 30 minutes old), assume the other orchestrator is mid-flight and do not start duplicate dispatch on the same spec.
 
