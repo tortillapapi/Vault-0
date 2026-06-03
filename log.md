@@ -3,6 +3,13 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \[` for grep-friendly parsing.*
 
+## [2026-06-03] [hermes] ops | Spec 90 — Hermes shakedown completed
+- Hermes authored `/root/specs/90-hermes-shakedown.md` + `/root/tasks/90-hermes-shakedown.txt` with `owner: hermes`.
+- Dispatched OC `grunt` (`opencode-go/deepseek-v4-pro`) to fix the peer-protocol owner-values doc nit; `.done` marker verified at `/root/tasks/90-hermes-shakedown.done`.
+- Protocol now consistently lists valid `owner:` values as `cc`, `codex`, and `hermes`.
+- Separately verified Hermes gateway is systemd-supervised, disabled inherited Alfred Telegram token in Hermes `.env`, and set Hermes fallback chain to DeepSeek V4 Pro via `opencode-go`.
+- Tier: hermes (orchestration), grunt (docs)
+
 ## [2026-06-02] [cc] ops | Task reconciliation + Hermes onboarded as 3rd peer orchestrator
 - Closed stale tasks (user-approved): **67-telegram-pa-profile → done** (pa agent confirmed live; only the old vault-commit step had blocked it); **50_4-order-parser-verify-and-extend → superseded** by specs 70-89; **51-n8n-remote-access → superseded** by spec 52 (Caddy HTTPS). Original blockers kept as `.blocked.resolved`.
 - **67-master-live-mirror** left BLOCKED — awaiting user manual "Allow access" on Master L1/L3; user unsure the sheet is still in use.

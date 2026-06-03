@@ -29,7 +29,7 @@ The following paths are private sidecars. Orchestrators MUST NOT read each other
 
 ## Spec Frontmatter
 
-Specs MAY include an optional `owner:` field to indicate which orchestrator should run the spec. Valid values are `cc` and `codex`; omit the field when the spec is unowned.
+Specs MAY include an optional `owner:` field to indicate which orchestrator should run the spec. Valid values are `cc`, `codex`, and `hermes`; omit the field when the spec is unowned.
 
 ```yaml
 ---
