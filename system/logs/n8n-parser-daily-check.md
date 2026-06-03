@@ -67,3 +67,8 @@
 - Precision: 6 recent rows | 4 confirmed | FALSE POSITIVES: Pokemon Center ...2122 2026-06-02; Capital One Shopping Support ...8317 2026-06-01
 - Verdict: ANOMALIES
 
+## 2026-06-03
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 0 order emails | 0 matched | MISSES: none
+- Precision: 4 recent rows | 2 confirmed | FALSE POSITIVES: Pokemon Center ...2122 2026-06-02; Capital One Shopping Support ...8317 2026-06-01
+- Verdict: ANOMALIES
