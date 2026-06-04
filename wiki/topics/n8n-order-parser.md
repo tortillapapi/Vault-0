@@ -3,12 +3,12 @@ type: topic
 title: n8n Order Parser
 slug: n8n-order-parser
 created: 2026-05-15
-last_updated: 2026-05-26
+last_updated: 2026-06-04
 tags: [ops, n8n, gmail, orders, sheets]
 thesis_version: 1
 priority: core
 domain_tags: [automation, pipeline, orders]
-last_accessed: 2026-05-21
+last_accessed: 2026-06-04
 access_count: 0
 ---
 
@@ -94,12 +94,43 @@ Direct restaurant emails may still leak through as purchase rows unless they are
   instead of the actual product name. The LLM fallback usually rescues
   the correct name, but regex-first extraction remains brittle for
   eBay's terse packing notices.
+- **eBay cart checkout lumping.** When an eBay cart confirmation email
+  contains multiple order numbers for separate items, the parser may
+  produce a single aggregate row with an ellipsis order number instead
+  of splitting into one row per order. Fixed 2026-06-04 (specs 99-100):
+  `extractCandidateRegexes` now splits multi-order eBay bodies per-block,
+  and `extractRegex` extracts per-block `Price:` and `(N x $unit)` qty
+  before falling back to generic extraction. Regression coverage:
+  `test_ebay_cart_multi_order_split.js`.
+- **Target HTML-entity order-number false positives.** Target emails
+  contain HTML entities like `&#8199;` that regex can misread as a
+  short-hash order number `#8199`. Fixed 2026-06-04 (specs 96-97):
+  `collectOrderNumberMatches` now uses a `target_order` pattern
+  (`Order #\d{13,18}`) that matches Target's long numeric order IDs
+  before falling back to short-hash patterns. Target product names
+  are extracted from link-heavy body text via `extractTargetItemName()`
+  using `Qty:` anchor text. Item name length cap raised to 120 chars.
+  Regression coverage: `test_target_order_extraction.js`,
+  `test_target_multi_order_blocks.js`.
+- **eBay item-name canonicalization.** eBay listings for the same
+  Pokémon TCG product use varying titles. Added 2026-06-04 (spec 98):
+  `canonicalizeEbayItemName()` normalizes known eBay Pokémon items
+  (eevee + SM233 -> Pokémon TCG Eevee GX SM233; alakazam ->
+  Pokémon TCG: Scarlet & Violet 151 Alakazam ex Boxes). Regression
+  coverage: `test_ebay_item_canonicalization.js`.
+- **Per-retailer multi-order block slicing.** `extractCandidateRegexes`
+  now branches block boundaries by retailer: Target emails place product
+  details after the `Order #`, so blocks run from current order to next
+  order offset. eBay cart emails place product details before the order
+  number, so blocks run from previous order end to current order end.
+  Added 2026-06-04 (spec 100 review follow-up).
 - **2-day scan window.** The parser scans only `in:inbox newer_than:2d`,
   so outage gaps older than 2 days need a manual `OP_GMAIL_QUERY`
   backfill via `listMessages` env override.
 
 ## Tuning History
 
+- **Specs 96-100 — 2026-06-04 (purchase log cleanup + parser hardening):** Hermes-orchestrated batch across five specs. (96) Removed SUPCASE master row 2 via source deletion + added `extractTargetItemName()` with `Qty:` anchor and HTML entity filtering, raised item name cap to 120 chars. (97) Fixed Target back-to-back orders (`102003482248229` + `912003091776786`) — parser now splits Target multi-order blocks forward (current Order # → next Order #) and uses `target_order` pattern for 13-18 digit Target order IDs. (98) Standardized 21 eBay item-name cells (Eevee SM233 + Alakazam 151 boxes) + added `canonicalizeEbayItemName()`. (99) Split master line 20 aggregate eBay cart row into seven exact rows — `extractCandidateRegexes` now splits eBay cart bodies with per-block `Price:` extraction. (100) Hermes review caught weak parser test assertions; OpenClaw strengthened regression + Hermes fixed Target multi-order regression from eBay block-slicing change. All 7 parser regression tests + 3 fixtures green. Backups under `/root/backups/purchase-log-cleanup/`. Tier: hermes (orchestration + review), grunt-eng (implementation).
 - **Spec 50.3 — 2026-05-21 (outage recovery):** Three workflows had auto-deactivated
   after a May 15–16 `MODULE_NOT_FOUND` error and were never re-enabled — root cause of
   the "no updates since May 16" outage. Re-activated all three. Code fixes in
@@ -135,6 +166,11 @@ Direct restaurant emails may still leak through as purchase rows unless they are
 - `/root/specs/50_1-order-parser-quality-fixes.md`
 - `/root/specs/50_2-order-parser-refinement.md`
 - `/root/specs/50_3-order-parser-outage-recovery.md`
+- `/root/specs/96-target-parser-cleanup.md`
+- `/root/specs/97-target-back-to-back-orders.md`
+- `/root/specs/98-ebay-item-name-standardization.md`
+- `/root/specs/99-ebay-cart-row20-split.md`
+- `/root/specs/100-ebay-cart-parser-price-qty-review-fix.md`
 
 ## 2026-05-26 — OAuth outage recovery & hardening
 
@@ -165,6 +201,7 @@ A ~11-day silent outage ran from ~2026-05-15 through 2026-05-26. All three workf
 
 ## Version
 
+- **v1.5** — Target + eBay parser hardening + item-name canonicalization + cart splitting, 2026-06-04 under Specs 96-100.
 - **v1.4** — OAuth outage recovery + Caddy HTTPS + published consent screen, 2026-05-26 under Spec 62.
 - **v1.3** — outage recovery + appendRows fix, 2026-05-21 under Spec 50.3.
 - **v1.2** — refinement + backfill shipped 2026-05-15 under Spec 50.2.

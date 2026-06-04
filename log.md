@@ -1,7 +1,24 @@
 # Wiki Log
 
 *Chronological append-only record of wiki activity. Each entry starts with*
-*a line matching `^## \[` for grep-friendly parsing.*
+*a line matching `^## \\[` for grep-friendly parsing.*
+
+## [2026-06-04] [hermes] ops | Purchase log cleanup + parser hardening batch (specs 96-100)
+- **Master row 2 (SUPCASE)**: removed via source-sheet deletion + master refresh. Backup `/root/backups/purchase-log-cleanup/20260604T075620Z/`.
+- **Target row 9 correction**: blank item name `Monster High Skulltimate Secrets Gore-geous Oasis Playset, Draculaura Doll and Accessories` (90 chars) filled. Order number `102003482248229` (was misparsed as `#8199` from HTML entities). Tracking `TLMD2256A0025527` filled from delivery email. Status `Delivered`. Source row updated, master refreshed.
+- **Target back-to-back orders**: missing order `912003091776786` (placed same day as `102003482248229`) appended to source sheet row 13. Both now in master rows 8-9. Backup `/root/backups/purchase-log-cleanup/20260604T080949Z/`.
+- **eBay item-name standardization (spec 98)**: 21 source-sheet cells updated — Eevee rows standardized to `Pokémon TCG Eevee GX SM233`, Alakazam eBay rows to `Pokémon TCG: Scarlet & Violet 151 Alakazam ex Boxes`. Canonicalization function added to parser. Backup `/root/backups/purchase-log-cleanup/20260604T083141Z/`.
+- **eBay cart split (spec 99)**: master line 20 was one aggregate row lumping seven eBay cart orders into `Pokémon 151 Boxes (15 items)` with ellipsis order `23-14553-12086...`. Gmail review confirmed seven separate order numbers from one cart checkout. Replaced with seven exact rows in source, master now has rows 20-26. Order `23-14553-12090` marked Cancelled (seller out of stock / refunded). Split prices allocated proportionally to charged total `$2,217.26`. Backup `/root/backups/purchase-log-cleanup/20260604T084131Z/`.
+- **eBay parser follow-up (spec 100)**: Hermes review caught weak regression tests — test was passing despite wrong price/qty extraction (candidate 1 grabbed cart total, candidate 2 leaked neighbor qty). OpenClaw strengthened assertions + fixed per-block extraction. Hermes then caught and fixed Target multi-order regression introduced by the eBay block-slicing change — `extractCandidateRegexes` now branches by retailer (Target: current→next; eBay: prev→current). All 7 parser tests + 3 fixtures green.
+- **Parser changes across all five specs**:
+  - `extractTargetItemName()`: handles link-heavy compact text, extracts product name before `Qty:`, ignores HTML entity noise
+  - `canonicalizeEbayItemName()`: eBay + eevee/SM233 → canonical Eevee name; eBay + alakazam → canonical Alakazam name
+  - `collectOrderNumberMatches()`: added `target_order` pattern (`Order #\d{13,18}`) to avoid short-hash false positives
+  - `extractCandidateRegexes()`: per-retailer block slicing (Target forward, eBay backward); first eBay block preamble trimmed; Price: prioritized over cart total/subtotal
+  - Item name length threshold raised to 120 chars (was 80)
+- **OpenClaw delegation**: three tasks (98, 99, 100) were delegated to `grunt-eng` due to Codex quota at 23%. Hermes acted as orchestrator/reviewer and caught two issues during independent verification (weak test assertions in 100, Target multi-order regression from eBay change).
+- **Regression tests added**: `test_target_order_extraction.js`, `test_target_multi_order_blocks.js`, `test_ebay_item_canonicalization.js`, `test_ebay_cart_multi_order_split.js`
+- Tier: hermes (orchestration + review), grunt-eng (implementation via OC)
 
 ## [2026-06-04] [hermes] ops | Tailscale dashboard access shakedown follow-up
 - Retrospective log correction: Hermes completed a dashboard-access task in Telegram without first creating a shared spec/task record, so this entry records the final verified state for peer visibility.
