@@ -3,6 +3,14 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-06-04] [hermes] ops | Spec 112 — OpenClaw grunt session maintenance watchdog
+- Created `/root/specs/112-openclaw-grunt-session-maintenance.md` and `/root/tasks/112-openclaw-grunt-session-maintenance.txt` with `owner: hermes`.
+- Added guarded maintenance script `/root/bin/openclaw-grunt-session-maintenance.py` for `grunt` and `grunt-eng` session stores. It defaults to dry-run, supports JSON output, archives before reset, resets `sessions.json` and `.usage-cost-cache.json`, leaves archives untouched, and refuses rotate when targeted OpenClaw tasks are running or fresh `.progress` markers exist.
+- Added silent Hermes cron watchdog `/root/.hermes/scripts/openclaw-grunt-session-watchdog.py`, scheduled every 6h as cron job `eac51421f32b`; it emits no output when stores are healthy and alerts only on threshold/check failures.
+- Corrected routing guidance: OpenClaw's OpenAI account is separate from Hermes/Janus's account, so OpenClaw GPT rolling-window exhaustion does not block Hermes. Janus delegation reasoning set to `low` for low/medium GPT subagent work while Janus remains high-reasoning orchestration.
+- Verification: script `--help`, `python3 -m py_compile`, live `--dry-run --json`, temp-fixture rotate/reset/archive test, watchdog silent-success run.
+- Tier: hermes (orchestration + review), Hermes delegated worker (implementation)
+
 ## [2026-06-04] [hermes] ops | Purchase log cleanup + parser hardening batch (specs 96-100)
 - **Master row 2 (SUPCASE)**: removed via source-sheet deletion + master refresh. Backup `/root/backups/purchase-log-cleanup/20260604T075620Z/`.
 - **Target row 9 correction**: blank item name `Monster High Skulltimate Secrets Gore-geous Oasis Playset, Draculaura Doll and Accessories` (90 chars) filled. Order number `102003482248229` (was misparsed as `#8199` from HTML entities). Tracking `TLMD2256A0025527` filled from delivery email. Status `Delivered`. Source row updated, master refreshed.

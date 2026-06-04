@@ -25,6 +25,13 @@ Codex, and OpenClaw equally (and Hermes once installed).
   whole spec to `main` with pre-approved handoffs + a `.progress` file instead of
   CC driving each phase (~10k tokens / ~3× faster). Not for single-phase work or
   phases needing CC judgment between them.
+- **OpenClaw grunt session watchdog is installed.** `/root/bin/openclaw-grunt-session-maintenance.py`
+  is the guarded manual dry-run/rotate tool for `grunt` and `grunt-eng` only;
+  `/root/.hermes/scripts/openclaw-grunt-session-watchdog.py` runs every 6h via
+  Hermes cron job `eac51421f32b` and stays silent unless thresholds are exceeded
+  or the check fails. Manual rotation command: `/root/bin/openclaw-grunt-session-maintenance.py --rotate --all --json`.
+  It refuses rotation when targeted OpenClaw tasks are running or fresh
+  `/root/tasks/*.progress` markers exist.
 - **OpenCode-Go agents have a weak clock (provider-wide, not just Kimi).** `grunt`
   and `grunt-eng` now run DeepSeek V4 Flash by default and `re-review` runs Qwen3.6,
   but hosted models can still misread current date/time. Always inject exact dates
@@ -42,17 +49,22 @@ Codex, and OpenClaw equally (and Hermes once installed).
   (GPT-5.5, medium) as a second review, before the orchestrator approves. Applies
   to all grunt work, not just the email parser.
 
-- **Dispatch cost discipline — keep OpenAI for judgment.** OpenAI/gpt-5.5 quota
-  is the scarce SHARED pool (Codex CLI + OC `main`/`lead`/`mid`/`pa` all draw on
-  one ChatGPT account); DeepSeek (`grunt`/`grunt-eng`) and Qwen (`re-review`) are
-  separate pools. Default mechanical/coding work to `grunt-eng` and docs/formatting
-  to `grunt`; reserve `main`/`lead`/`mid` (OpenAI) for genuine synthesis,
-  cross-file judgment, or multi-phase self-orchestration. Cap thinking at `medium`
-  for well-specified contracts — `xhigh` only for open-ended problems (reasoning
-  tokens dominate the bill). Do feasibility/investigation (`ls`/`grep`/`curl`) on
-  the orchestrator side directly; don't spend an OpenAI agent on greppy work, and
-  skip costly liveness probes (a PONG to `main` is ~60k tokens). Watch the Mission
-  Control Usage tab to stay ahead of the OpenAI 5h rolling window.
+- **Dispatch cost discipline — keep OpenAI for judgment.** OpenClaw's connected
+  OpenAI/ChatGPT account is separate from Hermes/Janus's OpenAI account, so an
+  OpenClaw GPT rolling-window burn does not affect Hermes availability. Within
+  OpenClaw, OpenAI/gpt-5.5 quota is still the scarce pool (`main`/`lead`/`mid`/`pa`);
+  DeepSeek (`grunt`/`grunt-eng`) and Qwen (`re-review`) are separate pools. Default
+  mechanical/coding work to `grunt-eng` and docs/formatting to `grunt`; reserve
+  OpenClaw `main`/`lead`/`mid` for genuine synthesis, cross-file judgment, or
+  multi-phase self-orchestration. If OpenClaw GPT is burned but GPT is still needed
+  for low/medium work, Janus may use Hermes delegation/subagents on the Hermes
+  account with lower reasoning while keeping Janus itself on the high-reasoning
+  orchestration lane. Cap thinking at `medium` for well-specified contracts —
+  `xhigh` only for open-ended problems (reasoning tokens dominate the bill). Do
+  feasibility/investigation (`ls`/`grep`/`curl`) on the orchestrator side directly;
+  don't spend an OpenAI agent on greppy work, and skip costly liveness probes (a
+  PONG to `main` is ~60k tokens). Watch the Mission Control Usage tab to stay ahead
+  of the OpenAI 5h rolling window.
 
 ## Session hygiene
 - **Manage OC main's context proactively.** Don't ask every session, but check
