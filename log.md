@@ -428,6 +428,6 @@ grep "^## \[2026-04-19\]" log.md
 
 
 ## [2026-06-04T22:57:29Z] [hermes] ops | OpenClaw grunt lanes moved to DeepSeek V4 Flash
-- Updated live OpenClaw config so  and  default to  instead of DeepSeek V4 Pro.
-- Rotated old bloated grunt/grunt-eng session stores into timestamped archives and reset their session indexes/cost caches.
-- Updated shared agent docs/cheatsheets to document Flash as the cost-control default and Pro/ as escalation paths.
+- Updated live OpenClaw config so `grunt` and `grunt-eng` default to `opencode-go/deepseek-v4-flash` instead of DeepSeek V4 Pro.
+- Rotated old bloated `grunt`/`grunt-eng` session stores into timestamped archives and reset their session indexes/cost caches.
+- Updated shared agent docs/cheatsheets to document Flash as the cost-control default and Pro/`mid` as escalation paths.
