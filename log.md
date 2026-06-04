@@ -423,3 +423,4 @@ grep "^## \[2026-04-19\]" log.md
   verified `A:J` unchanged. Live IMPORTRANGE mirror remains abandoned because it conflicts
   with the daily clear+rewrite rebuild.
 - Daily `order-parser.timer` remains enabled at 09:00 America/Los_Angeles.
+- [cc] Audit recall step now honors parser exclusions via --exclude-parser-rejects flag (spec 102). Filter script: /root/scripts/filter-parser-excluded.js. Runbook §2 updated.

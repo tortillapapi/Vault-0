@@ -47,11 +47,17 @@ sheets_b=$(jq -r '.credentials.sheets_b // empty' "$CONFIG_PATH" 2>/dev/null || 
 ```
 
 For each account (`account_a`, `account_b`):
-1. List the day's inbox candidates: `/root/scripts/gmail-orders-list.sh <account> 'in:inbox newer_than:1d' --json`
-2. **Judge independently** which messages are genuine order events (order
+1. List the day's inbox candidates, **pre-filtered to honor the parser's own exclusion
+   logic** (single source of truth: `order_parser.js` → `isExcluded` / `retailerExcluded`):
+   `/root/scripts/gmail-orders-list.sh <account> 'in:inbox newer_than:1d' --json --exclude-parser-rejects`
+   This drops emails the parser would exclude (J.Crew, Abercrombie, Panda Express,
+   Capital One Shopping, Pokemon Center marketing, food delivery, etc.) — the filter
+   uses the actual parser module exports, not a duplicated list.
+2. **Judge independently** which remaining messages are genuine order events (order
    confirmation / shipped / delivered / cancelled-with-order#). EXCLUDE
-   newsletters, marketing, price-drop alerts, food delivery, and the parser's
-   hard-excluded retailers. Use your own judgment — do NOT assume the parser was right.
+   newsletters, marketing, and price-drop alerts that passed the automatic filter.
+   Emails the `--exclude-parser-rejects` flag dropped are NOT recall misses — they
+   were intentionally excluded by the parser and you must NOT second-guess them.
 3. Read what landed in that account's sheet: `/root/scripts/sheets-read.sh <account> 'A:I' --json`
    (master uses `sheets-read.sh master 'A:I'`). Full-column `A:I` is the valid range syntax.
 4. For each judged order, check a matching row exists (match on order-number
