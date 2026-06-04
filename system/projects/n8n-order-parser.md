@@ -2,7 +2,7 @@
 type: system-project
 title: n8n Order Parser
 slug: n8n-order-parser
-last_synced: 2026-05-28
+last_synced: 2026-06-04
 maintainer: cc-oc-orchestrator
 tags: [project, order-parser, gmail, sheets, systemd]
 ---
@@ -98,3 +98,27 @@ marketing emails, and some classify() keyword misses.
   Telegram headline. Retirement of the daily watchdog stays a human decision.
 - Hard invariants: never auto-edit core matching logic; never auto-write/delete ledger rows
   without a human gate; every change passes a green full-corpus run; snapshot before any sheet write.
+
+## Audit hardening + Walmart Marketplace (2026-06-04)
+- **Spec 101 — second-audit delivery fixed.** The unattended CC parser review
+  (`parser-cc-review.timer`, 09:35 PT) ran with isolated `HOME=/opt/cc-parser-review`,
+  which made `openclaw` read an unpaired config and fail delivery. The systemd unit now sets
+  `OPENCLAW_STATE_DIR=/root/.openclaw` and
+  `OPENCLAW_CONFIG_PATH=/root/.openclaw/openclaw.json` while leaving `HOME` isolated for
+  Claude permission scoping. Its isolated `.claude` allowlist was also repaired:
+  `parser-run-status.sh` and the host-node dry-run are allowed, while dead docker-exec and
+  legacy `n8n-status.sh` entries were removed.
+- **Spec 102 — audit recall honors parser exclusions.** New
+  `/root/scripts/filter-parser-excluded.js` pipes recall candidates through the parser's
+  exported `isExcluded` / `retailerExcluded` checks, keeping `order_parser.js` as the single
+  source of truth. `/root/scripts/gmail-orders-list.sh` gained `--exclude-parser-rejects`,
+  and the daily-audit runbook now treats filtered parser rejects as not recall misses.
+- **Spec 103 — Walmart Marketplace extraction.** Parser handling now covers Walmart
+  Marketplace "Sold by <seller>" emails: `\d{7}-\d{8}` Walmart order tokens,
+  `walmart_order` matching, marketplace item-name extraction, Walmart price extraction,
+  HTML-entity decoding in `htmlToText`, and a short-hash collector guard. Regression fixtures
+  cover marketplace confirmation, marketplace shipping, and first-party Walmart behavior.
+- **103b — personal-order prune.** After the Walmart Marketplace fix, one personal
+  non-inventory CONCETTA order was corrected/pruned from account_a and master follow-up state:
+  the malformed blank-order tracking row was removed and the corrected Walmart row was verified
+  as the sole CONCETTA/tracking match.
