@@ -396,3 +396,13 @@ grep "^## \[2026-04-19\]" log.md
 - Vault writes: this log entry + spec 93's runbook/cron-name fix (commit 01a14c7). Parser code +
   sheets are NOT vault. Full record: reviews/session-2026-06-04-handoff.md + signoffs 91, 93-94.
 - [cc] Documented spec-92 L2 self-improvement loop + weekly KPI timer in system/projects/n8n-order-parser.md (spec 92 P4 follow-up B).
+
+## [2026-06-04] [cc] feature | On-demand Master refresh; spec 67 superseded
+- Shipped `/root/scripts/refresh-master.sh` for host-node Master rebuilds on demand, with
+  Telegram confirmation to Manny showing account_a/account_b/output/dedup row counts.
+- Wired OC main's known-command instructions for `refresh master`, `update master`, and
+  `rebuild master now`; caveat is one OpenClaw main agent turn plus script runtime.
+- Cleaned spec-67 Master leftovers by snapshotting `A:L` and clearing only `L1` and `L3`;
+  verified `A:J` unchanged. Live IMPORTRANGE mirror remains abandoned because it conflicts
+  with the daily clear+rewrite rebuild.
+- Daily `order-parser.timer` remains enabled at 09:00 America/Los_Angeles.

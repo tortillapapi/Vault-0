@@ -72,6 +72,15 @@ Open parser-quality items from May 21 still apply unless separately closed:
 eBay "Packing" item-name mis-extraction, false-positive "Cancelled" classification of
 marketing emails, and some classify() keyword misses.
 
+## Master Refresh (spec 67_1 — 2026-06-04)
+- Master stays on the daily rebuild path (`order-parser.timer`, 09:00 PT).
+- `/root/scripts/refresh-master.sh` plus the `refresh master` Telegram command gives
+  instant catch-up after manual source-sheet edits.
+- The live IMPORTRANGE mirror from spec 67 is abandoned because it conflicts with the
+  daily clear+rewrite rebuild.
+- Both account-to-Master IMPORTRANGE auth grants remain recorded if a future design
+  needs them.
+
 ## Self-Improvement Loop (spec 92, L2 — 2026-06-04)
 - Detection → proposal → regression-gated → human-approved deploy. Ceiling L2:
   every parser/ledger change stays human-gated; L3 (auto-merge exclusion-only) deferred.
