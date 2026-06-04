@@ -42,6 +42,18 @@ Codex, and OpenClaw equally (and Hermes once installed).
   (GPT-5.5, medium) as a second review, before the orchestrator approves. Applies
   to all grunt work, not just the email parser.
 
+- **Dispatch cost discipline — keep OpenAI for judgment.** OpenAI/gpt-5.5 quota
+  is the scarce SHARED pool (Codex CLI + OC `main`/`lead`/`mid`/`pa` all draw on
+  one ChatGPT account); DeepSeek (`grunt`/`grunt-eng`) and Qwen (`re-review`) are
+  separate pools. Default mechanical/coding work to `grunt-eng` and docs/formatting
+  to `grunt`; reserve `main`/`lead`/`mid` (OpenAI) for genuine synthesis,
+  cross-file judgment, or multi-phase self-orchestration. Cap thinking at `medium`
+  for well-specified contracts — `xhigh` only for open-ended problems (reasoning
+  tokens dominate the bill). Do feasibility/investigation (`ls`/`grep`/`curl`) on
+  the orchestrator side directly; don't spend an OpenAI agent on greppy work, and
+  skip costly liveness probes (a PONG to `main` is ~60k tokens). Watch the Mission
+  Control Usage tab to stay ahead of the OpenAI 5h rolling window.
+
 ## Session hygiene
 - **Manage OC main's context proactively.** Don't ask every session, but check
   OC main's context % before a heavy/multi-phase dispatch, and recommend `/clear`
