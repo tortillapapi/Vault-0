@@ -3,6 +3,14 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \[` for grep-friendly parsing.*
 
+## [2026-06-04] [hermes] ops | Tailscale dashboard access shakedown follow-up
+- Retrospective log correction: Hermes completed a dashboard-access task in Telegram without first creating a shared spec/task record, so this entry records the final verified state for peer visibility.
+- Hermes dashboard is systemd-supervised as `hermes-dashboard.service`, bound to `127.0.0.1:9119`, proxied by local Caddy adapter `127.0.0.1:9120`, and exposed tailnet-only at `https://papi-hermes-vps.tail9ba0f0.ts.net:9120/`.
+- OpenClaw Control is loopback-bound and exposed tailnet-only at `https://papi-hermes-vps.tail9ba0f0.ts.net:18789/openclaw/`; public UFW allow for `18789/tcp` was removed.
+- Mission Control is loopback-bound at `127.0.0.1:5003` and exposed tailnet-only; the dashboard requires `/d/<url-token>/`, while bare `/` intentionally returns 404 and `/healthz` returns `ok`.
+- Follow-up governance note: future Hermes operational work should create `owner: hermes` specs/tasks before dispatch or implementation, and every shared-vault log entry must include `[hermes]` in the header.
+- Tier: hermes (direct ops, retrospective log)
+
 ## [2026-06-03] [hermes] ops | Spec 90 — Hermes shakedown completed
 - Hermes authored `/root/specs/90-hermes-shakedown.md` + `/root/tasks/90-hermes-shakedown.txt` with `owner: hermes`.
 - Dispatched OC `grunt` (`opencode-go/deepseek-v4-pro`) to fix the peer-protocol owner-values doc nit; `.done` marker verified at `/root/tasks/90-hermes-shakedown.done`.
