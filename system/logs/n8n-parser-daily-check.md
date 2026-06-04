@@ -72,3 +72,9 @@
 - Recall: 0 order emails | 0 matched | MISSES: none
 - Precision: 4 recent rows | 2 confirmed | FALSE POSITIVES: Pokemon Center ...2122 2026-06-02; Capital One Shopping Support ...8317 2026-06-01
 - Verdict: ANOMALIES
+
+## 2026-06-04
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 4 order emails | 3 matched | MISSES: J.Crew order-last4 unavailable 2026-06-03
+- Precision: 12 recent rows | 12 confirmed | FALSE POSITIVES: none
+- Verdict: ANOMALIES
