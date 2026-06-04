@@ -71,3 +71,21 @@ Inactive n8n parser workflows are expected. Monitoring should use
 Open parser-quality items from May 21 still apply unless separately closed:
 eBay "Packing" item-name mis-extraction, false-positive "Cancelled" classification of
 marketing emails, and some classify() keyword misses.
+
+## Self-Improvement Loop (spec 92, L2 — 2026-06-04)
+- Detection → proposal → regression-gated → human-approved deploy. Ceiling L2:
+  every parser/ledger change stays human-gated; L3 (auto-merge exclusion-only) deferred.
+- Tooling in `n8n/local-files/order-parser/`:
+  - `run_fixtures.js` / `fixtures-run.sh` — regression gate (corpus in `fixtures/`).
+  - `propose_fix.js` — anomaly → staged fixture + scratch-validated minimal exclusion diff
+    → `reviews/parser-improve-<date>.proposal.md` (authoring only, no apply).
+  - `apply_proposal.js` — gated EXCLUDED_SENDERS deploy: `.bak` + full-corpus gate +
+    auto-revert on red; refuses any change outside the exclusion array. `--apply` + human OK.
+  - `prune_rows.js` — parameterized, snapshot-backed, assert-before-write FP-row remover for
+    account sheets (master self-heals). `--apply` + human OK.
+  - `kpi_rollup.js` — per-day + pooled 7/14d precision/recall, Verdict:OK streak, and a
+    human-confirmed retirement criterion (default 14 clean days). Report: `reviews/parser-kpi-<date>.md`.
+- Weekly KPI: `parser-kpi-weekly.timer` (Mon 09:45 PT) → regenerates the report and sends a
+  Telegram headline. Retirement of the daily watchdog stays a human decision.
+- Hard invariants: never auto-edit core matching logic; never auto-write/delete ledger rows
+  without a human gate; every change passes a green full-corpus run; snapshot before any sheet write.

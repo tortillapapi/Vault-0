@@ -395,3 +395,4 @@ grep "^## \[2026-04-19\]" log.md
   decommissioned if that sync is migrated.
 - Vault writes: this log entry + spec 93's runbook/cron-name fix (commit 01a14c7). Parser code +
   sheets are NOT vault. Full record: reviews/session-2026-06-04-handoff.md + signoffs 91, 93-94.
+- [cc] Documented spec-92 L2 self-improvement loop + weekly KPI timer in system/projects/n8n-order-parser.md (spec 92 P4 follow-up B).
