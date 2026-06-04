@@ -425,3 +425,9 @@ grep "^## \[2026-04-19\]" log.md
 - Daily `order-parser.timer` remains enabled at 09:00 America/Los_Angeles.
 - [cc] Audit recall step now honors parser exclusions via --exclude-parser-rejects flag (spec 102). Filter script: /root/scripts/filter-parser-excluded.js. Runbook §2 updated.
 - [cc] Session summary (2026-06-04, specs 101/102/103/103b/104): synced parser audit hardening and Walmart Marketplace docs into the vault. Spec 101 fixed unattended `parser-cc-review.timer` delivery and allowlist drift; spec 102 made audit recall honor parser exclusions via `/root/scripts/filter-parser-excluded.js` and `--exclude-parser-rejects`; spec 103 added Walmart Marketplace extraction and fixtures; 103b verified/pruned the personal CONCETTA account_a/master row state; spec 104 updated the parser project and resource registry docs.
+
+
+## [2026-06-04T22:57:29Z] [hermes] ops | OpenClaw grunt lanes moved to DeepSeek V4 Flash
+- Updated live OpenClaw config so  and  default to  instead of DeepSeek V4 Pro.
+- Rotated old bloated grunt/grunt-eng session stores into timestamped archives and reset their session indexes/cost caches.
+- Updated shared agent docs/cheatsheets to document Flash as the cost-control default and Pro/ as escalation paths.

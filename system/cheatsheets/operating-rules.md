@@ -26,11 +26,11 @@ Codex, and OpenClaw equally (and Hermes once installed).
   CC driving each phase (~10k tokens / ~3× faster). Not for single-phase work or
   phases needing CC judgment between them.
 - **OpenCode-Go agents have a weak clock (provider-wide, not just Kimi).** `grunt`
-  and `grunt-eng` now run DeepSeek V4 Pro and `re-review` runs Qwen3.6, but the
-  clock issue persists — confirmed 2026-05-26 when DeepSeek wrote a `00:00:00Z`
-  placeholder time. When audit accuracy matters, hardcode the timestamp in the task
-  prompt (tell the agent to copy it verbatim) or verify `.done` times with
-  `stat -c %y`. OpenAI agents (main/lead/mid on gpt-5.5) are unaffected.
+  and `grunt-eng` now run DeepSeek V4 Flash by default and `re-review` runs Qwen3.6,
+  but hosted models can still misread current date/time. Always inject exact dates
+  in task prompts and require `date -u` for completion markers; verify `.done`
+  times with `stat -c %y` when audit accuracy matters. OpenAI agents
+  (main/lead/mid on gpt-5.5) are unaffected.
 - **Verification checks must match unique content text**, not numeric prefixes or
   assumed file/process structure. Use `pgrep -af <name>` not `systemctl is-active`
   unless the target is confirmed a systemd unit (OpenClaw runs many plain
