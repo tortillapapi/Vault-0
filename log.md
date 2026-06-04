@@ -368,3 +368,22 @@ grep "^## \[2026-04-19\]" log.md
 - Specs 85–86 (codex-led scaffold + MVP pages), spec 87 (service hardening + smoke test), spec 88 (vault docs).
 - CC closed out the review chain + dispatched 87/88 while codex was quota-limited (quota reset ~03:39Z).
 - See `system/projects/mission-control.md` for paths, data sources, and future backlog.
+
+## [2026-06-04] [cc] maint+feature | Parser review-job cleanup, FP fix, self-improvement loop P1; Hermes readiness review
+- Hermes readiness review (advisory): install current, gateway daemon up, `.hermes.md` strong;
+  gaps = gateway not systemd-supervised + no real track record. User is testing Hermes by having
+  HIM implement the recommendations; CC = final reviewer of the result.
+- Parser review jobs (specs 90/90_1): dropped misleading `n8n-` prefix. Now TWO active reviews —
+  `parser-daily-audit` (OC cron 09:20 PT) + `parser-cc-review` (systemd 09:35 PT, renamed+enabled);
+  `parser-codex-review` (09:40) disabled (units kept). Parser itself = single `order-parser` timer 09:00.
+- Parser FP fix (spec 91): excluded `capitaloneshopping.com` + `em.pokemon.com` (over-block guard
+  confirms eBay/Mercari/pokemoncenter.com safe); removed 2 stale FP rows from account_a (master
+  self-heals); seeded 3 regression fixtures. Required explicit user auth for ledger/parser edits.
+- Self-improvement loop (spec 92 ROADMAP, L2 human-gated): P1 DONE (spec 94) = fixture harness +
+  `require.main` guard + `module.exports`; `fixtures-run.sh` green 3/3. P2 (proposal step) is next.
+- Spec 93: CC-review dry-run repointed docker-exec → host node.
+- CORRECTION (carry forward): the order parser is FULLY decoupled from n8n at runtime (host node +
+  /root/secrets creds). n8n is kept up ONLY for the Google Tasks↔Notion hourly sync; it can be
+  decommissioned if that sync is migrated.
+- Vault writes: this log entry + spec 93's runbook/cron-name fix (commit 01a14c7). Parser code +
+  sheets are NOT vault. Full record: reviews/session-2026-06-04-handoff.md + signoffs 91, 93-94.
