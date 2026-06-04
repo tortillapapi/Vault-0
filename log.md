@@ -431,3 +431,6 @@ grep "^## \[2026-04-19\]" log.md
 - Updated live OpenClaw config so `grunt` and `grunt-eng` default to `opencode-go/deepseek-v4-flash` instead of DeepSeek V4 Pro.
 - Rotated old bloated `grunt`/`grunt-eng` session stores into timestamped archives and reset their session indexes/cost caches.
 - Updated shared agent docs/cheatsheets to document Flash as the cost-control default and Pro/`mid` as escalation paths.
+- 2026-06-04 [feature] [cc] Mission Control usage tracker added (specs 105-110):
+  Anthropic and OpenAI auto, DeepSeek/Qwen opencode scrape plus local signals,
+  Gemini manual; 5-min refresh timer.
