@@ -3,6 +3,15 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-06-05] [hermes] ops | Specs 113-114 — Mnemosyne quick-capture + due dispatcher
+- Created shared specs/tasks for Mnemosyne's deterministic PA layer: `/root/specs/113-mnemo-quick-capture-kernel.md`, `/root/tasks/113-mnemo-quick-capture-kernel.txt`, `/root/specs/114-mnemo-due-dispatcher.md`, `/root/tasks/114-mnemo-due-dispatcher.txt`.
+- Delegated bounded implementation to OC `grunt-eng` per cost-control hierarchy; Hermes/Janus independently reviewed and sent two corrective passes for `OVERWHELMED` reply formatting and `oil change` phrase preservation.
+- Installed quick-capture helper `/root/.hermes/profiles/papipa/pa/bin/mnemo.py` plus `/root/.hermes/profiles/papipa/pa/README.md`; updated `/root/.hermes/profiles/papipa/SOUL.md` to call the helper for `ADD`, `PARK`, `WAITING ON`, `REMIND`, `DONE`, `LIST`, and `OVERWHELMED`.
+- Installed dispatcher `/root/.hermes/profiles/papipa/scripts/mnemo-due-dispatch.py`; scheduled cron job `cbcef468213a` (`Mnemosyne Due Reminder Dispatcher`) every 5 minutes under profile `papipa`, script-only/no-agent, Telegram delivery, silent when no due items.
+- Added shared config doc `/root/obsidian-vault/system/configs/mnemosyne-pa.md` documenting profile, state files, helper commands, cron jobs, and maintenance notes.
+- Verification: `py_compile`, helper `--help`, ADD/PARK/WAITING/REMIND/OVERWHELMED captures, list counts, future `due`, dispatcher no-due silence, dispatcher due-output fixture, and final PA state restored to empty arrays/empty JSONL.
+- Tier: hermes (orchestration + review + cron scheduling), grunt-eng (implementation via OC)
+
 ## [2026-06-04] [hermes] ops | Spec 112 — OpenClaw grunt session maintenance watchdog
 - Created `/root/specs/112-openclaw-grunt-session-maintenance.md` and `/root/tasks/112-openclaw-grunt-session-maintenance.txt` with `owner: hermes`.
 - Added guarded maintenance script `/root/bin/openclaw-grunt-session-maintenance.py` for `grunt` and `grunt-eng` session stores. It defaults to dry-run, supports JSON output, archives before reset, resets `sessions.json` and `.usage-cost-cache.json`, leaves archives untouched, and refuses rotate when targeted OpenClaw tasks are running or fresh `.progress` markers exist.
