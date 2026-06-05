@@ -78,3 +78,9 @@
 - Recall: 4 order emails | 3 matched | MISSES: J.Crew order-last4 unavailable 2026-06-03
 - Precision: 12 recent rows | 12 confirmed | FALSE POSITIVES: none
 - Verdict: ANOMALIES
+
+## 2026-06-05
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 3 order emails | 3 matched | MISSES: none
+- Precision: 3 recent rows | 3 confirmed | FALSE POSITIVES: none
+- Verdict: OK
