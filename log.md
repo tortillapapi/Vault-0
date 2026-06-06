@@ -458,3 +458,7 @@ grep "^## \[2026-04-19\]" log.md
 - 2026-06-04 [feature] [cc] Mission Control usage tracker added (specs 105-110):
   Anthropic and OpenAI auto, DeepSeek/Qwen opencode scrape plus local signals,
   Gemini manual; 5-min refresh timer.
+
+## [2026-06-06T05:06:10Z] task | [hermes] Spec 118 Milo nutrition activation
+- Orchestrated OC research, local nutrition kernel, Sheet integration, Telegram routing, and re-review.
+- Verified nutrition self-test 36/36, workout self-test 32/32, Sheet smoke/cleanup, and activation re-review PASS.
