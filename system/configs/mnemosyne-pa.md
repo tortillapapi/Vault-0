@@ -123,7 +123,7 @@ Each token must include the `tasks.readonly` OAuth scope for Google Tasks visibi
 
 ### Current scope status
 
-As of 2026-06-06, both tokens have Calendar, Gmail, Drive, Contacts, Sheets, and Docs scopes but do **not** include `https://www.googleapis.com/auth/tasks.readonly`.
+As of 2026-06-06, both account-scoped tokens include `https://www.googleapis.com/auth/tasks.readonly`. Live read-only Tasks API smoke checks succeeded for both accounts.
 
 ### If Tasks data is unavailable
 

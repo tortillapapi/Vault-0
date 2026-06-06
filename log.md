@@ -7,7 +7,7 @@
 - Created `/root/specs/115-mnemo-google-tasks-brief.md` and `/root/tasks/115-mnemo-google-tasks-brief.txt` with `owner: hermes`.
 - Delegated implementation to OC `grunt-eng`: added read-only Google Tasks CLI support to the Hermes Google Workspace helper, added `tasks.readonly` to OAuth scope lists, and updated Mnemo daily command stack cron job `0d108b2bb0c2` to include Google Tasks.
 - Updated `/root/obsidian-vault/system/configs/mnemosyne-pa.md` documenting Google Tasks visibility and re-auth requirements.
-- Verification: Python compile passed; cron prompt contains Google Tasks instructions; both account tokens currently lack `https://www.googleapis.com/auth/tasks.readonly`, so Tasks API reads return 403 insufficient scopes until Papi re-authorizes both Google accounts.
+- Verification: Python compile passed; cron prompt contains Google Tasks instructions. Follow-up user re-auth completed for both account-scoped tokens, and live read-only Google Tasks API smoke checks succeeded for `mramirez021111` and `themetalman13`.
 - Tier: hermes (orchestration + review), grunt-eng (implementation via OC)
 
 ## [2026-06-05] [hermes] ops | Specs 113-114 — Mnemosyne quick-capture + due dispatcher
