@@ -3,6 +3,13 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-06-06] [hermes] ops | Spec 115 — Mnemo Google Tasks visibility
+- Created `/root/specs/115-mnemo-google-tasks-brief.md` and `/root/tasks/115-mnemo-google-tasks-brief.txt` with `owner: hermes`.
+- Delegated implementation to OC `grunt-eng`: added read-only Google Tasks CLI support to the Hermes Google Workspace helper, added `tasks.readonly` to OAuth scope lists, and updated Mnemo daily command stack cron job `0d108b2bb0c2` to include Google Tasks.
+- Updated `/root/obsidian-vault/system/configs/mnemosyne-pa.md` documenting Google Tasks visibility and re-auth requirements.
+- Verification: Python compile passed; cron prompt contains Google Tasks instructions; both account tokens currently lack `https://www.googleapis.com/auth/tasks.readonly`, so Tasks API reads return 403 insufficient scopes until Papi re-authorizes both Google accounts.
+- Tier: hermes (orchestration + review), grunt-eng (implementation via OC)
+
 ## [2026-06-05] [hermes] ops | Specs 113-114 — Mnemosyne quick-capture + due dispatcher
 - Created shared specs/tasks for Mnemosyne's deterministic PA layer: `/root/specs/113-mnemo-quick-capture-kernel.md`, `/root/tasks/113-mnemo-quick-capture-kernel.txt`, `/root/specs/114-mnemo-due-dispatcher.md`, `/root/tasks/114-mnemo-due-dispatcher.txt`.
 - Delegated bounded implementation to OC `grunt-eng` per cost-control hierarchy; Hermes/Janus independently reviewed and sent two corrective passes for `OVERWHELMED` reply formatting and `oil change` phrase preservation.
