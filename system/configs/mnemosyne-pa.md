@@ -3,7 +3,7 @@ type: system-config
 title: Mnemosyne PA Bot
 slug: mnemosyne-pa
 owner: hermes
-last_updated: 2026-06-05
+last_updated: 2026-06-06
 ---
 
 # Mnemosyne PA Bot
@@ -112,6 +112,29 @@ Hermes cron job:
 - Mode: `no_agent` script-only
 - Script: `mnemo-due-dispatch.py`
 
+## Google Accounts & Data Sources
+
+Mnemo reads personal data from two Google accounts via account-scoped OAuth tokens:
+
+- `/root/.hermes/google-accounts/mramirez021111`
+- `/root/.hermes/google-accounts/themetalman13`
+
+Each token must include the `tasks.readonly` OAuth scope for Google Tasks visibility.
+
+### Current scope status
+
+As of 2026-06-06, both tokens have Calendar, Gmail, Drive, Contacts, Sheets, and Docs scopes but do **not** include `https://www.googleapis.com/auth/tasks.readonly`.
+
+### If Tasks data is unavailable
+
+If the daily command stack shows "Google Tasks unavailable" or the API returns 403:
+
+1. Run the Hermes Google Workspace setup for each account to re-authenticate with the updated scope list.
+2. The scope `https://www.googleapis.com/auth/tasks.readonly` is now included in `SCOPES` in both:
+   - `/root/.hermes/skills/productivity/google-workspace/scripts/setup.py`
+   - `/root/.hermes/skills/productivity/google-workspace/scripts/google_api.py`
+3. Re-auth flow: `setup.py --auth-url` → user authorizes in browser → `setup.py --auth-code CODE`.
+
 ## Daily command stack
 
 Hermes cron job:
@@ -121,6 +144,14 @@ Hermes cron job:
 - Profile: `papipa`
 - Schedule: `5 16 * * *` (9:05 AM Pacific during PDT)
 - Delivery: `telegram`
+- Data sources: Google Calendar, Google Tasks (read-only), parser-run-status, PA state files
+
+### Google Tasks data gathering
+
+The prompt instructs Mnemo to:
+1. Run `tasks lists` to discover task lists for each account.
+2. Run `tasks list --list <id> --due-max <48h-iso>` for each list to find items due today, overdue, or upcoming.
+3. If Tasks API returns 403/insufficient-scope, say "Google Tasks unavailable — re-auth needed" and continue.
 
 ## Maintenance notes
 
