@@ -3,6 +3,13 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-06-06] [hermes] ops | Spec 119 — Milo nutrition label photo OCR
+- Created/owned `/root/specs/119-milo-nutrition-label-photo-ocr.md` and `/root/tasks/119-milo-nutrition-label-photo-ocr.txt`; routed to OC `lead` per Papi's quota-preservation request, not DeepSeek/grunt lanes.
+- OC completed deterministic label OCR/text support in Milo nutrition: `label-text`/`label-json`, brand/product/serving preservation, high-confidence save/log gates, raw OCR/source/confidence metadata, tortilla fixture coverage, and SOUL routing for nutrition-label photos.
+- Live Telegram photo was not sent as an external smoke; installed gateway media path was verified from source/runtime state. Hermes independently reran nutrition/workout self-tests and a temp-home label fixture smoke after the OC CLI exited nonzero from post-completion GPT compaction.
+- Verification: nutrition self-test `48/48`, workout self-test `32/32`, fixture `Mission Carb Balance Soft Taco Flour Tortillas` with caption `ate 2` produced `140 cal / 10P / 38C / 6F / 30 fiber` in temp state.
+- Tier: hermes (orchestration + review), lead (implementation via OC)
+
 ## [2026-06-06] [cc] ops | Mission Control usage cleanup + parser-review fixes + VPS housekeeping
 - **VPS housekeeping**: freed ~6.2 GB of regenerable caches (npm/_cacache, uv, pip). Dispatched OC `grunt-eng` via **spec 116** to remove the stale `/root/.openclaw/session-prune-backup-20260528` (May-28 prune rollback, window closed) and empty `/root/.openclaw/trash` (~141 MB); verified real state, `_session-quarantine` left intact, `.done` written.
 - **Morning reviews restyled** to a multi-line "Headline + bullets" format (✅/🔴 verdict + bullets + 🔧 Actions / 🚩 Escalations). Edited `/opt/cc-parser-review/review.prompt.md` (CC review), `/root/codex-parser-review/review.prompt.md` and `/root/scripts/parser-codex-review.sh` (Codex) — also fixed the `tr '\n' ' '` line that was flattening the Codex message into a run-on. Dated backups made.
