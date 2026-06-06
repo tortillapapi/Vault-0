@@ -3,6 +3,15 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-06-06] [cc] ops | Mission Control usage cleanup + parser-review fixes + VPS housekeeping
+- **VPS housekeeping**: freed ~6.2 GB of regenerable caches (npm/_cacache, uv, pip). Dispatched OC `grunt-eng` via **spec 116** to remove the stale `/root/.openclaw/session-prune-backup-20260528` (May-28 prune rollback, window closed) and empty `/root/.openclaw/trash` (~141 MB); verified real state, `_session-quarantine` left intact, `.done` written.
+- **Morning reviews restyled** to a multi-line "Headline + bullets" format (✅/🔴 verdict + bullets + 🔧 Actions / 🚩 Escalations). Edited `/opt/cc-parser-review/review.prompt.md` (CC review), `/root/codex-parser-review/review.prompt.md` and `/root/scripts/parser-codex-review.sh` (Codex) — also fixed the `tr '\n' ' '` line that was flattening the Codex message into a run-on. Dated backups made.
+- **Codex review scheduling reconnected**: `parser-codex-review.timer` was installed but `disabled` (left un-enabled during the Jun-3 unit rename) — `enable --now`, next run 16:40 UTC daily. Codex's `/root/.codex` ChatGPT token had 401'd (shared-auth race per [[codex-review-shared-auth-race]]); user re-authed; a manual `systemctl start` produced + sent a real review.
+- **CC parser review**: its isolated token (`/opt/cc-parser-review/.claude`) had expired (401) alongside the main-session logout, so the Jun-5 scheduled run failed. Ran the review manually for 2026-06-05; user re-authed the isolated config; verified end-to-end. Removed the stale `MultiEdit` deny rule from the isolated `settings.json`.
+- **Mission Control Usage tab**: investigated "OpenCode not updating" — data was correct (DeepSeek **Flash** is cheap; account-level `0/50/33` is real, confirmed against the raw opencode.ai RSC + the portal). Fixed `_merge_opencode_scrape` to attribute scraped windows to `source=opencode.ai` + fresh `as_of` (was mislabeled `openclaw-local`/stale). **Merged DeepSeek+Qwen into one "OpenCode" card** (`PROVIDER_ORDER`, new `collect_opencode`), removed "usage unknown", moved per-window source to a single card footer, added a `compact_num` Jinja filter (1.67M / 79.0k). Restarted `mission-control`; dated backups of `usage.py`/`usage.html`/`main.py`.
+- Memories added: [[reference_mission_control_screenshot]] (headless-Chromium visual review workflow), [[feedback_isolated_parser_review_token]], [[project_mission_control_redesign]] (deferred sleeker UI).
+- Tier: cc (orchestration + direct ops/config), grunt-eng (spec 116 cleanup via OC)
+
 ## [2026-06-06] [hermes] ops | Spec 115 — Mnemo Google Tasks visibility
 - Created `/root/specs/115-mnemo-google-tasks-brief.md` and `/root/tasks/115-mnemo-google-tasks-brief.txt` with `owner: hermes`.
 - Delegated implementation to OC `grunt-eng`: added read-only Google Tasks CLI support to the Hermes Google Workspace helper, added `tasks.readonly` to OAuth scope lists, and updated Mnemo daily command stack cron job `0d108b2bb0c2` to include Google Tasks.
