@@ -462,3 +462,9 @@ grep "^## \[2026-04-19\]" log.md
 ## [2026-06-06T05:06:10Z] task | [hermes] Spec 118 Milo nutrition activation
 - Orchestrated OC research, local nutrition kernel, Sheet integration, Telegram routing, and re-review.
 - Verified nutrition self-test 36/36, workout self-test 32/32, Sheet smoke/cleanup, and activation re-review PASS.
+
+---
+## [2026-06-06T05:19:18Z] task | [hermes] Spec 119 Milo nutrition label photo OCR dispatched to OpenClaw Lead
+- User requested Hermes quota preservation: route everything to OpenClaw Main/Lead for now.
+- Created `/root/specs/119-milo-nutrition-label-photo-ocr.md` and `/root/tasks/119-milo-nutrition-label-photo-ocr.txt`.
+- Scope: precise packaged-food nutrition label photo/OCR flow for Milo, preserving brand/product line/serving macros and avoiding generic food estimates.
