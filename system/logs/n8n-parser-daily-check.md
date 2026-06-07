@@ -90,3 +90,9 @@
 - Recall: 2 order emails | 1 matched | MISSES: Mercari order-last4 unavailable 2026-06-06
 - Precision: 2 recent rows | 2 confirmed | FALSE POSITIVES: none
 - Verdict: ANOMALIES
+
+## 2026-06-07
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 0 order emails | 0 matched | MISSES: none
+- Precision: 2 recent rows | 2 confirmed | FALSE POSITIVES: none
+- Verdict: OK
