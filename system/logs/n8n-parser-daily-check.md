@@ -102,3 +102,10 @@
 - Recall: 2 order emails | 2 matched | MISSES: none
 - Precision: 2 recent rows | 2 confirmed | FALSE POSITIVES: none
 - Verdict: OK
+
+## 2026-06-09
+- Workflows: account_a=error (OAuth invalid_grant) | account_b=success | master=error (OAuth invalid_grant)
+- Recall: 1 observable order email | 1 matched | MISSES: none; account_a probe unavailable
+- Precision: 1 observable recent row | 1 confirmed | FALSE POSITIVES: none; account_a and master probes unavailable
+- Findings: account_a `FAILED account a` after OAuth refresh returned `invalid_grant` (`Token has been expired or revoked.`); master `FAILED master` for the same cause. Likely OAuth credential failure; diagnose via `n8n-parser-triage` only.
+- Verdict: ANOMALIES
