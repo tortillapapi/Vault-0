@@ -47,7 +47,9 @@ Codex, and OpenClaw equally (and Hermes once installed).
 - **Two-stage review chain over grunt work.** Grunt-tier output (`grunt`,
   `grunt-eng`) goes through `re-review` (Qwen3.6) for first-pass QA, then `mid`
   (GPT-5.5, medium) as a second review, before the orchestrator approves. Applies
-  to all grunt work, not just the email parser.
+  to all grunt work, not just the email parser. **Bound every review prompt to the
+  spec, the changed files/diff, test output, and the `.done` marker** — never broad
+  project/session history; inherited context is the main review-cost leak.
 
 - **Dispatch cost discipline — keep OpenAI for judgment.** OpenClaw's connected
   OpenAI/ChatGPT account is separate from Hermes/Janus's OpenAI account, so an
@@ -65,6 +67,27 @@ Codex, and OpenClaw equally (and Hermes once installed).
   don't spend an OpenAI agent on greppy work, and skip costly liveness probes (a
   PONG to `main` is ~60k tokens). Watch the Mission Control Usage tab to stay ahead
   of the OpenAI 5h rolling window.
+- **Judge cost by quota %, not raw token counts.** Per-session counters are
+  context-processing volume; with ~95% prompt caching, raw totals are dominated by
+  discounted cached re-reads and overstate real spend. Optimize against the
+  weekly/5h rolling-window percentages (Mission Control Usage tab); alert on
+  quota-point deltas (e.g. one session moving the weekly window ≥2 points), not on
+  raw-token thresholds.
+- **One project = one pre-approved dispatch, not many sequential GPT sessions.**
+  Bundle a project's phases into a single self-orchestrated `main` dispatch (or a
+  bounded `mid`/grunt chain). Re-opening a fresh GPT session per phase replays the
+  full instruction/tool payload each time — the specs 105-110 usage-tracker sprint
+  opened 7 sequential `main`/xhigh sessions for one project, the clearest avoidable
+  burn to date.
+- **Scheduled GPT crons need a justified tier.** Any recurring `openclaw cron` /
+  systemd job that wakes an OpenAI agent must run at the lowest tier that does the
+  job: default recurring audits/reviews to `mid`/medium or `re-review`/Qwen; reserve
+  `lead`/`high`+ for jobs that demonstrably need it; re-audit periodically.
+  (2026-06-09: `parser-daily-audit` moved lead/high → mid/medium.)
+- **Don't run heavy introspective usage reports on the paid OpenAI account.**
+  Generating a full token-usage analysis itself once burned ~5 points of a 5h
+  window. Pull usage from the Mission Control trackers / `rate_limits` fields
+  instead; if a narrative report is genuinely needed, run it on a cheaper agent.
 
 ## Session hygiene
 - **Manage OC main's context proactively.** Don't ask every session, but check
