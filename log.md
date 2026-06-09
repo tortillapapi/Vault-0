@@ -484,3 +484,19 @@ grep "^## \[2026-04-19\]" log.md
 - User requested Hermes quota preservation: route everything to OpenClaw Main/Lead for now.
 - Created `/root/specs/119-milo-nutrition-label-photo-ocr.md` and `/root/tasks/119-milo-nutrition-label-photo-ocr.txt`.
 - Scope: precise packaged-food nutrition label photo/OCR flow for Milo, preserving brand/product line/serving macros and avoiding generic food estimates.
+
+## [2026-06-08T23:41:23Z] task | [hermes] Spec 120 CC parser review Telegram digest formatting
+- User asked to make the daily CC parser review Telegram easier to digest.
+- Created `/root/specs/120-cc-parser-review-tg-digest-format.md` and `/root/tasks/120-cc-parser-review-tg-digest-format.txt`.
+- Scope: prompt/formatting only for `/opt/cc-parser-review/review.prompt.md`; no parser code, sheets, credentials, or cron changes.
+
+## [2026-06-08T23:51:57Z] task | [hermes] Spec 121 parser blank-order shipment repair dispatched
+- User approved steps 1-4: parser fix, account_b sheet cleanup, snapshot/audit alignment, and verification.
+- Created `/root/specs/121-parser-blank-order-shipment-repair.md` and `/root/tasks/121-parser-blank-order-shipment-repair.txt`.
+- Dispatch target: OpenClaw `grunt-eng`; step 5 (`mramirez` re-auth) remains out of scope until user/Janus handle it later.
+
+## [2026-06-09T00:08:50Z] task | [hermes] Spec 121 parser blank-order shipment repair accepted
+- OpenClaw `grunt-eng` completed parser fix, account_b sheet cleanup, parser snapshot blank-order metrics, and verification.
+- Hermes verified live account_b: 35 rows, 0 blank-order rows, 0 duplicate order groups; row 14 updated, row 37 no longer returned.
+- Hermes caught one safety gap in blank-order fallback tracking matching; OC follow-up tightened it to reject different nonblank tracking values.
+- Re-review and mid final review accepted with no required fixes. Ready for separate `mramirez` re-auth task.
