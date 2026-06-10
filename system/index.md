@@ -56,6 +56,8 @@ Catalog of internal ops knowledge mirrored and synthesized under `system/`.
 
 ## Configs
 
+- [[configs/milo-fitness|milo-fitness]] — Hermes workout/nutrition bot, Pacific-date schema, and maintenance.
+- [[configs/mnemosyne-pa|mnemosyne-pa]] — Hermes PA bot, deterministic capture, reminders, and Google Tasks.
 - [[configs/openclaw-agents|openclaw-agents]] — agent roster, models, tiers, and session keys.
 - [[configs/vault-layout|vault-layout]] — where wiki work vs system work belongs.
 - [[configs/index|configs index]] — config summary list.

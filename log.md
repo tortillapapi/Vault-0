@@ -3,6 +3,15 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-06-10] [codex] fix | Milo workout log now records Pacific dates
+- Added first-class `workout_date` values derived from session start in `America/Los_Angeles` while preserving UTC timestamps and `session_id` grouping.
+- Added `workout_date` columns to the live `Sets` and `Workout Sessions` tabs; backfilled all 12 existing set rows and all 13 local history records to `2026-06-07`.
+- Updated history lookup and session summaries to display dates and prevent same-named sessions from merging.
+- Left the existing June 7 session open because its completion status was unknown.
+- Added canonical config page `system/configs/milo-fitness.md`; updated system/config indexes and corrected the resource registry to reflect live Hermes, Milo, and Mnemosyne services.
+- Verification: workout self-test `34/34`, Pyright `0` errors/warnings, Sheet backfill idempotent, Milo gateway active after restart.
+- Tier: codex (direct implementation + documentation)
+
 ## [2026-06-06] [hermes] ops | Spec 119 — Milo nutrition label photo OCR
 - Created/owned `/root/specs/119-milo-nutrition-label-photo-ocr.md` and `/root/tasks/119-milo-nutrition-label-photo-ocr.txt`; routed to OC `lead` per Papi's quota-preservation request, not DeepSeek/grunt lanes.
 - OC completed deterministic label OCR/text support in Milo nutrition: `label-text`/`label-json`, brand/product/serving preservation, high-confidence save/log gates, raw OCR/source/confidence metadata, tortilla fixture coverage, and SOUL routing for nutrition-label photos.

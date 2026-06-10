@@ -2,7 +2,7 @@
 type: system-resource
 title: Resource Registry
 slug: registry
-last_synced: 2026-06-04
+last_synced: 2026-06-10
 maintainer: cc-oc-orchestrator
 tags: [ops, resources, registry, shared-brain]
 ---
@@ -10,7 +10,7 @@ tags: [ops, resources, registry, shared-brain]
 # Resource Registry
 
 The single map of every resource the VPS agents (CC/Claude, Codex, OpenClaw, and
-the planned Hermes agent) can touch. Canonical knowledge lives in the vault under
+Hermes) can touch. Canonical knowledge lives in the vault under
 `system/`; each agent keeps only a thin pointer in its native config. If a native
 config and a `system/` page disagree, **the `system/` page wins** — re-sync the
 native pointer.
@@ -67,6 +67,9 @@ native pointer.
 | Orders Dashboard | port 5002 | Flask/SQLite, v1.0 — see `system/projects/orders-dashboard` |
 | Mission Control | `127.0.0.1:5003` | Flask read-only cockpit over agents/tasks/blockers/schedules/search; token-protected (token at `/root/secrets/mission-control/url-token.txt`, mode 0600); no write actions, no public route yet — see `system/projects/mission-control` |
 | OpenClaw gateway | systemd user service `openclaw-gateway.service` | `openclaw gateway status` is authoritative; currently runs `/usr/bin/node /usr/lib/node_modules/openclaw/dist/index.js gateway --port 18789` |
+| Hermes / Janus gateway | Hermes default profile under `/root/.hermes/` | Peer orchestrator, systemd-supervised; shared project state remains in `/root/specs`, `/root/tasks`, and `/root/reviews` |
+| Milo fitness bot | `/root/.hermes/profiles/milo/`; `hermes-gateway-milo.service` | Workout + nutrition Telegram profile; deterministic kernels and Google Sheets backend — see `system/configs/milo-fitness` |
+| Mnemosyne PA bot | `/root/.hermes/profiles/papipa/`; `hermes-gateway-papipa.service` | Personal-assistant profile and deterministic capture/reminder layer — see `system/configs/mnemosyne-pa` |
 
 ## Ops helper scripts & scheduled jobs (VPS, not in vault)
 | Resource | Location / handle | Purpose |
@@ -77,11 +80,6 @@ native pointer.
 | `verify-done-files.sh` | `/root/scripts/` | verify a `.done` marker's FILES_CHANGED vs git/fs ground truth (spec 59) |
 | n8n parser daily audit | OC cron `n8n-parser-daily-audit` (id `b769b0b5…`) | `lead`, 09:20 PT / 16:20 UTC daily; active, not self-expired; runbook uses `--exclude-parser-rejects`; runbook `system/runbooks/n8n-parser-daily-audit.md`; log `system/logs/n8n-parser-daily-check.md` |
 | second parser audit | systemd `parser-cc-review.timer` | unattended CC review at 09:35 PT; script `/root/scripts/parser-cc-review.sh`; isolated config/log dir `/opt/cc-parser-review` |
-
-## Planned
-| Agent | Status | Onboarding |
-|---|---|---|
-| Hermes | not yet installed | on install, point it at `system/` as canonical; add a native pointer like CLAUDE.md/AGENTS.md |
 
 ## Private — listed for completeness, not shared
 - CC behavior-only memory (how CC should act): stays in CC auto-memory.
