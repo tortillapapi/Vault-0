@@ -3,6 +3,12 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-06-10T20:03:15Z] plan | [hermes] Parked Bookmark Hell pipeline MVP
+- Captured Papi's agreed direction for a reliable workflow-first Bookmark Hell project: Telegram/link capture before full X/TikTok scraping.
+- Saved the hybrid storage preference: structured store for records, Obsidian for searchable/curated knowledge, Notion/Google Drive views later if useful.
+- Documented MVP v1 categories, extraction fields, resurfacing modes, and next-session plan at `/root/obsidian-vault/system/projects/bookmark-hell-pipeline.md`.
+- Next recommended work: create an `owner: hermes` spec for MVP v1 after current finance Phase 4 work or when Papi explicitly reopens the project.
+
 ## [2026-06-10T07:21:54Z] ops | [hermes] Spec 124 finance Plaid Phase 3 accepted + handoff documented
 - Spec 124 Phase 3 is complete: final OpenClaw `mid` review v7 accepted `/root/reviews/124-phase3-final-mid-review-v7.md`; completion marker written at `/root/tasks/124-phase3-complete.done`.
 - Finance layer now has a sandbox-first read-only Plaid connector path with strict environment gates, production hard-block, sanitized token handling, per-Item atomic sync, hashed transaction refs, liabilities rollback, and no money-movement endpoints.

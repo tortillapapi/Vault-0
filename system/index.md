@@ -40,6 +40,7 @@ Catalog of internal ops knowledge mirrored and synthesized under `system/`.
 
 ## Projects
 
+- [[projects/bookmark-hell-pipeline|bookmark-hell-pipeline]] — parked MVP plan for X/TikTok bookmark capture, categorization, hybrid storage, and resurfacing.
 - [[projects/n8n-order-parser|n8n-order-parser]] — order automation state.
 - [[projects/orders-dashboard|orders-dashboard]] — orders dashboard state.
 
