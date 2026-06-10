@@ -3,7 +3,7 @@ type: system-config
 title: Mnemosyne PA Bot
 slug: mnemosyne-pa
 owner: hermes
-last_updated: 2026-06-06
+last_updated: 2026-06-10
 ---
 
 # Mnemosyne PA Bot
@@ -78,6 +78,18 @@ Supported commands:
 
 Default timezone: Pacific / `America/Los_Angeles`.
 
+The profile config also sets:
+
+```yaml
+timezone: America/Los_Angeles
+session_reset:
+  mode: daily
+  at_hour: 4
+```
+
+Daily reset prevents a long-lived PA session from treating its original
+conversation-start date as the current date.
+
 Verification examples passed on 2026-06-05:
 
 - `ADD` creates open task.
@@ -86,6 +98,31 @@ Verification examples passed on 2026-06-05:
 - `REMIND me to ... tomorrow at 10am` creates scheduled reminder.
 - `OVERWHELMED laundry orders oil change returns emails` replies with top 3 including `oil change` and parks items.
 - `due --now 2100-01-01T00:00:00-08:00` emits due reminders/nudges and updates state.
+
+### Reminder write path
+
+As of 2026-06-10, all reminder wording goes through `mnemo.py`, including
+natural requests such as:
+
+```bash
+mnemo.py capture "Set a reminder for me to finish Walmart setup tonight around 8:30 p.m."
+```
+
+The helper:
+
+- resolves relative dates in `America/Los_Angeles`,
+- rejects timestamps that are already in the past,
+- writes the local reminder consumed by the due dispatcher,
+- creates the matching Google Task in `mramirez021111` / `My Tasks`,
+- stores the Pacific calendar date as the Google Task due date,
+- stores the exact reminder date/time/timezone in Google Task notes.
+
+Google Tasks due values are date-only. Use `YYYY-MM-DDT00:00:00.000Z` for the
+intended Pacific calendar date; do not try to encode the reminder time in
+Google Tasks' `due` field.
+
+Mnemo must not use the `cronjob` tool or ad-hoc Google API snippets for user
+reminders.
 
 ## Due reminder dispatcher
 
@@ -159,3 +196,25 @@ The prompt instructs Mnemo to:
 - Do not copy bot tokens into specs, logs, or docs.
 - If quick-capture behavior changes, update both `SOUL.md` and this document.
 - Run helper verification with a backup/restore around PA state to avoid leaving fake tasks/reminders.
+
+## 2026-06-10 reminder-date incident
+
+A Walmart seller-account reminder requested on Wednesday, June 10 at 8:30 PM
+Pacific was initially written to a stale June 8 cron schedule and a June 9
+Google Task.
+
+Root cause:
+
+- the Telegram session began June 4 and its cached system prompt still said
+  `Conversation started: Thursday, June 04, 2026`,
+- the profile timezone was blank and fell back to the VPS UTC timezone,
+- the model bypassed `mnemo.py`, did not run a live date check, and improvised
+  separate cron and Google Tasks payloads,
+- Hermes accepted the stale one-shot cron with `next_run_at: null`.
+
+Correction:
+
+- the live cron was moved to `2026-06-10T20:30:00-07:00`,
+- the Google Task due date was changed to `2026-06-10`,
+- its notes now say `Wednesday, June 10, 2026 at 8:30 PM PT`,
+- the PA session was reset after the timezone and daily-reset config changed.
