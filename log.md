@@ -511,3 +511,17 @@ grep "^## \[2026-04-19\]" log.md
 
 Hermes dispatched and reviewed Spec 122 secure business finance data layer Phase 1. OC outputs created `/root/finance-data/` local read-only scaffold, CSV import, sanitized JSON commands, v0 optimizer, Plaid placeholder, and user runbook. Re-review + mid review initially found blockers; Hermes dispatched code/runbook fixes. Final mid review ACCEPTED with smoke test 22 passed / 0 failed and default finance DB empty. Phase 2 should add strict Plaid secret loader, Link/token flow, mocked Plaid adapters, account sync, per-account audit enrichment, and no payment/write features.
 
+
+## [2026-06-10T03:06:31Z] note | [cc] Session Q&A: Hermes dashboard access path + Purchase Log Master source clarification
+
+Two reference findings from a CC orchestrator Q&A session (no implementation; diagnostics only).
+
+**1. Hermes dashboard access.** User couldn't reach `http://127.0.0.1:9119/` after a restart/update — nothing was actually broken. `hermes-dashboard.service` is healthy and binds **loopback-only** (`--host 127.0.0.1 --port 9119`) by design. The correct external path:
+`https://papi-hermes-vps.tail9ba0f0.ts.net:9120/`
+Chain: browser → Tailscale Serve (HTTPS, tailnet-only) → Caddy `:9120` reverse_proxy → dashboard `127.0.0.1:9119`. Gotchas: (a) `127.0.0.1:9119` from a laptop hits the laptop, not the VPS — needs an SSH tunnel `ssh -N -L 9119:127.0.0.1:9119 root@...`; (b) port 9120 over Tailscale speaks **HTTPS only** (Serve), so `http://` returns "Client sent an HTTP request to an HTTPS server" — must use `https://` and the `*.ts.net` hostname (raw IP won't match the cert). Diagnosed without touching Hermes private state.
+
+**2. Purchase Log – Master source sheets.** Confirmed the Master is a **derived/output** spreadsheet, NOT its own source, even though account A's Google account owns both. `order_parser.js runMaster()` reads two separate source sheets, dedupes, then `A:J:clear` + rewrites Master. Three distinct sheet IDs:
+- account_a source: `1y1JXLFX0wUQuYrEfami6Z6yFE56Gl9yTpPEUWgIvkGU`
+- account_b source (eBay; A has shared read): `1ZJ1BVOItFstSVCN5oxuYC6JfcSUsi5SsOxBZr7g87Y0`
+- master (output): `1VA5dXBwTy7p7yoi2sWbWL56x71V9rRLbxRy1uftwrNM`
+Implication: edits to the account_a source propagate into Master on the next rebuild (daily 09:00 PT timer or instant "refresh master"); edits made directly in Master are wiped on the next rebuild.
