@@ -500,3 +500,9 @@ grep "^## \[2026-04-19\]" log.md
 - Hermes verified live account_b: 35 rows, 0 blank-order rows, 0 duplicate order groups; row 14 updated, row 37 no longer returned.
 - Hermes caught one safety gap in blank-order fallback tracking matching; OC follow-up tightened it to reject different nonblank tracking values.
 - Re-review and mid final review accepted with no required fixes. Ready for separate `mramirez` re-auth task.
+
+## [2026-06-10T00:43:34Z] task | [hermes] Spec 122 secure business finance data layer dispatched
+- User asked to build a secure finance data layer for Chase Business Checking cash and Amex/Chase card analysis; Plaid already connected to Chase and possibly Amex.
+- Created `/root/specs/122-secure-business-finance-data-layer.md` with strict read-only/no-payment/no-secret-in-prompts boundaries.
+- Dispatched Phase 1 tasks: `122_1` to OpenClaw lead for source/security architecture, `122_2` to grunt-eng for local SQLite/CLI scaffold, and `122_3` to grunt for ADHD-friendly setup/runbook docs.
+- Next: wait for `.done` markers, run re-review/mid review chain for grunt outputs, then Hermes verifies before Phase 2 Plaid integration.
