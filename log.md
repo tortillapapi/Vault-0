@@ -542,3 +542,19 @@ Chain: browser → Tailscale Serve (HTTPS, tailnet-only) → Caddy `:9120` rever
 - account_b source (eBay; A has shared read): `1ZJ1BVOItFstSVCN5oxuYC6JfcSUsi5SsOxBZr7g87Y0`
 - master (output): `1VA5dXBwTy7p7yoi2sWbWL56x71V9rRLbxRy1uftwrNM`
 Implication: edits to the account_a source propagate into Master on the next rebuild (daily 09:00 PT timer or instant "refresh master"); edits made directly in Master are wiped on the next rebuild.
+
+## [2026-06-10T09:10:00Z] task | [cc] Full VPS audit + hardening sweep (Fable 5 test drive)
+
+CC (Metis) ran a total scan of all projects, agents, automations, and dashboards. Report: `/root/reviews/vps-audit-2026-06-10.md`.
+
+**Healthy:** all services/timers green, parser pipeline + reviews clean, vault synced, OC fleet matches roster, disk 16%.
+
+**Fixed during audit (CC direct):** parent `.done` markers for completed specs 92/124; archived 485 completed artifacts ≤110 to `/root/archive/sweep-2026-06-10/` (specs 158→28, tasks 699→346); corrected CC's stale local memory (grunt agents are deepseek-v4-flash per 2026-06-06 rotation).
+
+**Dispatched + accepted (grunt-eng, verified by CC against artifacts):**
+- Spec 125 — all 7 production dirs now local git repos (orders-dashboard, mission-control, metis-gateway, codex-parser-review, scripts, systemd, order-parser), 1 clean initial commit each, zero secret-pattern files tracked.
+- Spec 126 — `/root/scripts/nightly-backup.sh` + staged units in `/root/systemd/` (NOT installed); verification snapshot passed integrity checks (3 SQLite DBs + configs/secrets tar, n8n-postgres gated behind install approval). Review chain worked as designed: re-review ACCEPT, mid BLOCKED on two real issues (unit allowlist missed 4 units; --ignore-failed-read could mask incomplete archives), grunt-eng fixed (126b), CC re-verified, mid v2 signoff. Artifacts committed to the new scripts/systemd repos.
+
+**Awaiting user approval (permission-gated infra):** drop stale ufw 5001 rule; disable two spent timers; install nightly-backup timer; spec 127 (orders-dashboard behind Tailscale, close public 5002) written but NOT dispatched.
+
+**Proposed new projects (specs, status: proposed):** 128 Papi Daily Brief, 129 Profit Engine (COGS/margin), 130 VPS Watchdog alerts, 131 Receipt & Expense Snap. Sent to user via Telegram.
