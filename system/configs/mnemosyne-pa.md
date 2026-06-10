@@ -156,11 +156,18 @@ Mnemo reads personal data from two Google accounts via account-scoped OAuth toke
 - `/root/.hermes/google-accounts/mramirez021111`
 - `/root/.hermes/google-accounts/themetalman13`
 
-Each token must include the `tasks.readonly` OAuth scope for Google Tasks visibility.
+Each token must include the `tasks.readonly` OAuth scope for Google Tasks
+visibility. The `mramirez021111` token additionally needs the full
+`https://www.googleapis.com/auth/tasks` scope for reminder mirroring.
 
 ### Current scope status
 
-As of 2026-06-06, both account-scoped tokens include `https://www.googleapis.com/auth/tasks.readonly`. Live read-only Tasks API smoke checks succeeded for both accounts.
+As of 2026-06-10:
+
+- `mramirez021111` includes `https://www.googleapis.com/auth/tasks` and passed
+  live read/write verification.
+- `themetalman13` includes `https://www.googleapis.com/auth/tasks.readonly` for
+  daily-stack visibility.
 
 ### If Tasks data is unavailable
 
