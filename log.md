@@ -3,6 +3,14 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-06-10T07:21:54Z] ops | [hermes] Spec 124 finance Plaid Phase 3 accepted + handoff documented
+- Spec 124 Phase 3 is complete: final OpenClaw `mid` review v7 accepted `/root/reviews/124-phase3-final-mid-review-v7.md`; completion marker written at `/root/tasks/124-phase3-complete.done`.
+- Finance layer now has a sandbox-first read-only Plaid connector path with strict environment gates, production hard-block, sanitized token handling, per-Item atomic sync, hashed transaction refs, liabilities rollback, and no money-movement endpoints.
+- Final verification: compile pass, gate probes 7/7, Plaid live tests 83/83, smoke suite 71/71, and `/root/secrets/finance` unchanged across required test runs.
+- Documented operational summary in `/root/obsidian-vault/system/configs/finance-data-layer.md`, indexed it in `system/configs/index.md`, updated `/root/finance-data/README.md`, and wrote next-session handoff `/root/context/finance-phase3-session-handoff.md`.
+- Next recommended work: separate Phase 4 spec for controlled Plaid sandbox credential setup and first sandbox Item sync; no secrets in Telegram/chat and no production/real-bank linking without explicit approval.
+- Tier: hermes (orchestration + final verification/documentation), grunt/grunt-eng/re-review/mid via OpenClaw review loop
+
 ## [2026-06-10] [codex] fix | Milo workout log now records Pacific dates
 - Added first-class `workout_date` values derived from session start in `America/Los_Angeles` while preserving UTC timestamps and `session_id` grouping.
 - Added `workout_date` columns to the live `Sets` and `Workout Sessions` tabs; backfilled all 12 existing set rows and all 13 local history records to `2026-06-07`.
