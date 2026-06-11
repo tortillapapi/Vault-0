@@ -584,3 +584,9 @@ CC (Metis) ran a total scan of all projects, agents, automations, and dashboards
 - Requested and dispatched follow-up fixes for natural meal-prefix logging and `late dinner:` normalization.
 - Verified nutrition self-test 61/61, workout self-test 34/34, py_compile, temp-home regressions, and zero invalid live meal types.
 - Final review: `/root/reviews/135-milo-nutrition-required-fields-gate.hermes-final-review.md`.
+
+## [2026-06-11T23:27:31Z] ops | [hermes] Spec 136 OpenClaw DeepSeek Pro routing applied
+- Papi requested one DeepSeek Flash lane for basic execution and one DeepSeek Pro lane for anything slightly complex.
+- Updated live OpenClaw config: `grunt` remains `opencode-go/deepseek-v4-flash`; `grunt-eng` now uses `opencode-go/deepseek-v4-pro`; `re-review` remains `opencode-go/qwen3.6-plus`.
+- Updated review policy: Qwen re-review remains first-pass over DeepSeek work; medium-to-high-level or important work should also get OC GPT `mid`/`lead` review when quota allows.
+- Updated shared docs: `/root/obsidian-vault/system/configs/openclaw-agents.md` and `/root/obsidian-vault/system/cheatsheets/oc-cli.md`.

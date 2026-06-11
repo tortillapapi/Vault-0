@@ -66,11 +66,11 @@ openclaw agent --agent <id> --local --message "prompt" --json
 
 ### Available agents
 - `main` — openai/gpt-5.5 (default top-tier: complex coding, multi-file work; identity "Alfred", legacy "Grunt")
-- `lead` — openai/gpt-5.4 (complex tasks, `--thinking high`)
-- `mid` — openai/gpt-5.3-codex (medium tasks, `--thinking medium`)
-- `grunt-eng` — opencode-go/deepseek-v4-flash (grunt-level coding/engineering; simple code edits, scripts, small fixes; escalate to Pro or `mid` if Flash struggles)
-- `grunt` — opencode-go/deepseek-v4-flash (non-code grunt: log edits, doc updates, formatting, ingest prep; cost-control lane; sessionKey `agent:grunt:main`)
-- `re-review` — opencode-go/qwen3.6-plus (second-opinion re-parse for low-confidence email-parser output)
+- `lead` — openai/gpt-5.5 (complex tasks, `--thinking high`; GPT review lane for important DeepSeek output)
+- `mid` — openai/gpt-5.5 (medium tasks, `--thinking medium`; GPT review lane for medium-to-high-level DeepSeek output)
+- `grunt-eng` — opencode-go/deepseek-v4-pro (stronger DeepSeek lane for code/config/parser work and bounded mid-level implementation)
+- `grunt` — opencode-go/deepseek-v4-flash (basic execution: non-code grunt work, log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
+- `re-review` — opencode-go/qwen3.6-plus (first-pass QA over all grunt/grunt-eng output; for medium-to-high-level or important work, also use OC GPT `mid`/`lead` review by default when quota allows)
 - `email-parser` — google/gemini-2.5-flash (email parsing only)
 
 ### NEVER use `openclaw agent --deliver` for simple message relay. Use `message send`.
