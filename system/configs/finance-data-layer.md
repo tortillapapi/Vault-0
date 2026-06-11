@@ -1,6 +1,6 @@
 # Finance Data Layer
 
-Last updated: 2026-06-10T07:21:54Z
+Last updated: 2026-06-11T20:20:00Z
 Owner/orchestrator: Hermes / Janus
 
 ## Purpose
@@ -13,8 +13,19 @@ Local, read-only business finance data layer for Papi's Chase Business Checking 
 - Spec 123 Phase 2: accepted; Plaid-ready read-only ingestion hardening.
 - Spec 124 Phase 3: complete and final-mid accepted at `/root/reviews/124-phase3-final-mid-review-v7.md`.
 - Completion marker: `/root/tasks/124-phase3-complete.done`.
-- Current live DB status at acceptance: schema version 4, no real financial rows ingested yet.
-- Current Plaid status at acceptance: CLI code available, config safely unconfigured, network not ready, sync not ready.
+- **Spec 130 Phase 4: accepted with safe blocker.** Sandbox activated, sync ready, Plaid Items for Chase-like and Amex-like institutions created and synced.
+- Phase 4 completion markers: `/root/tasks/130-finance-phase4-sandbox-activation.done`, `/root/tasks/130-finance-phase4-sandbox-activation-cash-safety.done`, `/root/tasks/130-finance-phase4-sandbox-activation.blocked`.
+- Phase 4 final accepted review: `/root/reviews/130-finance-phase4-sandbox-activation-final-mid-review-2.md`.
+- Phase 4 handoff: `/root/context/finance-phase4-session-handoff.md`.
+
+### Phase 4 accepted state
+
+- Plaid config: `configured=true`, `config_valid=true`, `environment=sandbox`, `environment_gate=allowed`.
+- Sandbox Items: 2 (`chase-business-checking`, `amex-cards`), `sync_ready=true`.
+- DB populated: schema version 4, 1 institution, 12 accounts, 12 balances, 100 transactions, 2 sync-state records, 0 liabilities.
+- Compatibility patch: `initial_products` for sandbox public-token create.
+- Targeted tests: 89 passed (test_plaid_live + test_gate_before_client).
+- Cash account: intentionally unset (`is_cash_account=1` is zero). Accepted safe blocker because sandbox institution labels are generic/ambiguous ("Plaid Checking") with no confirmed Chase/JP Morgan provenance. Future real Chase/JP Morgan depository checking Item needed before cash designation.
 
 ## Important paths
 
@@ -31,8 +42,8 @@ Local, read-only business finance data layer for Papi's Chase Business Checking 
 ## Security boundaries
 
 - Read-only only. No ACH, transfers, bill pay, card payments, account-setting writes, or money movement.
-- Plaid production is blocked in Phase 3 even with allow flags; production requires a separate explicit human-approved spec.
-- Sandbox is the intended environment.
+- Plaid production remains blocked unless a separate explicit human-approved spec changes that boundary.
+- Current configured environment is sandbox; Phase 5 real-account work must remain view-only/read-only unless explicitly re-scoped.
 - Development requires explicit `--allow-non-sandbox` and is still not production.
 - Network-capable Plaid commands enforce environment gates before live client/network construction.
 - Token commands must not print raw access/public/link tokens.
@@ -71,12 +82,13 @@ PYTHONPATH=/root/finance-data/lib python3 /root/finance-data/tests/test_plaid_li
 /root/finance-data/smoke-test.sh
 ```
 
-Phase 4 sandbox setup should start from the runbook in `/root/finance-data/README.md`, not from chat-pasted credentials.
+Phase 4 is already sandbox-activated; future Phase 5 work should start from the runbook and `/root/context/finance-phase4-session-handoff.md`, not from chat-pasted credentials.
 
 ## Recommended next session
 
-1. Re-orient by reading this note plus `/root/context/finance-phase3-session-handoff.md`.
-2. Confirm Papi wants Phase 4 sandbox credential setup.
-3. If yes, create a new `owner: hermes` spec/task for controlled Plaid sandbox configuration and first sandbox Item sync.
-4. Do not ask Papi to paste secrets into Telegram. Use local root-only file editing for `/root/secrets/finance/plaid.json`.
-5. Keep production and real Chase/Amex credentials out of scope until separately approved.
+1. Re-orient by reading this note plus `/root/context/finance-phase4-session-handoff.md`.
+2. Confirm Papi wants Phase 5: real Plaid Link / production-readiness (view-only).
+3. If yes, create a new `owner: hermes` spec/task for controlled real-account Plaid Link setup.
+4. **Phase 5 constraints:** read-only only, explicit human approval required for every account, Papi must explicitly connect each account via Plaid Link browser flow, no money movement, no autopay, no payment initiation.
+5. Do not ask Papi to paste secrets or tokens into Telegram. Use local root-only file editing.
+6. Do not set the cash account until a real Chase/JP Morgan depository checking Item exists with verified provenance.

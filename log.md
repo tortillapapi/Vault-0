@@ -564,3 +564,12 @@ CC (Metis) ran a total scan of all projects, agents, automations, and dashboards
 **Awaiting user approval (permission-gated infra):** drop stale ufw 5001 rule; disable two spent timers; install nightly-backup timer; spec 127 (orders-dashboard behind Tailscale, close public 5002) written but NOT dispatched.
 
 **Proposed new projects (specs, status: proposed):** 128 Papi Daily Brief, 129 Profit Engine (COGS/margin), 130 VPS Watchdog alerts, 131 Receipt & Expense Snap. Sent to user via Telegram.
+
+## [2026-06-11T20:20:00Z] ops | [hermes] Spec 130 finance Phase 4 sandbox activation accepted + handoff documented
+- Spec 130 Phase 4 completed and final-mid accepted at `/root/reviews/130-finance-phase4-sandbox-activation-final-mid-review-2.md`.
+- Plaid Sandbox sync is live: `configured=true`, `config_valid=true`, `environment=sandbox`, `environment_gate=allowed`, `item_count=2`, `sync_ready=true`.
+- DB populated: schema version 4, 1 institution, 12 accounts, 12 balances, 100 transactions, 2 sync-state records, 0 liabilities.
+- Cash account intentionally unset (accepted safe blocker): sandbox institution labels were generic/ambiguous with no confirmed Chase/JP Morgan provenance.
+- Targeted tests: 89 passed (test_plaid_live + test_gate_before_client). Compatibility patch: `initial_products` for sandbox public-token create.
+- Documented Phase 4 state in `/root/finance-data/README.md`, `/root/obsidian-vault/system/configs/finance-data-layer.md`, `/root/specs/130-finance-phase4-sandbox-activation.md`, and created next-session handoff at `/root/context/finance-phase4-session-handoff.md`.
+- Next recommended phase: Phase 5 real Plaid Link / production-readiness (read-only, explicit human approval, Papi connects each account). No money movement, no autopay. Cash account must not be set until a verified Chase/JP Morgan depository checking Item exists.
