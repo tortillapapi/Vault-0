@@ -594,3 +594,8 @@ CC (Metis) ran a total scan of all projects, agents, automations, and dashboards
 ## [2026-06-11T23:48:31Z] ops | [hermes] Metis exit-143 check + hardening
 
 Papi reported Metis Telegram returned `Command failed with exit code 143`. Checked `metis-gateway.service`: gateway daemon was active; error came from Claude SDK `receive_response()` after its subprocess was SIGTERM'd. Restarted service to clear state. Dispatched Spec 137 to `grunt-eng` (DeepSeek Pro), Qwen re-review initially BLOCKED because the SDK raised a bare `Exception`; follow-up fix added generic text-pattern handling for exit 143/SIGTERM. Verified py_compile, service active, clean journal, local simulated bare exception, and Qwen ACCEPT. Review: `/root/reviews/137-metis-exit-143-hardening-review.md`.
+
+
+## [2026-06-11T23:55:59Z] ops | [hermes] Session handoff documented
+
+Papi asked to document before a new session. Wrote detailed handoff to `/root/reviews/session-2026-06-11-hermes-handoff.md` and concise context note to `/root/context/hermes-session-handoff-2026-06-11.md`. Captured OC GPT hold until 19:31 PT, DeepSeek Flash/Pro routing, Qwen/GPT review policy, Metis exit-143 hardening status, Milo nutrition gate completion, finance blockers, pending candidate specs, and stale progress-marker cleanup. Removed stale `.progress` markers for completed specs 117, 127, 135, and 135_1; left old usage-tracker progress markers untouched.
