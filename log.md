@@ -573,3 +573,8 @@ CC (Metis) ran a total scan of all projects, agents, automations, and dashboards
 - Targeted tests: 89 passed (test_plaid_live + test_gate_before_client). Compatibility patch: `initial_products` for sandbox public-token create.
 - Documented Phase 4 state in `/root/finance-data/README.md`, `/root/obsidian-vault/system/configs/finance-data-layer.md`, `/root/specs/130-finance-phase4-sandbox-activation.md`, and created next-session handoff at `/root/context/finance-phase4-session-handoff.md`.
 - Next recommended phase: Phase 5 real Plaid Link / production-readiness (read-only, explicit human approval, Papi connects each account). No money movement, no autopay. Cash account must not be set until a verified Chase/JP Morgan depository checking Item exists.
+
+## [2026-06-11T22:37:48Z] task | [hermes] Spec 135 Milo nutrition required-fields gate approved/dispatched
+- Papi approved smart Pacific-date defaulting, strict explicit meal type, preview-before-write for best-judgment estimates, and compact checklist clarification.
+- Updated `/root/specs/135-milo-nutrition-required-fields-gate.md` and `/root/tasks/135-milo-nutrition-required-fields-gate.txt`.
+- Dispatch target: OpenClaw `mid`; implementation must add pre-write validation so Milo does not mutate nutrition logs when date/meal/item/quantity/source are missing or ambiguous.
