@@ -37,6 +37,7 @@ Every tool call passes through a **PreToolUse hook**:
 - `systemctl status|restart|stop metis-gateway`
 - Logs: `journalctl -u metis-gateway -f`
 - After editing the token or code: `systemctl restart metis-gateway`.
+- If Telegram shows `Command failed with exit code 143`, the Claude Code subprocess was SIGTERM'd while the Python gateway survived. Current gateway code resets that chat client and asks the user to resend the last request; restart `metis-gateway` only if it remains wedged.
 
 ## Roster
 Add/confirm a line wherever the agent/orchestrator roster is noted: **Metis** =

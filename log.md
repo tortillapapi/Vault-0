@@ -590,3 +590,7 @@ CC (Metis) ran a total scan of all projects, agents, automations, and dashboards
 - Updated live OpenClaw config: `grunt` remains `opencode-go/deepseek-v4-flash`; `grunt-eng` now uses `opencode-go/deepseek-v4-pro`; `re-review` remains `opencode-go/qwen3.6-plus`.
 - Updated review policy: Qwen re-review remains first-pass over DeepSeek work; medium-to-high-level or important work should also get OC GPT `mid`/`lead` review when quota allows.
 - Updated shared docs: `/root/obsidian-vault/system/configs/openclaw-agents.md` and `/root/obsidian-vault/system/cheatsheets/oc-cli.md`.
+
+## [2026-06-11T23:48:31Z] ops | [hermes] Metis exit-143 check + hardening
+
+Papi reported Metis Telegram returned `Command failed with exit code 143`. Checked `metis-gateway.service`: gateway daemon was active; error came from Claude SDK `receive_response()` after its subprocess was SIGTERM'd. Restarted service to clear state. Dispatched Spec 137 to `grunt-eng` (DeepSeek Pro), Qwen re-review initially BLOCKED because the SDK raised a bare `Exception`; follow-up fix added generic text-pattern handling for exit 143/SIGTERM. Verified py_compile, service active, clean journal, local simulated bare exception, and Qwen ACCEPT. Review: `/root/reviews/137-metis-exit-143-hardening-review.md`.
