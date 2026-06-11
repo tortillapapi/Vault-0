@@ -578,3 +578,9 @@ CC (Metis) ran a total scan of all projects, agents, automations, and dashboards
 - Papi approved smart Pacific-date defaulting, strict explicit meal type, preview-before-write for best-judgment estimates, and compact checklist clarification.
 - Updated `/root/specs/135-milo-nutrition-required-fields-gate.md` and `/root/tasks/135-milo-nutrition-required-fields-gate.txt`.
 - Dispatch target: OpenClaw `mid`; implementation must add pre-write validation so Milo does not mutate nutrition logs when date/meal/item/quantity/source are missing or ambiguous.
+
+## [2026-06-11T23:05:49Z] task | [hermes] spec 135 Milo nutrition required-fields gate approved
+- Reviewed OpenClaw mid implementation for `/root/specs/135-milo-nutrition-required-fields-gate.md`.
+- Requested and dispatched follow-up fixes for natural meal-prefix logging and `late dinner:` normalization.
+- Verified nutrition self-test 61/61, workout self-test 34/34, py_compile, temp-home regressions, and zero invalid live meal types.
+- Final review: `/root/reviews/135-milo-nutrition-required-fields-gate.hermes-final-review.md`.
