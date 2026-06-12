@@ -599,3 +599,7 @@ Papi reported Metis Telegram returned `Command failed with exit code 143`. Check
 ## [2026-06-11T23:55:59Z] ops | [hermes] Session handoff documented
 
 Papi asked to document before a new session. Wrote detailed handoff to `/root/reviews/session-2026-06-11-hermes-handoff.md` and concise context note to `/root/context/hermes-session-handoff-2026-06-11.md`. Captured OC GPT hold until 19:31 PT, DeepSeek Flash/Pro routing, Qwen/GPT review policy, Metis exit-143 hardening status, Milo nutrition gate completion, finance blockers, pending candidate specs, and stale progress-marker cleanup. Removed stale `.progress` markers for completed specs 117, 127, 135, and 135_1; left old usage-tracker progress markers untouched.
+
+## [2026-06-12T00:09:21Z] task | [hermes] Spec 138 Google OAuth scope preservation dispatched
+
+Papi asked to spec and dispatch the mramirez021111 Google OAuth scope-preservation fix, explicitly covering all agents/automations and not only Milo. Created `/root/specs/138-google-oauth-scope-preservation.md` and `/root/tasks/138-google-oauth-scope-preservation.txt`. Current diagnosis: shared token is Sheets-only/partial, Calendar and Tasks fail with insufficient scopes, and Milo nutrition/workout still have Sheets-only refresh/write-back risk. Dispatch target is OpenClaw `grunt-eng` (DeepSeek Pro) while OC GPT is unavailable; Qwen `re-review` is required before acceptance, with GPT review deferred until available if risk remains.
