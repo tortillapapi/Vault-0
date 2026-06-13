@@ -127,3 +127,9 @@
 - Recall: 4 order emails | 3 matched | MISSES: TikTok Shop order-last4 unavailable 2026-06-12
 - Precision: 3 recent rows | 3 confirmed | FALSE POSITIVES: none
 - Verdict: ANOMALIES
+
+## 2026-06-13
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 4 order emails | 3 matched | MISSES: Abercrombie order-last4 unavailable 2026-06-12
+- Precision: 4 recent rows | 4 confirmed | FALSE POSITIVES: none
+- Verdict: ANOMALIES
