@@ -134,3 +134,9 @@
 - Precision: 4 recent rows | 4 confirmed | FALSE POSITIVES: none
 - Correction (2026-06-14): the prior fourth candidate was a FedEx notification for parser-excluded Abercrombie personal apparel, so it was not recall-eligible.
 - Verdict: OK
+
+## 2026-06-14
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 1 order emails | 1 matched | MISSES: none
+- Precision: 3 recent rows | 3 confirmed | FALSE POSITIVES: none
+- Verdict: OK
