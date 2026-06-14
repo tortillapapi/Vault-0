@@ -113,6 +113,9 @@ marketing emails, and some classify() keyword misses.
   exported `isExcluded` / `retailerExcluded` checks, keeping `order_parser.js` as the single
   source of truth. `/root/scripts/gmail-orders-list.sh` gained `--exclude-parser-rejects`,
   and the daily-audit runbook now treats filtered parser rejects as not recall misses.
+  A 2026-06-14 follow-up also feeds the message subject and Gmail snippet through
+  `retailerExcluded`, so carrier/payment notifications inherit the same policy; all
+  Abercrombie-family orders are personal apparel and excluded like J.Crew.
 - **Spec 103 — Walmart Marketplace extraction.** Parser handling now covers Walmart
   Marketplace "Sold by <seller>" emails: `\d{7}-\d{8}` Walmart order tokens,
   `walmart_order` matching, marketplace item-name extraction, Walmart price extraction,

@@ -52,7 +52,10 @@ For each account (`account_a`, `account_b`):
    `/root/scripts/gmail-orders-list.sh <account> 'in:inbox newer_than:1d' --json --exclude-parser-rejects`
    This drops emails the parser would exclude (J.Crew, Abercrombie, Panda Express,
    Capital One Shopping, Pokemon Center marketing, food delivery, etc.) — the filter
-   uses the actual parser module exports, not a duplicated list.
+   uses the actual parser module exports, not a duplicated list. It also checks the
+   subject and Gmail snippet so carrier or payment notifications that identify an
+   excluded retailer outside the sender address (for example, FedEx shipping from
+   Abercrombie) are excluded.
 2. **Judge independently** which remaining messages are genuine order events (order
    confirmation / shipped / delivered / cancelled-with-order#). EXCLUDE
    newsletters, marketing, and price-drop alerts that passed the automatic filter.

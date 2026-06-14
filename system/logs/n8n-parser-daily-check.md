@@ -130,6 +130,7 @@
 
 ## 2026-06-13
 - Workflows: account_a=success | account_b=success | master=success
-- Recall: 4 order emails | 3 matched | MISSES: Abercrombie order-last4 unavailable 2026-06-12
+- Recall: 3 order emails | 3 matched | MISSES: none
 - Precision: 4 recent rows | 4 confirmed | FALSE POSITIVES: none
-- Verdict: ANOMALIES
+- Correction (2026-06-14): the prior fourth candidate was a FedEx notification for parser-excluded Abercrombie personal apparel, so it was not recall-eligible.
+- Verdict: OK
