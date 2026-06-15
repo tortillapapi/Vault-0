@@ -616,3 +616,16 @@ Papi asked to spec and dispatch the mramirez021111 Google OAuth scope-preservati
 - Mid review initially rejected two blockers; grunt-eng fixed exact public route + POST DoS hardening.
 - Final mid review APPROVED `/root/reviews/137_1-ebay-account-deletion-endpoint.final-review.md`.
 - Papi next action: enter public endpoint `https://n8n.rareforceone.cloud/ebay/account-deletion` and copy verification token from tailnet setup page.
+
+## [2026-06-15T20:46:36Z] in-progress | [hermes] Spec 137 eBay OAuth token capture helper
+
+- Papi has eBay Developer OAuth user token ready.
+- Created `/root/tasks/137_2-ebay-oauth-secret-capture.txt` for OC grunt-eng.
+- Goal: local SSH helper to write `/root/secrets/sales/ebay.json` without token leakage in chat/history/output.
+
+## [2026-06-15T20:48:49Z] completed | [hermes] Spec 137 eBay OAuth token capture helper ready
+
+- OC grunt-eng created `/root/bin/store-ebay-oauth-token` for secure local capture of Papi's eBay OAuth user token into `/root/secrets/sales/ebay.json`.
+- Hermes patched sanitizer to avoid revealing any token prefix; status/confirmation now prints only `[REDACTED] (len N)` and metadata counts/presence.
+- Verified py_compile and `--status`; no real eBay token file exists yet.
+- Papi next action: SSH to VPS and run `/root/bin/store-ebay-oauth-token`, then `/root/bin/store-ebay-oauth-token --status`.
