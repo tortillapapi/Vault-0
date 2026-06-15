@@ -603,3 +603,16 @@ Papi asked to document before a new session. Wrote detailed handoff to `/root/re
 ## [2026-06-12T00:09:21Z] task | [hermes] Spec 138 Google OAuth scope preservation dispatched
 
 Papi asked to spec and dispatch the mramirez021111 Google OAuth scope-preservation fix, explicitly covering all agents/automations and not only Milo. Created `/root/specs/138-google-oauth-scope-preservation.md` and `/root/tasks/138-google-oauth-scope-preservation.txt`. Current diagnosis: shared token is Sheets-only/partial, Calendar and Tasks fail with insufficient scopes, and Milo nutrition/workout still have Sheets-only refresh/write-back risk. Dispatch target is OpenClaw `grunt-eng` (DeepSeek Pro) while OC GPT is unavailable; Qwen `re-review` is required before acceptance, with GPT review deferred until available if risk remains.
+
+## [2026-06-15T08:02:47Z] task | [hermes] Spec 137 eBay account-deletion endpoint dispatched
+- Papi explicitly reassigned Spec 137 to Hermes after eBay Developer approval and Production keyset blockage on Marketplace Account Deletion/Closure notifications.
+- Updated `/root/specs/137-ebay-sales-connector.md` owner to `hermes` and split current work into Scope A endpoint unblocker before Scope B read-only sales connector.
+- Created `/root/tasks/137_1-ebay-account-deletion-endpoint.txt` for OpenClaw `grunt-eng`: public endpoint `https://n8n.rareforceone.cloud/ebay/account-deletion`, tailnet-only setup page, root-only token storage, Caddy preservation, verification, and no secret leakage.
+
+## [2026-06-15T08:27:20Z] completed | [hermes] Spec 137 eBay deletion endpoint ready
+
+- Reassigned spec 137 to Hermes.
+- Dispatched OpenClaw grunt-eng to wire eBay Marketplace Account Deletion endpoint.
+- Mid review initially rejected two blockers; grunt-eng fixed exact public route + POST DoS hardening.
+- Final mid review APPROVED `/root/reviews/137_1-ebay-account-deletion-endpoint.final-review.md`.
+- Papi next action: enter public endpoint `https://n8n.rareforceone.cloud/ebay/account-deletion` and copy verification token from tailnet setup page.
