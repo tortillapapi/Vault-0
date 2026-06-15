@@ -140,3 +140,9 @@
 - Recall: 1 order emails | 1 matched | MISSES: none
 - Precision: 3 recent rows | 3 confirmed | FALSE POSITIVES: none
 - Verdict: OK
+
+## 2026-06-15
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 0 order emails | 0 matched | MISSES: none
+- Precision: 2 recent rows | 1 confirmed | FALSE POSITIVES: Alibaba …0582 2026-06-15
+- Verdict: ANOMALIES
