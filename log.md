@@ -3,6 +3,13 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-06-15T21:48:00Z] ops | [hermes] Spec 137 eBay sales connector mocked/local-ready
+- Advanced approved eBay Developer work into implementation: created/dispatched `/root/tasks/137_3-ebay-sales-connector.txt`, added read-only eBay config/client/sync/schema/CLI support under `/root/sales-data`, and preserved strict secret hygiene.
+- Verification: local full test suite is green (`110 passed` after the dry-run fix); `sales ebay-status --json` and `sales sync-ebay --dry-run` exit cleanly without credentials and print sanitized `not_configured` status.
+- Review loop: OC `mid` initially blocked on dry-run DB mutation from schema migration; OC `grunt-eng` fixed it in `/root/tasks/137_4-ebay-dry-run-no-mutation.done`; OC `mid` acceptance review accepted `/root/reviews/137_4-ebay-dry-run-no-mutation.acceptance-review.md`.
+- Current blocker: live eBay API validation still awaits secure token capture at `/root/secrets/sales/ebay.json` via `/root/bin/store-ebay-oauth-token`; no OAuth token values were pasted or logged.
+- Tier: hermes (orchestration + verification), grunt-eng (implementation/fix via OC), mid (review via OC)
+
 ## [2026-06-10T20:03:15Z] plan | [hermes] Parked Bookmark Hell pipeline MVP
 - Captured Papi's agreed direction for a reliable workflow-first Bookmark Hell project: Telegram/link capture before full X/TikTok scraping.
 - Saved the hybrid storage preference: structured store for records, Obsidian for searchable/curated knowledge, Notion/Google Drive views later if useful.
@@ -629,3 +636,9 @@ Papi asked to spec and dispatch the mramirez021111 Google OAuth scope-preservati
 - Hermes patched sanitizer to avoid revealing any token prefix; status/confirmation now prints only `[REDACTED] (len N)` and metadata counts/presence.
 - Verified py_compile and `--status`; no real eBay token file exists yet.
 - Papi next action: SSH to VPS and run `/root/bin/store-ebay-oauth-token`, then `/root/bin/store-ebay-oauth-token --status`.
+
+## [2026-06-15T21:23:00Z] in-progress | [hermes] Spec 137 Scope B eBay connector dispatched
+
+- Papi reports eBay approval is complete; Hermes verified no `/root/secrets/sales/ebay.json` exists yet.
+- Created `/root/tasks/137_3-ebay-sales-connector.txt` for OC grunt-eng.
+- Scope: add mock-tested read-only eBay connector to `/root/sales-data` with strict secret loader, `sales ebay-status`, `sales sync-ebay`, idempotent schema, no PII, no secret leakage.
