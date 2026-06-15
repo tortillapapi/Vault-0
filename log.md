@@ -3,6 +3,13 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-06-15T22:47:42Z] ops | [hermes] Spec 137 eBay live read-only sync verified
+- Papi captured the eBay OAuth user token locally with `/root/bin/store-ebay-oauth-token`; helper status verified healthy permissions and sanitized metadata only.
+- Live validation passed: `sales ebay-status --json` reported configured/valid, `sales sync-ebay --dry-run` saw 3 orders and 3 items without DB mutation, then live read-only sync wrote 3 eBay orders and 3 eBay order items locally.
+- Idempotency check passed: a second `sales sync-ebay` saw 0 new orders/items; full suite remained green (`110 passed`).
+- Finance events currently count 0 for the token/window; no token/client/RuName/order IDs/item titles/buyer data were logged in chat or marker files.
+- Tier: hermes (live validation + closeout), prior grunt-eng/mid OC implementation/review loop retained.
+
 ## [2026-06-15T21:48:00Z] ops | [hermes] Spec 137 eBay sales connector mocked/local-ready
 - Advanced approved eBay Developer work into implementation: created/dispatched `/root/tasks/137_3-ebay-sales-connector.txt`, added read-only eBay config/client/sync/schema/CLI support under `/root/sales-data`, and preserved strict secret hygiene.
 - Verification: local full test suite is green (`110 passed` after the dry-run fix); `sales ebay-status --json` and `sales sync-ebay --dry-run` exit cleanly without credentials and print sanitized `not_configured` status.
