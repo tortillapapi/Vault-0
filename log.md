@@ -702,3 +702,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 ## [2026-06-16T00:26:00Z] project | [hermes] Spec 139 pinned with handoff
 - Created /root/context/139-profit-engine-cogs-bridge-handoff.md so Profit Engine Option A / Sellerboard-BoxEm COGS bridge can be resumed later without chat context.
 - Current state: importer built and verified; no real SaaS COGS export imported yet; next user action is Sellerboard or BoxEm export discovery/upload.
+
+## [2026-06-16T01:31:37Z] project | [hermes] Sellerboard Orders export staged for Spec 139 benchmark
+- Papi uploaded Sellerboard Orders CSV for 2026-05-01 to 2026-06-16 export window.
+- Staged securely under /root/sales-data/imports/cogs/ and copied to /root/sales-data/imports/sellerboard/orders/ for benchmark/reconciliation use.
+- Dry-run against COGS importer performed no DB writes and rejected rows as expected because this is an Orders report, not a Products/COGS export; COGS tables remain empty pending Products/BoxEm buy-cost export.
