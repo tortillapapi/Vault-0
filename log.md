@@ -758,3 +758,11 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Verified Account A unchanged at 15 rows, Account B 39→41, master 52→54.
 - Verified Dell 1032444096, Klarna #1353190, and Todd Snyder/apparel were not appended.
 - Spec/task: /root/specs/144-parser-backfill-approved-second-review-append.md, /root/tasks/144_1-approved-second-review-append.done.
+
+## [2026-06-16T06:33:36Z] handoff | [hermes] Window 2026-04-09 backfill complete — handoff doc refreshed for next window
+- All four curated rows appended and verified (Specs 142, 144).
+- Sheets: Account A 15, Account B 41, Master 54.
+- Sales DB: BoxEm COGS seed 88 obs imported.
+- Business-inventory filter rules documented.
+- Handoff: /root/context/139-profit-engine-cogs-bridge-handoff.md updated with current state, spec status, pipeline scripts, filter rules, and next-window resume steps.
+- Next backfill window: 2026-04-02 → 2026-04-09.
