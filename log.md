@@ -707,3 +707,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Papi uploaded Sellerboard Orders CSV for 2026-05-01 to 2026-06-16 export window.
 - Staged securely under /root/sales-data/imports/cogs/ and copied to /root/sales-data/imports/sellerboard/orders/ for benchmark/reconciliation use.
 - Dry-run against COGS importer performed no DB writes and rejected rows as expected because this is an Orders report, not a Products/COGS export; COGS tables remain empty pending Products/BoxEm buy-cost export.
+
+## [2026-06-16T01:52:17Z] status | [hermes] Sellerboard dashboard-by-product staged/dry-run
+- Papi uploaded Sellerboard Dashboard-by-product CSV for Spec 139 COGS bridge.
+- Raw dry-run recognized ASIN/SKU/Name but rejected as COGS because Sellerboard uses negative `ProductCost Sales` instead of positive cost columns.
+- Derived normalized COGS dry-run file created at `/root/sales-data/imports/cogs/derived/20260616T015124Z-sellerboard-dashboard-by-product-derived-cogs.csv` using abs(ProductCost Sales) and summed unit columns; 37 accepted, 0 rejected, DB unmutated.
+- Follow-up: fuller seed still needs BoxEm Inventory/Buy-Cost or Sellerboard Products/COGS export with true product buy costs.
