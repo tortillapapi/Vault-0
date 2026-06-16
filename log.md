@@ -739,3 +739,11 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Results: 16/16 parser runs exited 0; 36 dry-run append events collapsed to 25 unique candidates; 9 priced canonical groups technically appendable; 1 cancel/refund row set aside; 4 clean candidates need manual review.
 - Recommendation: do not switch fully to Option B yet; add business-inventory review filter and canonicalize lifecycle rows before append.
 - Artifacts: /root/reviews/artifacts/141_1-parser-backfill-audit-2026-04-09/audit-report.md and audit-summary.json.
+
+## [2026-06-16T05:20:34Z] task | [hermes] Spec 142 approved inventory append complete
+
+- Papi approved exactly two parser-backfill rows: Walmart Strixhaven Codex Bundle (qty 5, $499.85) and eBay Pokémon 151 Alakazam ex Collection Box (qty 12, $1,140.00).
+- Delegated append/master-refresh to OpenClaw grunt-eng via `/root/tasks/142_1-approved-inventory-append.txt`; task completed with `.done`.
+- Source sheet results: account A row 15 appended; account B row 39 appended; master refreshed to 52 rows.
+- Hermes independently verified the two approved orders appear exactly once in their source sheets and master; zero `Todd Snyder` rows in account A, account B, or master after append.
+- Todd Snyder candidates were classified as apparel (polo/linen/shirt/sweater/button-down/Men's XL/Baird McNutt/Riviera) and remain excluded.
