@@ -713,3 +713,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Raw dry-run recognized ASIN/SKU/Name but rejected as COGS because Sellerboard uses negative `ProductCost Sales` instead of positive cost columns.
 - Derived normalized COGS dry-run file created at `/root/sales-data/imports/cogs/derived/20260616T015124Z-sellerboard-dashboard-by-product-derived-cogs.csv` using abs(ProductCost Sales) and summed unit columns; 37 accepted, 0 rejected, DB unmutated.
 - Follow-up: fuller seed still needs BoxEm Inventory/Buy-Cost or Sellerboard Products/COGS export with true product buy costs.
+
+## [2026-06-16T02:04:47Z] status | [hermes] BoxEm buy-cost export staged/dry-run
+- Papi uploaded BoxEm `2026_06_16-buy-cost-export.csv` for Spec 139 COGS bridge.
+- Raw dry-run detected ASIN/SKU/FNSKU but rejected because this export labels cost as `Buycost` while the importer expects `buy cost`/`unit cost`.
+- Derived normalized file created at `/root/sales-data/imports/cogs/derived/20260616T020349Z-boxem-buy-cost-derived-cogs.csv`; dry-run accepted 88 rows, rejected 0, warned 0, DB unmutated.
+- Follow-up: ask Papi for explicit approval before real-importing the derived BoxEm seed.
