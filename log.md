@@ -649,3 +649,52 @@ Papi asked to spec and dispatch the mramirez021111 Google OAuth scope-preservati
 - Papi reports eBay approval is complete; Hermes verified no `/root/secrets/sales/ebay.json` exists yet.
 - Created `/root/tasks/137_3-ebay-sales-connector.txt` for OC grunt-eng.
 - Scope: add mock-tested read-only eBay connector to `/root/sales-data` with strict secret loader, `sales ebay-status`, `sales sync-ebay`, idempotent schema, no PII, no secret leakage.
+
+## [2026-06-16T00:01:25Z] project | [hermes] Spec 139 Option A COGS SaaS bridge built
+- Created Hermes-owned Spec 139 for Profit Engine Option A: local canonical profit engine + SaaS bridge for BoxEm/Sellerboard.
+- Dispatched OC strategy, implementation, Qwen re-review, and follow-up fixes through shared task files.
+- Built /root/sales-data COGS importer for Sellerboard/BoxEm/manual-template CSV/XLSX with provenance, validation, dry-run, duplicate detection, and query CLI.
+- Installed documented Python dependency via /root/sales-data/requirements.txt and verified ........................................................................ [ 28%]
+........................................................................ [ 57%]
+........................................................................ [ 86%]
+..................................                                       [100%]
+=============================== warnings summary ===============================
+finance-data/tests/test_gate_before_client.py::test_sync_plaid_live_development_no_allow
+  /usr/local/lib/hermes-agent/venv/lib/python3.11/site-packages/_pytest/python.py:170: PytestReturnNotNoneWarning: Test functions should return None, but finance-data/tests/test_gate_before_client.py::test_sync_plaid_live_development_no_allow returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+finance-data/tests/test_gate_before_client.py::test_link_token_development_no_allow
+  /usr/local/lib/hermes-agent/venv/lib/python3.11/site-packages/_pytest/python.py:170: PytestReturnNotNoneWarning: Test functions should return None, but finance-data/tests/test_gate_before_client.py::test_link_token_development_no_allow returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+finance-data/tests/test_gate_before_client.py::test_exchange_public_token_development_no_allow
+  /usr/local/lib/hermes-agent/venv/lib/python3.11/site-packages/_pytest/python.py:170: PytestReturnNotNoneWarning: Test functions should return None, but finance-data/tests/test_gate_before_client.py::test_exchange_public_token_development_no_allow returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+finance-data/tests/test_gate_before_client.py::test_items_refresh_development_no_allow
+  /usr/local/lib/hermes-agent/venv/lib/python3.11/site-packages/_pytest/python.py:170: PytestReturnNotNoneWarning: Test functions should return None, but finance-data/tests/test_gate_before_client.py::test_items_refresh_development_no_allow returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+finance-data/tests/test_gate_before_client.py::test_production_blocked_without_both_allow_flags
+  /usr/local/lib/hermes-agent/venv/lib/python3.11/site-packages/_pytest/python.py:170: PytestReturnNotNoneWarning: Test functions should return None, but finance-data/tests/test_gate_before_client.py::test_production_blocked_without_both_allow_flags returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
+  /usr/local/lib/hermes-agent/venv/lib/python3.11/site-packages/_pytest/python.py:170: PytestReturnNotNoneWarning: Test functions should return None, but finance-data/tests/test_gate_before_client.py::test_sandbox_allowed returned <class 'bool'>.
+  Did you mean to use `assert` instead of `return`?
+  See https://docs.pytest.org/en/stable/how-to/assert.html#return-not-none for more information.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+250 passed, 6 warnings in 15.65s => 146 passed in 25.40s.
+- Dry-run verification parsed Sellerboard and BoxEm fixtures without mutating production COGS tables; current production COGS import counts remain zero pending Papi-provided exports.
