@@ -731,3 +731,11 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Output generated under `/root/sales-data/reports/cogs-coverage/` plus read-only script `/root/sales-data/scripts/cogs_coverage_report.py`.
 - Re-review accepted with no critical issues; DB counts unchanged.
 - Key metrics: 2024 Amazon item rows, 1900 units, $185,424.25 item revenue; 188 rows / 177 units / $9,854.47 revenue covered; estimated covered COGS $7,880.00; pre-fee/tax/refund margin $1,974.47; 1836 rows missing cost.
+
+## [2026-06-16T05:07:51Z] task | [hermes] Spec 141 parser backfill audit complete
+
+- Completed read-only n8n Gmail order-parser backfill audit for 2026-04-09 through 2026-04-16 using daily  slices to avoid Gmail 500-message cap.
+- Verified no Google Sheet writes: account A source, account B source, and master snapshots remained identical before/after.
+- Results: 16/16 parser runs exited 0; 36 dry-run append events collapsed to 25 unique candidates; 9 priced canonical groups technically appendable; 1 cancel/refund row set aside; 4 clean candidates need manual review.
+- Recommendation: do not switch fully to Option B yet; add business-inventory review filter and canonicalize lifecycle rows before append.
+- Artifacts: /root/reviews/artifacts/141_1-parser-backfill-audit-2026-04-09/audit-report.md and audit-summary.json.
