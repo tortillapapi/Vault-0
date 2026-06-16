@@ -747,3 +747,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Source sheet results: account A row 15 appended; account B row 39 appended; master refreshed to 52 rows.
 - Hermes independently verified the two approved orders appear exactly once in their source sheets and master; zero `Todd Snyder` rows in account A, account B, or master after append.
 - Todd Snyder candidates were classified as apparel (polo/linen/shirt/sweater/button-down/Men's XL/Baird McNutt/Riviera) and remain excluded.
+
+## [2026-06-16T05:51:44Z] task | [hermes] Spec 143 parser backfill GPT second review complete
+- Dispatched OpenClaw mid/GPT read-only second pass for 2026-04-09 backfill week.
+- Outcome: no brand-new high-confidence priced unappended inventory found; recovered price evidence for eBay Unova Mini Tin, eBay First Partner, and Dell Epson EcoTank review rows.
+- Sheets/parser/sales DB stayed unchanged during second review; next step is Papi manual approval for any of the three candidates.
