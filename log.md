@@ -719,3 +719,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Raw dry-run detected ASIN/SKU/FNSKU but rejected because this export labels cost as `Buycost` while the importer expects `buy cost`/`unit cost`.
 - Derived normalized file created at `/root/sales-data/imports/cogs/derived/20260616T020349Z-boxem-buy-cost-derived-cogs.csv`; dry-run accepted 88 rows, rejected 0, warned 0, DB unmutated.
 - Follow-up: ask Papi for explicit approval before real-importing the derived BoxEm seed.
+
+## [2026-06-16T02:09:26Z] status | [hermes] BoxEm COGS seed imported
+- Papi explicitly approved real import: “Import the BoxEm COGS seed”.
+- Created pre-import DB backup `/root/sales-data/db/backups/sales-before-boxem-cogs-20260616T020841Z.db` (`0600`, 1,224,704 bytes).
+- Imported `/root/sales-data/imports/cogs/derived/20260616T020349Z-boxem-buy-cost-derived-cogs.csv` as source `boxem`; result `ok`, import_run_id 3, 88 accepted, 0 rejected, 88 observations.
+- Verified DB now has `cogs_import_runs=1` and `cogs_observations=88`; handoff updated at `/root/context/139-profit-engine-cogs-bridge-handoff.md`.
