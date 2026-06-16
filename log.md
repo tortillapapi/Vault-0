@@ -752,3 +752,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Dispatched OpenClaw mid/GPT read-only second pass for 2026-04-09 backfill week.
 - Outcome: no brand-new high-confidence priced unappended inventory found; recovered price evidence for eBay Unova Mini Tin, eBay First Partner, and Dell Epson EcoTank review rows.
 - Sheets/parser/sales DB stayed unchanged during second review; next step is Papi manual approval for any of the three candidates.
+
+## [2026-06-16T06:23:43Z] task | [hermes] Spec 144 approved second-review append complete
+- Appended Papi-approved eBay Unova Mini Tin and First Partner Illustration rows to Account B source; refreshed master.
+- Verified Account A unchanged at 15 rows, Account B 39→41, master 52→54.
+- Verified Dell 1032444096, Klarna #1353190, and Todd Snyder/apparel were not appended.
+- Spec/task: /root/specs/144-parser-backfill-approved-second-review-append.md, /root/tasks/144_1-approved-second-review-append.done.
