@@ -725,3 +725,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Created pre-import DB backup `/root/sales-data/db/backups/sales-before-boxem-cogs-20260616T020841Z.db` (`0600`, 1,224,704 bytes).
 - Imported `/root/sales-data/imports/cogs/derived/20260616T020349Z-boxem-buy-cost-derived-cogs.csv` as source `boxem`; result `ok`, import_run_id 3, 88 accepted, 0 rejected, 88 observations.
 - Verified DB now has `cogs_import_runs=1` and `cogs_observations=88`; handoff updated at `/root/context/139-profit-engine-cogs-bridge-handoff.md`.
+
+## [2026-06-16T02:20:30Z] status | [hermes] COGS coverage report generated/reviewed
+- Created Spec 140 and dispatched `140_1-cogs-coverage-report` to OpenClaw `grunt-eng`.
+- Output generated under `/root/sales-data/reports/cogs-coverage/` plus read-only script `/root/sales-data/scripts/cogs_coverage_report.py`.
+- Re-review accepted with no critical issues; DB counts unchanged.
+- Key metrics: 2024 Amazon item rows, 1900 units, $185,424.25 item revenue; 188 rows / 177 units / $9,854.47 revenue covered; estimated covered COGS $7,880.00; pre-fee/tax/refund margin $1,974.47; 1836 rows missing cost.
