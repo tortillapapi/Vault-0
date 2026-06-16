@@ -698,3 +698,7 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
 250 passed, 6 warnings in 15.65s => 146 passed in 25.40s.
 - Dry-run verification parsed Sellerboard and BoxEm fixtures without mutating production COGS tables; current production COGS import counts remain zero pending Papi-provided exports.
+
+## [2026-06-16T00:26:00Z] project | [hermes] Spec 139 pinned with handoff
+- Created /root/context/139-profit-engine-cogs-bridge-handoff.md so Profit Engine Option A / Sellerboard-BoxEm COGS bridge can be resumed later without chat context.
+- Current state: importer built and verified; no real SaaS COGS export imported yet; next user action is Sellerboard or BoxEm export discovery/upload.
