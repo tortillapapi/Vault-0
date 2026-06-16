@@ -734,7 +734,7 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 
 ## [2026-06-16T05:07:51Z] task | [hermes] Spec 141 parser backfill audit complete
 
-- Completed read-only n8n Gmail order-parser backfill audit for 2026-04-09 through 2026-04-16 using daily  slices to avoid Gmail 500-message cap.
+- Completed read-only n8n Gmail order-parser backfill audit for 2026-04-09 through 2026-04-16 using daily `in:anywhere -in:spam -in:trash` slices to avoid Gmail 500-message cap.
 - Verified no Google Sheet writes: account A source, account B source, and master snapshots remained identical before/after.
 - Results: 16/16 parser runs exited 0; 36 dry-run append events collapsed to 25 unique candidates; 9 priced canonical groups technically appendable; 1 cancel/refund row set aside; 4 clean candidates need manual review.
 - Recommendation: do not switch fully to Option B yet; add business-inventory review filter and canonicalize lifecycle rows before append.
