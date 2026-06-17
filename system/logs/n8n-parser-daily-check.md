@@ -152,3 +152,9 @@
 - Recall: 4 order emails | 4 matched | MISSES: none
 - Precision: 7 recent rows | 7 confirmed | FALSE POSITIVES: none
 - Verdict: OK
+
+## 2026-06-17
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 3 order emails | 2 matched | MISSES: Madewell order-last4 unavailable 2026-06-16
+- Precision: 6 recent rows | 6 confirmed | FALSE POSITIVES: none
+- Verdict: ANOMALIES
