@@ -3,7 +3,7 @@ type: system-project
 title: Parked Backlog
 slug: parked-backlog
 created: 2026-06-16
-last_updated: 2026-06-16
+last_updated: 2026-06-18
 status: parked
 priority: review-weekly
 tags: [project, backlog, parking-lot, agents]
@@ -19,6 +19,13 @@ check this file before inventing new work.
 
 Review weekly, ideally Sunday around noon Pacific. Pick one item to activate, defer,
 or delete. Do not let this become another inbox.
+
+## Daily visibility
+
+Mnemosyne's daily command stack surfaces a short Parked ideas section from this
+file plus Mnemo `PARK <text>` captures. Use `PARK` for loose ideas that should stay
+visible without becoming full specs. Activation still requires an explicit
+"activate/build/spec this" style request.
 
 ## Highest-value parked items
 

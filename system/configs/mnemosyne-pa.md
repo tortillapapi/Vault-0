@@ -3,7 +3,7 @@ type: system-config
 title: Mnemosyne PA Bot
 slug: mnemosyne-pa
 owner: hermes
-last_updated: 2026-06-10
+last_updated: 2026-06-18
 ---
 
 # Mnemosyne PA Bot
@@ -189,6 +189,21 @@ Hermes cron job:
 - Schedule: `5 16 * * *` (9:05 AM Pacific during PDT)
 - Delivery: `telegram`
 - Data sources: Google Calendar, Google Tasks (read-only), parser-run-status, PA state files
+
+### Parked ideas in the command stack
+
+Loose ideas should use Mnemo's deterministic `PARK <text>` quick-capture command
+instead of forcing a full spec. Parked captures are written to
+`/root/.hermes/profiles/papipa/pa-state/tasks.json` with `status: parked`.
+
+The daily command stack now includes a short **Parked ideas** section that reads:
+
+- PA `tasks.json` entries where `status == "parked"`;
+- `/root/obsidian-vault/system/projects/parked-backlog.md` for the canonical
+  shared-agent parking lot.
+
+Parked ideas are visibility-only. Mnemo should not activate, dispatch, or write a
+spec for one unless Papi explicitly says to activate/build/spec it.
 
 ### Google Tasks data gathering
 
