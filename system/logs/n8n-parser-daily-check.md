@@ -170,3 +170,9 @@
 - Recall: 8 order emails | 8 matched | MISSES: none
 - Precision: 10 recent rows | 10 confirmed | FALSE POSITIVES: none
 - Verdict: OK
+
+## 2026-06-20
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 6 order emails | 6 matched | MISSES: none
+- Precision: 8 recent rows | 7 confirmed | FALSE POSITIVES: Mattel Creations …6434 2026-06-20 (review-request email only)
+- Verdict: ANOMALIES
