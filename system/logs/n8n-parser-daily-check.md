@@ -176,3 +176,9 @@
 - Recall: 6 order emails | 6 matched | MISSES: none
 - Precision: 8 recent rows | 7 confirmed | FALSE POSITIVES: Mattel Creations …6434 2026-06-20 (review-request email only)
 - Verdict: ANOMALIES
+
+## 2026-06-21
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 6 order emails | 6 matched | MISSES: none
+- Precision: 6 recent rows | 6 confirmed | FALSE POSITIVES: none
+- Verdict: OK
