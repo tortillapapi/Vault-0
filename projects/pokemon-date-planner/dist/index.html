@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#ef3f54">
+    <title>Rare Date Dex</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="app-shell" aria-live="polite">
+      <div class="sparkles" aria-hidden="true">
+        <span style="--x: 8%; --y: 14%; --d: 0s;">✦</span>
+        <span style="--x: 18%; --y: 72%; --d: .6s;">✿</span>
+        <span style="--x: 34%; --y: 22%; --d: 1.1s;">♡</span>
+        <span style="--x: 56%; --y: 80%; --d: .2s;">✦</span>
+        <span style="--x: 72%; --y: 16%; --d: .9s;">✿</span>
+        <span style="--x: 88%; --y: 62%; --d: 1.4s;">♡</span>
+      </div>
+
+      <section class="dex-frame" data-screen="invite">
+        <div class="dex-topline">
+          <span class="pill">Rare Date Dex</span>
+          <span class="pill muted">fan mission</span>
+        </div>
+
+        <article class="card invite-card active" id="screen-invite">
+          <div class="sprite-card" aria-hidden="true">
+            <div class="poke-ball">
+              <span></span>
+            </div>
+          </div>
+          <p class="eyebrow">A wild invitation appeared</p>
+          <h1>Will you go on a date adventure with me?</h1>
+          <p class="soft-copy">Choose wisely. This trainer has been cooking.</p>
+          <div class="button-row chase-zone">
+            <button class="primary-btn" id="yesBtn" type="button">YES! ✨</button>
+            <button class="no-btn" id="noBtn" type="button">no</button>
+          </div>
+          <p class="micro-copy" id="noMessage">The no button is feeling nervous.</p>
+        </article>
+
+        <article class="card confirm-card" id="screen-confirm">
+          <div class="sprite-card electric" aria-hidden="true">⚡</div>
+          <p class="eyebrow">Critical capture</p>
+          <h2>WAIT, YOU ACTUALLY SAID YES??</h2>
+          <p class="soft-copy">I was so ready for you to dodge that.</p>
+          <button class="primary-btn" id="okayBtn" type="button">okay okay! →</button>
+        </article>
+
+        <article class="card form-card" id="screen-date">
+          <div class="sprite-row" aria-hidden="true">
+            <span>📅</span>
+            <span>🐾</span>
+          </div>
+          <h2>So... when are you free?</h2>
+          <label>
+            Pick a day
+            <input id="dateInput" type="date" required>
+          </label>
+          <label>
+            What time?
+            <select id="timeInput" required>
+              <option value="">Select a time...</option>
+              <option value="5:00 PM">5:00 PM — we eating with the retirees</option>
+              <option value="6:00 PM">6:00 PM — this is the right answer</option>
+              <option value="7:00 PM">7:00 PM — you are making me hungry already</option>
+              <option value="8:00 PM">8:00 PM — dinner or breakfast?</option>
+            </select>
+          </label>
+          <button class="primary-btn wide" id="setDateBtn" type="button">set the date! ♥</button>
+        </article>
+
+        <article class="card choice-card" id="screen-food">
+          <p class="eyebrow">Route unlocked</p>
+          <h2>What are we feeling?</h2>
+          <div class="choice-grid" id="foodChoices" role="listbox" aria-label="Food choices">
+            <button type="button" data-value="Pizza" data-type="fire">🍕<span>Pizza</span></button>
+            <button type="button" data-value="Sushi" data-type="water">🍣<span>Sushi</span></button>
+            <button type="button" data-value="Burgers" data-type="normal">🍔<span>Burgers</span></button>
+            <button type="button" data-value="Pasta" data-type="fairy">🍝<span>Pasta</span></button>
+            <button type="button" data-value="Tacos" data-type="electric">🌮<span>Tacos</span></button>
+            <button type="button" data-value="Ramen" data-type="dragon">🍜<span>Ramen</span></button>
+          </div>
+          <button class="primary-btn wide" id="foodBtn" type="button" disabled>this one! →</button>
+        </article>
+
+        <article class="card choice-card" id="screen-activity">
+          <p class="eyebrow">Bonus encounter</p>
+          <h2>Pick our side quest</h2>
+          <div class="choice-grid activity-grid" id="activityChoices" role="listbox" aria-label="Activity choices">
+            <button type="button" data-value="Arcade Battle" data-type="electric">🕹️<span>Arcade</span></button>
+            <button type="button" data-value="Cafe Crawl" data-type="grass">☕<span>Cafe</span></button>
+            <button type="button" data-value="Movie Nest" data-type="dark">🎬<span>Movie</span></button>
+            <button type="button" data-value="Sunset Route" data-type="fire">🌅<span>Sunset</span></button>
+            <button type="button" data-value="Photo Walk" data-type="flying">📸<span>Photos</span></button>
+            <button type="button" data-value="Surprise Me" data-type="psychic">🎁<span>Surprise</span></button>
+          </div>
+          <button class="primary-btn wide" id="activityBtn" type="button" disabled>lock it in →</button>
+        </article>
+
+        <article class="card final-card" id="screen-final">
+          <div class="trainer-badge" aria-hidden="true">♥</div>
+          <p class="eyebrow">Date saved to the Dex</p>
+          <h2 id="finalHeadline">Glad you didn't say no.</h2>
+          <p class="final-summary" id="finalSummary"></p>
+
+          <label class="email-label">
+            Send the mission briefing to
+            <input id="emailInput" type="email" placeholder="her@email.com" autocomplete="email">
+          </label>
+
+          <div class="button-stack">
+            <a class="primary-btn wide link-btn" id="gmailLink" href="#" target="_blank" rel="noreferrer">open Gmail draft →</a>
+            <button class="ghost-btn wide" id="copyBtn" type="button">copy invite text</button>
+            <button class="ghost-btn wide" id="restartBtn" type="button">start over</button>
+          </div>
+          <p class="micro-copy" id="copyStatus">Normal people text. We made a tiny website.</p>
+        </article>
+      </section>
+    </main>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>

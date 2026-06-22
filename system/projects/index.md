@@ -7,3 +7,4 @@ Live project state so any agent can pick up the work.
 - [[bookmark-hell-pipeline]] — parked MVP plan for turning X/TikTok/bookmarked links into actionable categorized knowledge, hybrid storage, and weekly resurfacing.
 - [[orders-dashboard]] — Flask/SQLite orders dashboard, v1.0 (port 5002); v2 backlog is low-priority.
 - [[mission-control]] — Flask read-only cockpit over agents/tasks/blockers/schedules/search, MVP (port 5003); specs 85–88.
+- [[pokemon-date-planner]] — intake for a Pokemon-themed girlfriend date-planning website targeting `rareforceone.cloud`.
