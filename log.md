@@ -787,3 +787,11 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Inaugural fast capture: raw/clips/karpathy-second-brain-wiki.md -> wiki/sources/karpathy-second-brain-wiki.md.
 - New pages: entities/andrej-karpathy, concepts/second-brain-wiki. Linked source<->entity<->concept<->skill.
 - Context: this lane is the engine for the parked bookmarks project (TikTok/X/Reddit). No grunt/mid review (fast lane by design).
+
+## [2026-06-23T01:45:00Z] fast-ingest | tiktok AI folder (pilot batch of 4)
+- First real bookmarks pilot. Source: TikTok collection "AI" (@tortilla_papi). Links supplied by user; metadata via TikTok oEmbed (caption+creator; no transcript).
+- Raw: raw/bookmarks/ai-folder-pilot-2026-06-23.md (immutable).
+- New topic/folder index: wiki/topics/ai.md (table of bookmarks + per-item action + categorization-optimization note).
+- New entity: entities/claude-code (3 of 4 reference it).
+- 4 bookmark source pages: tiktok-one-cloud-claude-iac, tiktok-claude-room-redesign, tiktok-colton-ai-automation-setup, tiktok-dylanworr-build-cool-tech-mindset.
+- Limitation surfaced: caption-level only; transcript capture would raise value (parked w/ export automation). TikTok collection contents are not server-scrapable (signed/auth API) — user must supply links or use TikTok data export.
