@@ -781,3 +781,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - User corrected first heading to `Will you go on an adventure with me?`; live page verified new heading once and old `your adventure` copy zero times.
 - User-provided Tenor Meowth GIF deployed to `/srv/rare-date-dex/current/assets/crying-pokemon.gif`; public asset verified HTTP 200 image/gif, GIF89a, 640x480; browser sees it on confirmation screen.
 - Previous GIF asset blocker resolved; calendar/notification backend unchanged.
+
+## [2026-06-23T01:30:00Z] fast-ingest | karpathy-second-brain-wiki
+- Built fast-ingest lane (option B): new skill system/skills/wiki-fast-ingest.md; WIKI_SCHEMA.md gains source_type:bookmark, ingest_mode:fast, and a required ## Action Items section; wiki-operations.md now documents two lanes (full vs fast).
+- Inaugural fast capture: raw/clips/karpathy-second-brain-wiki.md -> wiki/sources/karpathy-second-brain-wiki.md.
+- New pages: entities/andrej-karpathy, concepts/second-brain-wiki. Linked source<->entity<->concept<->skill.
+- Context: this lane is the engine for the parked bookmarks project (TikTok/X/Reddit). No grunt/mid review (fast lane by design).

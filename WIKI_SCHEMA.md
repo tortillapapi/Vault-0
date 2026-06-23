@@ -129,12 +129,13 @@ Required sections:
 
 ### Source pages (`wiki/sources/<slug>.md`)
 
-One per ingested source. Created by Grunt during ingest.
+One per ingested source. Created by Grunt during the full ingest loop, or by CC
+directly during fast ingest (see [[wiki-fast-ingest]]).
 
 ```yaml
 ---
 type: source
-source_type: article | paper | podcast | book-chapter | clip | notion-page
+source_type: article | paper | podcast | book-chapter | clip | notion-page | bookmark
 title: Source Title
 slug: kebab-case-slug
 author: 
@@ -144,6 +145,7 @@ raw_path: raw/<subpath>/<filename>
 url:                          # if applicable
 tags: []
 priority: core | reference | archive   # required
+ingest_mode: full | fast      # 'fast' = CC single-turn capture (no review tier)
 domain_tags: []    # controlled vocabulary — see tag taxonomy below
 last_accessed: YYYY-MM-DD   # updated by CC when page is read
 access_count: 0    # incremented by CC when page is read
@@ -151,9 +153,15 @@ access_count: 0    # incremented by CC when page is read
 ```
 
 Required sections:
-- `## Summary` — 2-4 paragraph neutral summary
+- `## Summary` — 2-4 paragraph neutral summary (1-3 short paragraphs for fast ingest)
 - `## Key Claims` — numbered list of the main claims, each with a brief note
+  (a fast-ingest `bookmark` may title this `## Key Points` instead)
+- `## Action Items` — concrete next steps the source implies for the user, or
+  `None` if it is pure reference. Required for `source_type: bookmark`; optional
+  but encouraged for fast captures. This is the actionable layer that keeps a
+  saved item from being filed-and-forgotten.
 - `## Contradictions Noted` — claims that conflict with existing wiki pages
+  (omit-able for fast captures where there is nothing to contradict)
 - `## Wiki Pages Updated` — wikilinks to pages this ingest modified
 
 ### Comparison pages (`wiki/comparisons/<slug>.md`)
