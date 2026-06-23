@@ -766,3 +766,13 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Business-inventory filter rules documented.
 - Handoff: /root/context/139-profit-engine-cogs-bridge-handoff.md updated with current state, spec status, pipeline scripts, filter rules, and next-window resume steps.
 - Next backfill window: 2026-04-02 → 2026-04-09.
+
+## 2026-06-23 implementation | [hermes] Spec 149 Rare Date Dex edits/calendar/notification dispatched
+- Authored /root/specs/149-rare-date-dex-edits-calendar-notify.md and /root/tasks/149-rare-date-dex-edits-calendar-notify.txt.
+- User-provided crying Pokemon GIF was not visible in Hermes filesystem; task instructs OC to deploy hook/fallback and record BLOCKED_ON_GIF_ASSET if still missing.
+
+## [2026-06-23T01:12:22Z] status | [hermes] Spec 149 Rare Date Dex verified / GIF asset blocked
+- Live site: https://dates.rareforceone.cloud/; public /, /styles.css, /app.js verified HTTP/2 200.
+- Copy/UI live: first heading `Will you go on your adventure with me?`; second heading `She actually said yes!`; Route Unlock has Other + custom text input; final screen has Confirm.
+- Confirm backend verified with a live temporary Google Calendar event in mramirez021111, Hermes/papipa Telegram notification response, then test event deleted; final mid review SIGNOFF at /root/reviews/149-rare-date-dex-final.review.
+- Remaining blocker: user crying Pokemon GIF attachment not accessible; /assets/crying-pokemon.gif 404, fallback displays until real GIF is copied to /srv/rare-date-dex/current/assets/crying-pokemon.gif.
