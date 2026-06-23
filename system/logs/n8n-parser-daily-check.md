@@ -188,3 +188,9 @@
 - Recall: 1 order emails | 1 matched | MISSES: none
 - Precision: 3 recent rows | 3 confirmed | FALSE POSITIVES: none
 - Verdict: OK
+
+## 2026-06-23
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 8 order emails | 8 matched | MISSES: none
+- Precision: 6 recent rows | 4 confirmed | FALSE POSITIVES: Walmart …0147 2026-06-22 (junk partial order number); Walmart …0148 2026-06-22 (junk partial order number)
+- Verdict: ANOMALIES
