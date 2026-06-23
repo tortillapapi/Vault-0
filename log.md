@@ -802,3 +802,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Re-ingested all 4 AI-folder pilots from transcripts. Captions had hidden the real content: #3 Colton = RAG-for-Claude-Code (YouTube/voice-memo ingestion, Telegram voice control); #4 dylanworr = build-your-own second-brain (vector embeddings, hybrid storage). Both directly relevant to THIS project. Re-categorized topics/ai.md accordingly.
 - New raw: raw/bookmarks/ai-folder-pilot-2026-06-23-transcripts.md (verbatim STT).
 - Surfaced two roadmap decisions for the vault: YouTube-link auto-transcript ingestion, and an optional vector/semantic retrieval layer.
+
+## [2026-06-23T09:12:34Z] status | [hermes] Clear-ready handoff for Rare Date Dex
+- Wrote `/root/context/hermes-clear-handoff-rare-date-dex-2026-06-23.md` with live URL, verification evidence, key files, and resume notes.
+- Confirmed `/root/obsidian-vault` is the only git repo among inspected project/shared paths; site root and specs/tasks/reviews/context are filesystem records, not git repos.
+- Rare Date Dex remains complete with no active blocker: heading corrected to `Will you go on an adventure with me?`, GIF live, calendar/notification flow previously verified.
