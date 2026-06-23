@@ -776,3 +776,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Copy/UI live: first heading `Will you go on your adventure with me?`; second heading `She actually said yes!`; Route Unlock has Other + custom text input; final screen has Confirm.
 - Confirm backend verified with a live temporary Google Calendar event in mramirez021111, Hermes/papipa Telegram notification response, then test event deleted; final mid review SIGNOFF at /root/reviews/149-rare-date-dex-final.review.
 - Remaining blocker: user crying Pokemon GIF attachment not accessible; /assets/crying-pokemon.gif 404, fallback displays until real GIF is copied to /srv/rare-date-dex/current/assets/crying-pokemon.gif.
+
+## [2026-06-23T01:27:37Z] status | [hermes] Spec 149 Rare Date Dex copy/GIF correction complete
+- User corrected first heading to `Will you go on an adventure with me?`; live page verified new heading once and old `your adventure` copy zero times.
+- User-provided Tenor Meowth GIF deployed to `/srv/rare-date-dex/current/assets/crying-pokemon.gif`; public asset verified HTTP 200 image/gif, GIF89a, 640x480; browser sees it on confirmation screen.
+- Previous GIF asset blocker resolved; calendar/notification backend unchanged.
