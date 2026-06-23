@@ -21,7 +21,7 @@ is orchestrated through Claude Code.
 
 - [[tiktok-claude-room-redesign]] — Claude Code + Banana Skill + Google AI Studio for room redesign.
 - [[tiktok-one-cloud-claude-iac]] — let Claude write infrastructure-as-code for a single cloud.
-- [[tiktok-colton-ai-automation-setup]] — an AI automation/agent setup (Claude Code tagged).
+- [[tiktok-colton-ai-automation-setup]] — set up a RAG system for Claude Code (YouTube/voice-memo ingestion).
 
 ## Related
 

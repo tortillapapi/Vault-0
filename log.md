@@ -795,3 +795,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - New entity: entities/claude-code (3 of 4 reference it).
 - 4 bookmark source pages: tiktok-one-cloud-claude-iac, tiktok-claude-room-redesign, tiktok-colton-ai-automation-setup, tiktok-dylanworr-build-cool-tech-mindset.
 - Limitation surfaced: caption-level only; transcript capture would raise value (parked w/ export automation). TikTok collection contents are not server-scrapable (signed/auth API) — user must supply links or use TikTok data export.
+
+## [2026-06-23T02:05:00Z] feature | transcript capture added to fast-ingest (option A) + pilot re-ingest
+- Built local transcription: /root/scripts/tiktok-transcribe.py (yt-dlp audio -> faster-whisper base/int8, venv /opt/stt-venv). No API key, no cost. ~11s per 36s clip on 2-core CPU. Also returns creator+caption+duration.
+- wiki-fast-ingest skill: added the transcribe step for video/audio bookmarks; synthesize from transcript not caption; normalize Whisper mishears (Clawed=Claude, cloud code=Claude Code).
+- Re-ingested all 4 AI-folder pilots from transcripts. Captions had hidden the real content: #3 Colton = RAG-for-Claude-Code (YouTube/voice-memo ingestion, Telegram voice control); #4 dylanworr = build-your-own second-brain (vector embeddings, hybrid storage). Both directly relevant to THIS project. Re-categorized topics/ai.md accordingly.
+- New raw: raw/bookmarks/ai-folder-pilot-2026-06-23-transcripts.md (verbatim STT).
+- Surfaced two roadmap decisions for the vault: YouTube-link auto-transcript ingestion, and an optional vector/semantic retrieval layer.

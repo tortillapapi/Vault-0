@@ -54,9 +54,24 @@ Read, in order:
   it's the immutable record.
 - If the source is already a file in `raw/`, just reference its path.
 
-### 3. Read it directly
+### 3. Read it directly (transcribe video/audio first)
 Unlike the orchestrator, CC DOES read the whole source here (that's the tradeoff
 for skipping the review tiers). It's small by definition of the fast lane.
+
+For **video/audio bookmarks** (TikTok, YouTube, Reels, etc.) the caption is NOT
+the content — transcribe the audio:
+
+```
+/root/scripts/tiktok-transcribe.py <url> [<url> ...]      # or --file links.txt
+```
+
+It returns JSON per URL with `uploader`, `description` (caption), `duration`, and
+`transcript` (local STT — yt-dlp audio → faster-whisper base/int8, no API key, no
+cost). Synthesize the source page from the **transcript**, not the caption. Note
+known Whisper mishears in this domain ("Clawed"→Claude, "cloud code"→Claude Code,
+"Vipe"→vibe) and normalize them in the page while keeping the raw transcript
+verbatim under `raw/bookmarks/`. Re-categorize on transcript content — captions
+routinely mislabel what a clip is actually about.
 
 ### 4. Write the source page
 Create `wiki/sources/<slug>.md` per the schema's source frontmatter. For fast

@@ -13,29 +13,30 @@ access_count: 0
 
 The living index for the TikTok **"AI"** bookmark folder
 (`@tortilla_papi/collection/AI`). Each saved video is captured as a `bookmark`
-source page (caption + creator via oEmbed) and linked here. Raw batch records
-live under `raw/bookmarks/`.
+source page with creator + caption + **full audio transcript** (local STT via
+`/root/scripts/tiktok-transcribe.py`). Raw transcripts live under `raw/bookmarks/`.
 
 ## Bookmarks
 
-| Saved item | Creator | What it is | Action |
+| Saved item | Creator | What it actually is (from transcript) | Action |
 |---|---|---|---|
-| [[tiktok-one-cloud-claude-iac]] | Eric (@codingai) | Pick ONE cloud, diagram it, let Claude write the IaC instead of a SaaS Frankenstein stack | **Apply** as a default infra heuristic; try Claude→Terraform on a small system |
-| [[tiktok-claude-room-redesign]] | AI Honeycove | Claude Code + "Banana Skill" + Google AI Studio to redesign a room from one photo | Rewatch to capture the skill wiring if a makeover comes up |
-| [[tiktok-colton-ai-automation-setup]] | Colton Holland | Hook about an AI automation/agents setup ([[claude-code]] tagged) | Rewatch — caption has no specifics |
-| [[tiktok-dylanworr-build-cool-tech-mindset]] | dylanworr | Mindset: follow builders who reveal "the sauce", not demo-flexers | None — curation principle |
+| [[tiktok-colton-ai-automation-setup]] | Colton Holland | Set up a **RAG system for Claude Code** — store YouTube/voice-memo/photo data in chunks; send a YT link → auto-transcript → chunk → store; Telegram voice-memo control | **Build next:** YouTube-link ingestion + retrieval layer for our own vault |
+| [[tiktok-dylanworr-build-cool-tech-mindset]] | dylanworr | **Build your own second-brain memory system** — local embedded DB + vector rows + local embedding model; hybrid on-disk/cloud storage | **Decide:** add a vector/semantic layer to the wiki? |
+| [[tiktok-one-cloud-claude-iac]] | Eric (@codingai) | Ditch the SaaS Frankenstein stack: pick ONE cloud, let the AI write the infrastructure-as-code | Apply as default infra heuristic; try Claude→Terraform |
+| [[tiktok-claude-room-redesign]] | AI Honeycove | 3-step Claude Code "Banana Skill" + Google AI Studio room redesign from one photo | Follow the 3 steps if a makeover comes up |
 
-## Categorization note (optimization)
+## Categorization note
 
-This folder is broad. Of the pilot batch, three are really **Claude Code / AI dev
-workflows** ([[claude-code]]) and one ([[tiktok-dylanworr-build-cool-tech-mindset]])
-is a **mindset** clip that doesn't fit the others. Suggested refinement as the
-folder grows: split into `ai-dev-workflows` (Claude Code, IaC, agents) vs. a
-`mindset`/`creator-curation` topic. Holding off until there's more volume to
-cluster against.
+Transcripts changed the picture vs. captions. Two of these four are really about
+**building second-brain / RAG systems** ([[second-brain-wiki]]) — directly
+relevant to this very project — not the "mindset" or "vague hook" the captions
+implied. The other two are **AI dev-workflow** tips ([[claude-code]]). As the
+folder grows, the natural split is `second-brain-and-rag` vs `ai-dev-workflows`.
+This is the "folder optimization" payoff: the machine reclassifies on *content*,
+not the title you happened to save it under.
 
-## Open improvement
+## Meta: this folder is feeding its own tooling
 
-Captures are **caption-level** only — the instructional substance is in the video.
-Capturing transcripts (audio→text) would materially raise the value of every
-entry here. Parked as part of the bookmarks-export automation.
+Both top entries describe the next steps for the vault itself (auto-transcript
+ingestion — now built — plus a retrieval/embedding layer). The bookmarks are
+literally a roadmap for the second brain ingesting them.
