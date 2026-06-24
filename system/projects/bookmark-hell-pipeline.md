@@ -1,8 +1,46 @@
 # Bookmark Hell Pipeline
 
-Status: parked for later build
-Owner/orchestrator: Hermes/Janus
-Captured: 2026-06-10T20:03:15Z
+Status: **ingestion + extraction core BUILT & piloted (2026-06-23)**; export automation + resurfacing still parked
+Owner/orchestrator: Hermes/Janus (plan) · Metis/CC (2026-06-23 build)
+Captured: 2026-06-10T20:03:15Z · Updated: 2026-06-23
+
+## 2026-06-23 update — the engine is built (Metis/CC)
+
+The hard middle of this plan — capture → transcript → summary → category →
+next-action, stored in Obsidian — now exists and is proven on real bookmarks.
+
+**What's built:**
+- **Fast-ingest lane** ([[wiki-fast-ingest]]) — a low-friction, single-turn CC
+  ingest (no spec/grunt/mid). This is the "extractor" layer (steps 2–3 of the MVP).
+  Schema gained `source_type: bookmark`, `ingest_mode: fast`, and a required
+  `## Action Items` section (the "next action" field this plan wanted).
+- **Local transcription** — `/root/scripts/tiktok-transcribe.py` (venv
+  `/opt/stt-venv`): `yt-dlp` audio → `faster-whisper` base/int8, CPU, **no API
+  key, no cost**. Returns creator + caption + duration + transcript JSON. Works
+  for any yt-dlp source (TikTok **and YouTube/Reels**). This delivers the
+  "transcript/text when available" extraction field — and it's decisive: captions
+  routinely mislabel a clip; transcripts re-categorize on real content.
+- **Storage** = Obsidian, link-graph categorization. A TikTok folder maps to a
+  topic page (e.g. [[ai]]); each video is a `bookmark` source page with summary +
+  key points + action items + verbatim transcript in `raw/bookmarks/`.
+
+**Piloted:** the TikTok "AI" collection (`@tortilla_papi/collection/AI`), 4 videos,
+end-to-end. See [[ai]]. Two of them turned out to describe this very project
+(RAG-for-Claude-Code; DIY second-brain w/ vector embeddings).
+
+**Hard wall confirmed:** TikTok *collection contents* are not server-scrapable
+(signed/authenticated API + captcha from datacenter IP). So the feed is
+user-driven: paste links, or use the TikTok "Download your data" export (JSON) —
+that list is then batch-run through the transcription script + fast-ingest.
+
+**Still parked (matches Hermes plan below):**
+- Automated bookmark *pull* per platform (MVP v3) — TikTok especially is manual/export-only.
+- Structured SQLite/Sheet mirror for filters/dedupe/digest (currently Obsidian-only).
+- Resurfacing (weekly Loot Drop, ADHD pick-one, trip mode).
+- Optional **vector/semantic retrieval** layer over the wiki (raised by the dylanworr + Colton pilot clips).
+- Deciding whether to keep one big folder/topic or auto-split into tighter categories as volume grows.
+
+The original plan (unchanged) follows.
 
 ## Goal
 

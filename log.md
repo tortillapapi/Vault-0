@@ -807,3 +807,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Wrote `/root/context/hermes-clear-handoff-rare-date-dex-2026-06-23.md` with live URL, verification evidence, key files, and resume notes.
 - Confirmed `/root/obsidian-vault` is the only git repo among inspected project/shared paths; site root and specs/tasks/reviews/context are filesystem records, not git repos.
 - Rare Date Dex remains complete with no active blocker: heading corrected to `Will you go on an adventure with me?`, GIF live, calendar/notification flow previously verified.
+
+## [2026-06-23T02:20:00Z] docs | documented fast-ingest + bookmarks build
+- Updated system/projects/bookmark-hell-pipeline.md (Hermes's parked plan): status -> "ingestion+extraction core BUILT & piloted"; added 2026-06-23 build section (fast-ingest lane, tiktok-transcribe.py, Obsidian link-graph storage, AI-folder pilot, TikTok scrape wall, what's still parked). Preserved original plan.
+- Refreshed wiki index.md catalog (was stale since 05-15): added andrej-karpathy, claude-code, second-brain-wiki, ai topic, 5 new sources.
+- Cross-checked: fast-ingest lane also documented in system/skills/wiki-fast-ingest.md + system/workflows/wiki-operations.md + WIKI_SCHEMA.md.
