@@ -2,7 +2,7 @@
 
 Mirrored reference documentation for CC orchestrator skills used across the vault system.
 
-- [[dashboard-healthcheck]] — Read-only spot-check of the Orders Dashboard (port 5002, orders.db).
+- [[dashboard-healthcheck]] — DECOMMISSIONED 2026-06-24. Was read-only spot-check of the Orders Dashboard (was port 5002, orders.db).
 - [[fix-iterate]] — Create targeted fix tasks when review identifies specific issues.
 - [[n8n-parser-triage]] — Diagnose/recover the n8n order-parser pipeline; deactivation-first triage.
 - [[notion-ingest]] — Orchestrate ingestion of Notion pages into the wiki.

@@ -818,3 +818,15 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Updated system/projects/orders-dashboard.md: mark legacy source as DEPRECATED, point to active master.
 - Updated wiki/topics/n8n-order-parser.md: replaced stale "still reads old Gemini source until Spec 51" line with current deprecation status.
 - Active `Purchase Log - Master` file untouched. Both files remain in Drive, not trashed.
+
+## [2026-06-24] decommission | [hermes] Deleted legacy Orders Master and decommissioned Orders Dashboard (spec 151)
+
+- Backup dir: `/root/backups/orders-dashboard-decommission-20260624T194544Z/`
+- Legacy Drive file `1SlhST4AtYd2czZPcvqguEwdOBQLHy--KeiLXjT8QT2k` (`DEPRECATED — Orders Master (legacy; use Purchase Log - Master)`) trashed in Google Drive; `.xlsx` export saved to backup dir.
+- Active parser master `Purchase Log - Master` (`1VA5dXBwTy7p7yoi2sWbWL56x71V9rRLbxRy1uftwrNM`) verified unchanged, `trashed=false`.
+- Dashboard units stopped/disabled/masked: `orders-dashboard.service`, `orders-pull.timer`, `orders-pull.service`, `orders-dashboard-7day-check.timer`, `orders-dashboard-7day-check.service`.
+- Port 5002: nothing on `127.0.0.1:5002` (Tailscale DERP uses port 5002 on its own IPs — unrelated).
+- UFW: no dedicated 5002/tcp rule found; nothing removed.
+- Caddy: no isolated route for orders-dashboard or port 5002 found; nothing changed.
+- Vault docs updated: `system/projects/orders-dashboard.md`, `wiki/topics/orders-dashboard.md`, `wiki/topics/n8n-order-parser.md`, `system/resources/registry.md`, `core-index.md`, `system/projects/index.md`, `system/governance/cc-memory.md`, `system/skills/dashboard-healthcheck.md`, `system/skills/index.md`.
+- Marker: `/root/orders-dashboard/DECOMMISSIONED.md` written.

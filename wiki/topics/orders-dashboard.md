@@ -3,117 +3,85 @@ type: topic
 title: Orders Dashboard
 slug: orders-dashboard
 created: 2026-04-27
-last_updated: 2026-04-27
-tags: [ops, dashboard, orders, sheets, gemini]
+last_updated: 2026-06-24
+tags: [ops, dashboard, orders, sheets, gemini, decommissioned]
 thesis_version: 1
-priority: core
+priority: decommissioned
 domain_tags: [dashboard, pipeline]
-last_accessed: 2026-04-27
+last_accessed: 2026-06-24
 access_count: 0
 ---
 
-## Current Thesis
+## Current Thesis — DECOMMISSIONED 2026-06-24
 
-The Orders Dashboard is a Flask-based web interface that visualizes purchase order data from the Gemini Orders master sync system. It provides a lightweight, read-only view into the consolidated order sheet without requiring direct Google Sheets access. The dashboard serves time-series charts, retailer breakdowns, and item-level summaries suitable for quick status checks and inventory oversight.
+The Orders Dashboard has been **decommissioned** per Spec 151. Papi is not
+using it. The legacy source sheet has been trashed and the runtime is stopped,
+disabled, and masked. The active parser master `Purchase Log - Master`
+(`1VA5dXBwTy7p7yoi2sWbWL56x71V9rRLbxRy1uftwrNM`) remains the source of
+truth.
 
-## Supporting Evidence
+- **Legacy sheet:** `1SlhST4AtYd2czZPcvqguEwdOBQLHy--KeiLXjT8QT2k` — trashed.
+- **Dashboard units:** All stopped, disabled, masked.
+- **Backup dir:** `/root/backups/orders-dashboard-decommission-20260624T194544Z/`
+- **Rollback:** See `/root/orders-dashboard/DECOMMISSIONED.md`.
+- **Source tree:** `/root/orders-dashboard/` remains on disk (not deleted).
+
+## Pre-Decommission History (archival)
+
+The Orders Dashboard was a Flask-based web interface that visualized purchase
+order data from the Gemini Orders master sync system. It provided a
+lightweight, read-only view into the consolidated order sheet without
+requiring direct Google Sheets access. The dashboard served time-series
+charts, retailer breakdowns, and item-level summaries suitable for quick
+status checks and inventory oversight.
+
+## Supporting Evidence (historical)
 
 - Data source: Orders — Master sheet (All tab) via Google Sheets API
-- Sync mechanism: Pulls hourly via `orders-pull.timer` systemd unit
+- Sync mechanism: Pulled hourly via `orders-pull.timer` systemd unit
 - Visualization: Chart.js for time-series and categorical breakdowns
 - Authentication: Token-in-URL pattern with rotation capability
 - Deployment: systemd-managed service on port 5002
 
-## Architecture
+## Architecture (historical)
 
-Upstream source: [[docs/gemini-orders-master-sync]] — the Gemini Orders master sync system provides the canonical order data. The dashboard does not write back to Sheets; it is a read-only consumer of the All tab.
+Upstream source: [[docs/gemini-orders-master-sync]] — the Gemini Orders master
+sync system provided the canonical order data. The dashboard did not write
+back to Sheets; it was a read-only consumer of the All tab.
 
 Components:
-- **Flask app** (`orders-dashboard.service`) — serves the web UI
+- **Flask app** (`orders-dashboard.service`) — served the web UI
 - **SQLite cache** — local copy of sheet data for fast queries
 - **Chart.js** — client-side rendering of purchase trends and summaries
 - **Sheets API client** — Vertex AI service account with readonly scope
 
-## URL + Token Rotation
+## systemd Units (all masked)
 
-Dashboard URL pattern: `http://srv1535917.hstgr.cloud:5002/d/<token>/`
-
-Token rotation procedure:
-1. Generate new random token: `openssl rand -hex 16`
-2. Write to secret file: `/root/secrets/orders-dashboard/url-token.txt`
-3. Reload dashboard service: `systemctl restart orders-dashboard.service`
-4. Update any bookmarks or shared links
-5. Old token becomes invalid immediately
-
-**Never commit the token to git or paste it in chat.**
-
-## systemd Units + Ports
-
-| Unit | Type | Port | Purpose |
-|------|------|------|---------|
-| `orders-dashboard.service` | Service | 5002 | Flask HTTP server |
-| `orders-pull.timer` | Timer | — | Hourly sheet sync trigger |
-| `orders-pull.service` | Service | — | One-shot sync execution |
-
-Service status:
-```bash
-systemctl status orders-dashboard.service
-systemctl status orders-pull.timer
-```
-
-## Filters + Charts Present
-
-Dashboard sections:
-- **Time series**: Purchase volume over last 30/60/90 days
-- **Retailer breakdown**: Pie chart of spend by retailer
-- **Item grid**: Recent orders with search/filter by SKU/description
-- **Status summary**: Counts by processing status (ordered, shipped, delivered)
-
-Filters available:
-- Date range (preset or custom)
-- Retailer multi-select
-- Item category
-- Order status
-
-## Source Change Pending
-
-Spec 50 shipped the replacement n8n Order Parser and new `Purchase Log - Master` sheet on 2026-05-15. This dashboard still reads the old Gemini Orders Master Sync source. Do **not** assume dashboard data reflects the new n8n parser until Spec 51 repoints and verifies the dashboard ingestion against the new master sheet column order.
-
-## Maintenance
-
-**Token rotation:**
-- Rotate immediately if URL is shared with unintended parties
-- Rotate quarterly as routine hygiene
-- Procedure documented in "URL + Token Rotation" section above
-
-**Refresh interval:**
-- Automatic: hourly via `orders-pull.timer`
-- Manual: `systemctl start orders-pull.service` for on-demand sync
-
-**Pull logs:**
-- systemd journal: `journalctl -u orders-pull.service -f`
-- Log file: `/var/log/orders-dashboard/pull.log` (if configured)
-- Failed pulls do not clear existing SQLite cache; dashboard shows stale data until next successful sync
-
-**Common issues:**
-- 403 from Sheets API → check Vertex SA key validity and scopes
-- Empty dashboard → verify `orders-pull.service` last run success
-- Token rejected → verify token file matches URL parameter exactly
+| Unit | Status |
+|------|--------|
+| `orders-dashboard.service` | masked |
+| `orders-pull.timer` | masked |
+| `orders-pull.service` | masked |
+| `orders-dashboard-7day-check.timer` | masked |
+| `orders-dashboard-7day-check.service` | masked |
 
 ## Related
 
+- [[n8n-order-parser]] — replacement parser shipped in Spec 50; active.
+  Legacy Orders sheet (`1SlhST4AtYd2czZPcvqguEwdOBQLHy--KeiLXjT8QT2k`) is
+  trashed. Active parser master is `Purchase Log - Master`
+  (`1VA5dXBwTy7p7yoi2sWbWL56x71V9rRLbxRy1uftwrNM`).
 - [[docs/gemini-orders-master-sync]] — previous upstream sync system
-- [[n8n-order-parser]] — replacement parser shipped in Spec 50
 - [[decisions/gemini-orders-architecture]] — design decisions for master sync
 
 ## Sources
 
 - /root/specs/42-orders-dashboard.md
+- /root/specs/151-delete-legacy-orders-master-and-decommission-dashboard.md
 - /root/reviews/session-2026-04-27-handoff.md
 
 ## Version
 
+- **DECOMMISSIONED** — 2026-06-24 per Spec 151.
 - **v1.1** — updated 2026-05-15 with source-change pending note for Spec 51.
 - **v1.0** — released 2026-04-27. Stable, actionable. Specs 42, 43, 44.
-- v2 backlog is explicitly LOW priority per user
-  (see /root/.claude/projects/-root/memory/project_order_dashboard.md).

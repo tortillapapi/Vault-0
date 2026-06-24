@@ -27,7 +27,7 @@ tags: [governance, mirror, audit]
 - [OC Main Self-Orchestration](feedback_oc_main_self_orchestration.md) — Dispatch multi-phase specs to OC main in one call with pre-approved handoffs; saves ~10k CC tokens, 3× faster
 - [Check systemd before run tasks](feedback_check_systemd_before_run_tasks.md) — On projects with a systemd/ dir, check timer state first; live timers silently race your work
 - [n8n Order Parser](project_n8n_order_parser.md) — Gmail→Sheets automation: 3 workflows, account_b=eBay; auto-deactivates on errors, won't self-re-enable
-- [Orders Dashboard v1.0](project_order_dashboard.md) — Flask + SQLite dashboard live on VPS port 5002; v2 backlog is LOW priority, do not pitch unsolicited
+- [Orders Dashboard v1.0](project_order_dashboard.md) — DECOMMISSIONED 2026-06-24 (spec 151); Flask + SQLite dashboard was on VPS port 5002, now stopped/disabled/masked. Legacy sheet trashed.
 - [Never revive Inventory Dashboard](feedback_never_revive_inventory_dashboard.md) — User permanently retired the inventory-tracker pipeline + dashboard; do not propose revival or partial reuse
 - [Vault commits required](feedback_vault_git_commit_push.md) — Every spec that writes to /root/obsidian-vault must end with git commit + push, or Mac/GitHub/VPS drift
 - [Notion mirror not reference](feedback_notion_mirror_not_reference.md) — /root/obsidian-vault/notion/ is one-way mirror of Notion; never read as reference/learning material

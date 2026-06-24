@@ -15,7 +15,7 @@ last_updated: 2026-05-26
 ## Active Services
 - openclaw-gateway — always running
 - n8n Order Parser — daily Gmail order parsing; now at `https://n8n.rareforceone.cloud` (Caddy proxy). Recovered 2026-05-26 from ~11-day OAuth outage (consent screen now Published). Daily accuracy audit cron runs 16:30 UTC through 2026-06-01 → log `system/logs/n8n-parser-daily-check.md`. See [[wiki/topics/n8n-order-parser]]
-- Orders Dashboard — still reads old Gemini master until Spec 51; see [[wiki/topics/orders-dashboard]]
+- Orders Dashboard — DECOMMISSIONED 2026-06-24 per Spec 151; runtime stopped/disabled/masked, legacy sheet trashed. See [[wiki/topics/orders-dashboard]]
 - cleanup-inventory-tracker.timer — scheduled 2026-05-27, archives the decommissioned inventory-tracker workspace permanently
 
 ## Historical (kept for reference, not active)

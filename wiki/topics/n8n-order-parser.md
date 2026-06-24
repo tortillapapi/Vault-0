@@ -160,7 +160,7 @@ Direct restaurant emails may still leak through as purchase rows unless they are
 
 ## Related
 
-- [[orders-dashboard]] — reads the legacy `Orders — Master` / Gemini sheet (`1SlhST4AtYd2czZPcvqguEwdOBQLHy--KeiLXjT8QT2k`), which was deprecated 2026-06-24 (spec 150). The active parser master is `Purchase Log - Master` (`1VA5dXBwTy7p7yoi2sWbWL56x71V9rRLbxRy1uftwrNM`). The dashboard has not yet been repointed.
+- [[orders-dashboard]] — **DECOMMISSIONED 2026-06-24** per Spec 151. The legacy `Orders — Master` / Gemini sheet (`1SlhST4AtYd2czZPcvqguEwdOBQLHy--KeiLXjT8QT2k`) has been **trashed** in Google Drive. The dashboard runtime is stopped, disabled, and masked. The active parser master remains `Purchase Log - Master` (`1VA5dXBwTy7p7yoi2sWbWL56x71V9rRLbxRy1uftwrNM`).
 - `/root/specs/50-n8n-order-parser.md`
 - `/root/specs/50-n8n-order-parser-amendment.md`
 - `/root/specs/50_1-order-parser-quality-fixes.md`
