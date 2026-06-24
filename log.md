@@ -830,3 +830,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Caddy: no isolated route for orders-dashboard or port 5002 found; nothing changed.
 - Vault docs updated: `system/projects/orders-dashboard.md`, `wiki/topics/orders-dashboard.md`, `wiki/topics/n8n-order-parser.md`, `system/resources/registry.md`, `core-index.md`, `system/projects/index.md`, `system/governance/cc-memory.md`, `system/skills/dashboard-healthcheck.md`, `system/skills/index.md`.
 - Marker: `/root/orders-dashboard/DECOMMISSIONED.md` written.
+
+## [2026-06-24T20:20:00Z] spec | 152 TikTok bookmarks bulk ingest (parked)
+- Analyzed Papi's full TikTok export (read-only): 2,011 favorites ({Date,Link} only, no captions), 6,000 likes, 67 folder NAMES but NO folder->video mapping (export "Collection" is empty). TikTok collection pages not scrapable.
+- Wrote /root/specs/152-tiktok-bookmarks-bulk-ingest.md: phased plan (scale test 50 -> lightweight storage -> throttled resumable full run), classify-by-content into the 67 folder names. Parked on 5 open decisions (scope, scale test, granularity, order, pacing).
+- Export stashed /root/bookmarks-data/tiktok-export-2026-06-24.json (out of git, personal bulk data). Nothing processed — awaiting Papi.

@@ -40,6 +40,13 @@ that list is then batch-run through the transcription script + fast-ingest.
 - Optional **vector/semantic retrieval** layer over the wiki (raised by the dylanworr + Colton pilot clips).
 - Deciding whether to keep one big folder/topic or auto-split into tighter categories as volume grows.
 
+**2026-06-24:** Papi's full TikTok export analyzed (2,011 favorites + 6,000 likes
++ 67 folder NAMES, but no folder→video mapping and no captions in the export). The
+bulk-ingest plan is written up and PARKED pending Papi's scope decisions — see
+`/root/specs/152-tiktok-bookmarks-bulk-ingest.md`. Export stashed at
+`/root/bookmarks-data/tiktok-export-2026-06-24.json` (out of git). Gateway now
+accepts `.json/.zip/.csv/.txt` drops.
+
 The original plan (unchanged) follows.
 
 ## Goal
