@@ -812,3 +812,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Updated system/projects/bookmark-hell-pipeline.md (Hermes's parked plan): status -> "ingestion+extraction core BUILT & piloted"; added 2026-06-23 build section (fast-ingest lane, tiktok-transcribe.py, Obsidian link-graph storage, AI-folder pilot, TikTok scrape wall, what's still parked). Preserved original plan.
 - Refreshed wiki index.md catalog (was stale since 05-15): added andrej-karpathy, claude-code, second-brain-wiki, ai topic, 5 new sources.
 - Cross-checked: fast-ingest lane also documented in system/skills/wiki-fast-ingest.md + system/workflows/wiki-operations.md + WIKI_SCHEMA.md.
+## [2026-06-24] deprecation | [hermes] Deprecated legacy Orders Master sheet (spec 150)
+- Renamed Google Drive file `1SlhST4ATYd2czZPcvqguEwdOBQLHy--KeiLXjT8QT2k` from `Orders — Master` to `DEPRECATED — Orders Master (legacy; use Purchase Log - Master)`.
+- Set description warning that active parser master is `Purchase Log - Master` (`1VA5dXBwTy7p7yoi2sWbWL56x71V9rRLbxRy1uftwrNM`).
+- Updated system/projects/orders-dashboard.md: mark legacy source as DEPRECATED, point to active master.
+- Updated wiki/topics/n8n-order-parser.md: replaced stale "still reads old Gemini source until Spec 51" line with current deprecation status.
+- Active `Purchase Log - Master` file untouched. Both files remain in Drive, not trashed.
