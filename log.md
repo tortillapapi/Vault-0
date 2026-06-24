@@ -835,3 +835,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Analyzed Papi's full TikTok export (read-only): 2,011 favorites ({Date,Link} only, no captions), 6,000 likes, 67 folder NAMES but NO folder->video mapping (export "Collection" is empty). TikTok collection pages not scrapable.
 - Wrote /root/specs/152-tiktok-bookmarks-bulk-ingest.md: phased plan (scale test 50 -> lightweight storage -> throttled resumable full run), classify-by-content into the 67 folder names. Parked on 5 open decisions (scope, scale test, granularity, order, pacing).
 - Export stashed /root/bookmarks-data/tiktok-export-2026-06-24.json (out of git, personal bulk data). Nothing processed — awaiting Papi.
+
+## [2026-06-24T20:35:00Z] closeout | Orders Master deletion + Rare Date Dex (at Papi's direction)
+- Specs 150 + 151 (delete legacy Orders Master / decommission Orders Dashboard) -> status complete. Verified: legacy Orders Master Drive file trashed=true, active "Purchase Log - Master" untouched; orders-dashboard.service inactive+masked. (Built by Hermes; closed by Metis per Papi.)
+- Specs 148 + 149 (Rare Date Dex) -> complete. Verified live: dates.rareforceone.cloud HTTP 200; previously-blocking crying-pokemon.gif now HTTP 200 (554KB, fallback gone). pokemon-date-planner project status -> live-complete.
+- Updated /root/specs frontmatter + closeout notes, projects index, pokemon-date-planner.md.
