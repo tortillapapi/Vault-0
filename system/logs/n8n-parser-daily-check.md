@@ -194,3 +194,9 @@
 - Recall: 8 order emails | 8 matched | MISSES: none
 - Precision: 6 recent rows | 4 confirmed | FALSE POSITIVES: Walmart …0147 2026-06-22 (junk partial order number); Walmart …0148 2026-06-22 (junk partial order number)
 - Verdict: ANOMALIES
+
+## 2026-06-24
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 4 order emails | 3 matched | MISSES: eBay Dayton Audio Classic B65 order-last4 unknown 2026-06-24
+- Precision: 5 recent rows | 5 confirmed | FALSE POSITIVES: none
+- Verdict: ANOMALIES
