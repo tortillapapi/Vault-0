@@ -853,6 +853,14 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Archived stale orphan task/review prompts and completed `.progress` markers to `/root/tasks/archive/hygiene-20260625T185256Z/` with `MANIFEST.txt`; no `.done` or active `.blocked` markers removed.
 - Post-cleanup task scan has no orphan prompt/progress noise; remaining live blocker is `/root/tasks/136-amazon-spapi-sales-connector.blocked`.
 
+## [2026-06-25T22:31:12Z] data | [hermes] Synced Amazon 2026 orders and recalculated COGS gap
+- Backed up `/root/sales-data/db/sales.db` to `/root/sales-data/backups/sales.db.bak-20260625T211119Z-pre-amazon-2026-sync` before mutation.
+- Ran Amazon SP-API sync from `2026-01-01T00:00:00Z`; normal sync hit Orders API 429 throttling, then slow resumable per-order sync completed successfully at `2026-06-25T22:24:23Z`.
+- Verified DB integrity: SQLite quick check `ok`, foreign key check rows `0`.
+- Local Amazon canonical state now has 1,818 2026 orders / 1,852 item rows through purchase date `2026-06-25T20:22:40Z`; no 2026 Amazon orders missing item rows.
+- 2026 practical COGS gap after excluding canceled Amazon rows: Amazon needs 6 distinct item keys / 29 rows / 31 units; eBay needs 1 distinct item key / 3 rows / 3 units; combined gap is 7 item keys / 32 rows / 34 units / `$5,459.68` revenue.
+- Wrote private aggregate reports under `/root/sales-data/reports/cogs-coverage/2026-cogs-gap-after-amazon-sync-20260625.{md,json}`.
+
 ## [2026-06-25T20:33:30Z] data | [hermes] Imported Sellerboard COGS seed into Profit Engine
 - Staged Sellerboard CSV under `/root/sales-data/imports/cogs/sellerboard/` and derived normalized import file under `/root/sales-data/imports/cogs/derived/`; original export preserved unchanged.
 - Created pre-import SQLite backup: `/root/sales-data/backups/sales.db.bak-20260625T203120Z-pre-sellerboard-cogs-import`.
