@@ -852,3 +852,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Cleaned `/root/n8n/local-files/order-parser` working tree: committed deployed Walmart partial-order fix + regression test as `1dd8d51` (`Fix Walmart partial order IDs`). Verification: all `test_*.js` scripts passed and `fixtures-run.sh` reported 6/6 passed.
 - Archived stale orphan task/review prompts and completed `.progress` markers to `/root/tasks/archive/hygiene-20260625T185256Z/` with `MANIFEST.txt`; no `.done` or active `.blocked` markers removed.
 - Post-cleanup task scan has no orphan prompt/progress noise; remaining live blocker is `/root/tasks/136-amazon-spapi-sales-connector.blocked`.
+
+## [2026-06-25T20:33:30Z] data | [hermes] Imported Sellerboard COGS seed into Profit Engine
+- Staged Sellerboard CSV under `/root/sales-data/imports/cogs/sellerboard/` and derived normalized import file under `/root/sales-data/imports/cogs/derived/`; original export preserved unchanged.
+- Created pre-import SQLite backup: `/root/sales-data/backups/sales.db.bak-20260625T203120Z-pre-sellerboard-cogs-import`.
+- Ran approved real import: source `sellerboard`, import_run_id=4, rows=981, accepted=238, rejected=743 blank/invalid cost rows, observations=238, dry_run=false.
+- Verified DB integrity (`quick_check=ok`, foreign_key_check=0) and active COGS observations: BoxEm=88, Sellerboard=238.
+- Generated coverage artifacts: `/root/sales-data/reports/cogs-coverage/sellerboard-plus-boxem-coverage-20260625.md` and `.json`; coverage improved to 1,922/2,024 Amazon item rows (95.0%) and $180,228.36/$185,424.25 item revenue (97.2%).
