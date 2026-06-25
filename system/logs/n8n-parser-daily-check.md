@@ -200,3 +200,9 @@
 - Recall: 4 order emails | 3 matched | MISSES: eBay Dayton Audio Classic B65 order-last4 unknown 2026-06-24
 - Precision: 5 recent rows | 5 confirmed | FALSE POSITIVES: none
 - Verdict: ANOMALIES
+
+## 2026-06-25
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 1 order emails | 0 matched | MISSES: account_b verification failed (Sheets HTTP 503); eBay delivery update order-last4 unknown 2026-06-24 unverified
+- Precision: 1 recent rows | 0 confirmed | FALSE POSITIVES: Walmart …0148 2026-06-22 (junk partial order number); account_b precision check failed (Sheets HTTP 503)
+- Verdict: ANOMALIES
