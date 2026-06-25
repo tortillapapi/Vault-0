@@ -847,3 +847,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Safely terminated only the gateway-owned LSP/helper children; did not stop/restart main Hermes, Milo, or Papipa gateways.
 - Result: LSP helper PSS dropped from ~583.8 MB to 0; overall used RAM dropped from ~3.4 GiB to ~2.8 GiB; available RAM rose to ~4.9-5.0 GiB.
 - Verified `hermes-gateway.service`, `hermes-gateway-milo.service`, and `hermes-gateway-papipa.service` remained active after cleanup.
+
+## [2026-06-25T18:53:55Z] ops | [hermes] Task hygiene + parser repo cleanup before Profit Engine pivot
+- Cleaned `/root/n8n/local-files/order-parser` working tree: committed deployed Walmart partial-order fix + regression test as `1dd8d51` (`Fix Walmart partial order IDs`). Verification: all `test_*.js` scripts passed and `fixtures-run.sh` reported 6/6 passed.
+- Archived stale orphan task/review prompts and completed `.progress` markers to `/root/tasks/archive/hygiene-20260625T185256Z/` with `MANIFEST.txt`; no `.done` or active `.blocked` markers removed.
+- Post-cleanup task scan has no orphan prompt/progress noise; remaining live blocker is `/root/tasks/136-amazon-spapi-sales-connector.blocked`.
