@@ -840,3 +840,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Specs 150 + 151 (delete legacy Orders Master / decommission Orders Dashboard) -> status complete. Verified: legacy Orders Master Drive file trashed=true, active "Purchase Log - Master" untouched; orders-dashboard.service inactive+masked. (Built by Hermes; closed by Metis per Papi.)
 - Specs 148 + 149 (Rare Date Dex) -> complete. Verified live: dates.rareforceone.cloud HTTP 200; previously-blocking crying-pokemon.gif now HTTP 200 (554KB, fallback gone). pokemon-date-planner project status -> live-complete.
 - Updated /root/specs frontmatter + closeout notes, projects index, pokemon-date-planner.md.
+
+## [2026-06-25T04:11:26Z] ops | [hermes] VPS memory cleanup: stale Hermes LSP helpers cleared
+- Investigated steady ~40% VPS memory use. System was healthy: memory PSI 0.00, no swap usage because no swap configured, and available RAM remained healthy.
+- Identified stale Hermes LSP/helper child processes under the main Hermes gateway: `pyright-langserver`, `typescript-language-server`, `tsserver.js`, `typingsInstaller.js`, and `bash-language-server`.
+- Safely terminated only the gateway-owned LSP/helper children; did not stop/restart main Hermes, Milo, or Papipa gateways.
+- Result: LSP helper PSS dropped from ~583.8 MB to 0; overall used RAM dropped from ~3.4 GiB to ~2.8 GiB; available RAM rose to ~4.9-5.0 GiB.
+- Verified `hermes-gateway.service`, `hermes-gateway-milo.service`, and `hermes-gateway-papipa.service` remained active after cleanup.
