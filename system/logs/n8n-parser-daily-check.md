@@ -212,3 +212,9 @@
 - Recall: 2 order emails | 2 matched | MISSES: none
 - Precision: 3 recent rows | 2 confirmed | FALSE POSITIVES: Robinhood Credit Card no order-last4 2026-06-25 (card-delivery email, not order)
 - Verdict: ANOMALIES
+
+## 2026-06-27
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 2 order emails | 2 matched | MISSES: none
+- Precision: 5 recent rows | 4 confirmed | FALSE POSITIVES: Capital One Business no order-last4 2026-06-27 (card-shipment email, not order)
+- Verdict: ANOMALIES
