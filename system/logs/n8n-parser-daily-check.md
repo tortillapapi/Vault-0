@@ -218,3 +218,9 @@
 - Recall: 2 order emails | 2 matched | MISSES: none
 - Precision: 5 recent rows | 4 confirmed | FALSE POSITIVES: Capital One Business no order-last4 2026-06-27 (card-shipment email, not order)
 - Verdict: ANOMALIES
+
+## 2026-06-28
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 2 order emails | 2 matched | MISSES: none
+- Precision: 2 recent rows | 2 confirmed | FALSE POSITIVES: none
+- Verdict: OK
