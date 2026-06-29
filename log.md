@@ -882,3 +882,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Spec 154 Phase 1 is complete: aggregate-only Profit Engine spreadsheet workbook generated from accepted JSON, safety-scanned, independently reviewed, and uploaded to `mramirez021111` Drive as `Profit Engine Spreadsheet v1 - 2026 YTD.xlsx` (`1RtPXpAPUGO5tqXvq-uckGOEG-YiJb3QR`).
 - Created canonical evergreen project page `system/projects/profit-engine.md`, indexed it in `system/projects/index.md`, and updated `system/projects/parked-backlog.md` to mark Profit Engine as evergreen-active rather than parked.
 - Wrote new-session handoff `/root/context/profit-engine-evergreen-session-handoff-2026-06-29.md`; next focused upgrade is Spec 154 Phase 2: eBay finance events + missing eBay COGS, then rerun report and spreadsheet.
+
+## [2026-06-29T22:57:29Z] ops | [hermes] Rotated OpenClaw grunt sessions
+- Forced rotation of default grunt lanes after safety checks passed.
+- Targets: `grunt`, `grunt-eng`; running tasks: 0; fresh progress blockers: none.
+- Archives: `/root/.openclaw/agents/grunt/sessions/archive/auto-20260629T225701Z`, `/root/.openclaw/agents/grunt-eng/sessions/archive/auto-20260629T225701Z`.
+- Post-verify: both lanes reset to empty `sessions.json`, 42 bytes non-archive store, `would_rotate=false`.
