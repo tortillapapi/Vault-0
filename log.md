@@ -876,3 +876,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Real sync succeeded: run 1 orders_seen=8, new=5, updated=1, unchanged=2; run 2 idempotent with new=0, updated=0, unchanged=8.
 - Aggregate DB state: `ebay_orders`=8, `ebay_order_items`=8, `ebay_fin_events`=0; SQLite integrity check `ok`; foreign key check rows `0`; regression suite `159 passed in 5.72s`.
 - Marker closed: `/root/tasks/153_2-ebay-finance-oauth-readiness.done`; stale `.blocked` and `.progress` markers removed.
+
+## [2026-06-29T03:31:37Z] data | [hermes] Profit Engine v1 finalized, spreadsheet uploaded, evergreen project documented
+- Spec 153 is complete: Amazon finance DB repair accepted; final 2026 YTD net-profit v1 report accepted after independent review. Headline: net profit `$15,083.64`, net margin `14.0%`, revenue `$107,882.49`.
+- Spec 154 Phase 1 is complete: aggregate-only Profit Engine spreadsheet workbook generated from accepted JSON, safety-scanned, independently reviewed, and uploaded to `mramirez021111` Drive as `Profit Engine Spreadsheet v1 - 2026 YTD.xlsx` (`1RtPXpAPUGO5tqXvq-uckGOEG-YiJb3QR`).
+- Created canonical evergreen project page `system/projects/profit-engine.md`, indexed it in `system/projects/index.md`, and updated `system/projects/parked-backlog.md` to mark Profit Engine as evergreen-active rather than parked.
+- Wrote new-session handoff `/root/context/profit-engine-evergreen-session-handoff-2026-06-29.md`; next focused upgrade is Spec 154 Phase 2: eBay finance events + missing eBay COGS, then rerun report and spreadsheet.

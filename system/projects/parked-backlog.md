@@ -3,7 +3,7 @@ type: system-project
 title: Parked Backlog
 slug: parked-backlog
 created: 2026-06-16
-last_updated: 2026-06-18
+last_updated: 2026-06-29
 status: parked
 priority: review-weekly
 tags: [project, backlog, parking-lot, agents]
@@ -87,9 +87,7 @@ These are not "someday" ideas; they need a decision or focused project continuat
 - **Spec 145 parser backfill:** Papi needs to approve or reject one verified Pokemon
   ETB append row. Todd Snyder apparel is excluded unless Papi explicitly reclassifies
   it as resale inventory.
-- **Profit Engine / COGS:** sales sync and COGS seed import exist. Next real work is
-  allocating COGS observations to sold items and comparing local margin output against
-  Sellerboard benchmarks.
+- **Profit Engine:** now evergreen-active, not parked. Source: `system/projects/profit-engine.md`; current state is accepted 2026 YTD net-profit v1 plus spreadsheet in `mramirez021111` Drive. Next focused upgrade is Spec 154 Phase 2: eBay finance events + missing eBay COGS, then rerun report/spreadsheet.
 - **Order parser Spec 135 repo cleanup:** deployed parser changes appear to be on disk
   but uncommitted in `/root/n8n/local-files/order-parser`; clean this before more
   parser work stacks on top.
