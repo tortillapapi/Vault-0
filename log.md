@@ -867,3 +867,12 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Ran approved real import: source `sellerboard`, import_run_id=4, rows=981, accepted=238, rejected=743 blank/invalid cost rows, observations=238, dry_run=false.
 - Verified DB integrity (`quick_check=ok`, foreign_key_check=0) and active COGS observations: BoxEm=88, Sellerboard=238.
 - Generated coverage artifacts: `/root/sales-data/reports/cogs-coverage/sellerboard-plus-boxem-coverage-20260625.md` and `.json`; coverage improved to 1,922/2,024 Amazon item rows (95.0%) and $180,228.36/$185,424.25 item revenue (97.2%).
+
+
+## [2026-06-29T01:03:43Z] data | [hermes] eBay OAuth refreshed and live Profit Engine sync validated
+- Replaced the invalid eBay token path with a current seller OAuth access token captured via local hidden-input auth-code exchange; status now healthy with expiry, scopes=2, client metadata present, RuName present.
+- Live eBay dry-run since 2026-01-01T00:00:00Z succeeded: orders_seen=8, dry-run new count=8, finance_events_seen=0.
+- Backed up `/root/sales-data/db/sales.db` to `/root/sales-data/backups/sales.db.bak-20260629T010156Z-pre-ebay-reauth-sync2` before mutation.
+- Real sync succeeded: run 1 orders_seen=8, new=5, updated=1, unchanged=2; run 2 idempotent with new=0, updated=0, unchanged=8.
+- Aggregate DB state: `ebay_orders`=8, `ebay_order_items`=8, `ebay_fin_events`=0; SQLite integrity check `ok`; foreign key check rows `0`; regression suite `159 passed in 5.72s`.
+- Marker closed: `/root/tasks/153_2-ebay-finance-oauth-readiness.done`; stale `.blocked` and `.progress` markers removed.
