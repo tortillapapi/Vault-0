@@ -224,3 +224,9 @@
 - Recall: 2 order emails | 2 matched | MISSES: none
 - Precision: 2 recent rows | 2 confirmed | FALSE POSITIVES: none
 - Verdict: OK
+
+## 2026-06-29
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 0 order emails | 0 matched | MISSES: none
+- Precision: 1 recent rows | 1 confirmed | FALSE POSITIVES: none
+- Verdict: OK
