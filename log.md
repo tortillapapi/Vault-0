@@ -894,3 +894,11 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Result: 136/136 reversible Drive metadata mutations succeeded; no deletes, sharing changes, or Docs/Sheets content edits.
 - Live verification: root now 26 items = 10 folders + 16 loose files; all 16 loose files are the intentional excluded review set.
 - Artifacts: `/root/workspace/google-drive-org-20260629/phase1-safe-batch-mutation-log.jsonl`, `/root/reviews/156-google-drive-workspace-organization-execution-report.md`, `/root/tasks/156-google-drive-workspace-organization.done`.
+
+
+## [2026-06-30T07:29:04Z] data | [hermes] Profit Engine eBay gap closure started; blocked on Papi inputs
+- Spec 154 Phase 2 started at Papi's direction. Dispatched `/root/tasks/154_2-ebay-gap-closure-refresh-finance-cogs.txt` to OpenClaw `grunt-eng`.
+- Implemented and verified eBay OAuth refresh support in `/root/sales-data` with `174 passed`; live sync now blocks cleanly because `/root/secrets/sales/ebay.json` lacks `cert_id` / client secret.
+- Fixed `/root/bin/store-ebay-oauth-token` so secure capture now includes hidden `Cert ID / Client Secret` prompt and presence-only status output.
+- COGS diagnostic produced `/root/sales-data/reports/cogs-coverage/ebay-unmatched-gaps-20260630.csv`; 4 unmatched eBay items need manual buy-cost values before final net-profit/spreadsheet regeneration.
+- Current marker: `/root/tasks/154_2-ebay-gap-closure-refresh-finance-cogs.blocked`; spec status `phase_2_blocked_user_input`.
