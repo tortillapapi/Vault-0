@@ -910,3 +910,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Correct eBay unmatched COGS revenue is `$1,494.99` on line-subtotal semantics; the earlier `$2,194.99` enriched-template figure was rejected after verification because eBay `lineItemCost.value` is already the line subtotal.
 - Regression suite now passes `176 passed`; `sync-ebay --dry-run` still blocks cleanly on missing `cert_id` and points Papi to `/root/bin/add-ebay-cert-id`.
 - Remaining user inputs: eBay Cert ID via secure helper + four `unit_cost_you_paid` values in `/root/sales-data/reports/cogs-coverage/ebay-unmatched-gaps-enriched-20260630.csv`.
+
+## [2026-06-30T08:37:59Z] work | [hermes] Profit Engine eBay COGS/OAuth gap closed
+- Spec 154 Phase 2 completed for OAuth + manual eBay COGS: live sync idempotent, Papi's four costs imported/allocated, eBay COGS 7/7 matched and 0 unmatched.
+- Final report: /root/sales-data/reports/profit/net-profit-v1-20260630T081341Z.md / .json; spreadsheet: /root/sales-data/reports/profit/spreadsheet/profit-engine-spreadsheet-v1-20260630T081500Z.xlsx.
+- Verified: tests 186 passed, DB quick_check ok, foreign_key_check 0 rows, OC review ACCEPT at /root/reviews/154_4-ebay-gap-closure.review.md.
+- Remaining caveat: ebay_fin_events remains 0, so eBay fees/refunds are unavailable and should be handled as a separate Finances API ingestion phase.
