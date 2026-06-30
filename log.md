@@ -916,3 +916,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Final report: /root/sales-data/reports/profit/net-profit-v1-20260630T081341Z.md / .json; spreadsheet: /root/sales-data/reports/profit/spreadsheet/profit-engine-spreadsheet-v1-20260630T081500Z.xlsx.
 - Verified: tests 186 passed, DB quick_check ok, foreign_key_check 0 rows, OC review ACCEPT at /root/reviews/154_4-ebay-gap-closure.review.md.
 - Remaining caveat: ebay_fin_events remains 0, so eBay fees/refunds are unavailable and should be handled as a separate Finances API ingestion phase.
+
+## [2026-06-30T08:50:33Z] info | [hermes] Profit Engine eBay gap handoff documented
+- Created shared handoff: `/root/context/profit-engine-ebay-gap-handoff-2026-06-30.md`.
+- Updated project doc and vault handoff for eBay OAuth + COGS closure.
+- Created next-phase prompt: `/root/tasks/154_6-ebay-finance-events-ingestion.txt` for `ebay_fin_events = 0` caveat.
+- No secrets included.
