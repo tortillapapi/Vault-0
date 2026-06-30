@@ -230,3 +230,9 @@
 - Recall: 0 order emails | 0 matched | MISSES: none
 - Precision: 1 recent rows | 1 confirmed | FALSE POSITIVES: none
 - Verdict: OK
+
+## 2026-06-30
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 4 order emails | 4 matched | MISSES: none
+- Precision: 4 recent rows | 3 confirmed | FALSE POSITIVES: Sakuras Card Shop no order-last4 2026-06-29 (store-wide ORDER UPDATE/preorder notice, not a specific order)
+- Verdict: ANOMALIES
