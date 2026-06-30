@@ -900,5 +900,6 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Spec 154 Phase 2 started at Papi's direction. Dispatched `/root/tasks/154_2-ebay-gap-closure-refresh-finance-cogs.txt` to OpenClaw `grunt-eng`.
 - Implemented and verified eBay OAuth refresh support in `/root/sales-data` with `174 passed`; live sync now blocks cleanly because `/root/secrets/sales/ebay.json` lacks `cert_id` / client secret.
 - Fixed `/root/bin/store-ebay-oauth-token` so secure capture now includes hidden `Cert ID / Client Secret` prompt and presence-only status output.
+- Added `/root/bin/add-ebay-cert-id` as the preferred low-friction helper: hidden Cert ID prompt, atomic merge into existing eBay secrets JSON, no token recapture required.
 - COGS diagnostic produced `/root/sales-data/reports/cogs-coverage/ebay-unmatched-gaps-20260630.csv`; 4 unmatched eBay items need manual buy-cost values before final net-profit/spreadsheet regeneration.
 - Current marker: `/root/tasks/154_2-ebay-gap-closure-refresh-finance-cogs.blocked`; spec status `phase_2_blocked_user_input`.
