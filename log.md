@@ -903,3 +903,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Added `/root/bin/add-ebay-cert-id` as the preferred low-friction helper: hidden Cert ID prompt, atomic merge into existing eBay secrets JSON, no token recapture required.
 - COGS diagnostic produced `/root/sales-data/reports/cogs-coverage/ebay-unmatched-gaps-20260630.csv`; 4 unmatched eBay items need manual buy-cost values before final net-profit/spreadsheet regeneration.
 - Current marker: `/root/tasks/154_2-ebay-gap-closure-refresh-finance-cogs.blocked`; spec status `phase_2_blocked_user_input`.
+
+
+## [2026-06-30T07:45:16Z] data | [hermes] Profit Engine eBay gap blocker refined
+- Follow-up tasks 154_2c-154_2e enriched the eBay COGS input template, fixed item-summary double-counting, and updated cert_id blocker copy.
+- Correct eBay unmatched COGS revenue is `$1,494.99` on line-subtotal semantics; the earlier `$2,194.99` enriched-template figure was rejected after verification because eBay `lineItemCost.value` is already the line subtotal.
+- Regression suite now passes `176 passed`; `sync-ebay --dry-run` still blocks cleanly on missing `cert_id` and points Papi to `/root/bin/add-ebay-cert-id`.
+- Remaining user inputs: eBay Cert ID via secure helper + four `unit_cost_you_paid` values in `/root/sales-data/reports/cogs-coverage/ebay-unmatched-gaps-enriched-20260630.csv`.
