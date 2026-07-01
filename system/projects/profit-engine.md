@@ -36,10 +36,10 @@ Spec 160 resolved the Amazon Orders throttle caveat, clarified date-basis report
 
 Spec 160_5 completed the explicit forward-only FIFO activation requested by Papi. `python scripts/profit_report.py --with-fifo` is the guarded writable activation path and creates an automatic DB backup before allocation; ordinary reports remain read-only. Current live data has no post-boundary eligible sale items yet, so activation exercised the path with 0 allocations and no P&L impact.
 
-Spec 161_1 and 161_2 completed the first date-basis/reporting and parser-linkage pass. `profit_report.py --basis order-date|statement-date|both` now emits clearly labeled operational and cash-reconciliation views with embedded guidance and reconciliation back to the accepted aggregate P&L. Parser/COGS coverage reporting is aggregate-only and shows 100% COGS coverage for current 2026 sales; parser backfill remained dry-run only pending Papi approval for live Google Sheet writes.
+Spec 161 is complete. `profit_report.py --basis order-date|statement-date|both` now emits clearly labeled operational and cash-reconciliation views with embedded guidance and reconciliation back to the accepted aggregate P&L. Parser/COGS coverage reporting is aggregate-only and shows 100% COGS coverage for current 2026 sales. After Papi approval, W1 live parser backfill completed, TheCanvasDon parsing was fixed, cancelled/refund standalone append guards were added, and the additive hashed `parser_sale_link` table/export was applied with 3 medium/title-fingerprint/pending links and no COGS/P&L semantic changes.
 
-Current handoff: [[profit-engine-ebay-gap-handoff-2026-06-30]].  
-Previous handoff: [[profit-engine-handoff-2026-06-29]].
+Current handoff: [[profit-engine-spec-161-closeout-handoff-2026-07-01]].  
+Previous handoff: [[profit-engine-ebay-gap-handoff-2026-06-30]].
 
 ### Accepted report artifacts
 
@@ -116,7 +116,10 @@ Key task markers:
 - `/root/tasks/160_5-forward-only-fifo-activation.done`
 - `/root/tasks/161_1-profit-engine-date-basis-views.done`
 - `/root/tasks/161_2-parser-cogs-linkage-backfill.done`
-- `/root/tasks/161-profit-engine-date-views-parser-cogs-linkage.blocked` — parent spec blocked only on Papi approval for live parser backfill writes / next linkage implementation phase.
+- `/root/tasks/161_3-live-parser-backfill-canvasdon-fix.done`
+- `/root/tasks/161_3a-cancelled-refund-backfill-guard.done`
+- `/root/tasks/161_4-parser-sale-link-export-table.done`
+- `/root/tasks/161-profit-engine-date-views-parser-cogs-linkage.done`
 
 Reviews:
 
@@ -133,7 +136,9 @@ Reviews:
 - `/root/reviews/160_5-forward-only-fifo-activation-final.review.md` — ACCEPT.
 - `/root/reviews/161_1-profit-engine-date-basis-views-qwen.review.md` — ACCEPT.
 - `/root/reviews/161_2-parser-cogs-linkage-backfill-qwen.review.md` — ACCEPT.
-- `/root/reviews/161-profit-engine-date-views-parser-cogs-linkage.md` — handoff / pending approvals.
+- `/root/reviews/161_3a-cancelled-refund-backfill-guard-qwen.review.md` — ACCEPT.
+- `/root/reviews/161_4-parser-sale-link-export-table.review.md` — ACCEPT.
+- `/root/reviews/161-profit-engine-date-views-parser-cogs-linkage.md` — final closeout handoff.
 
 Operational DB and code:
 
