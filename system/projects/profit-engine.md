@@ -32,6 +32,8 @@ Spec 158 checked off the remaining caveats/Amazon blocker audit and eBay TRANSFE
 
 Spec 159 completed the guarded Amazon SP-API sync validation. The first live sync safely ingested **73 new Amazon finance events**, after a dry-run and root-only DB backup; all post-sync tests passed, DB integrity remained clean, and final Qwen/re-review accepted the closeout. Amazon Orders API hit a transient 429 after checking 1,300/1,900 orders during the live run, but finance ingestion completed fully and the pre-sync dry-run had already shown 0 new/updated orders across all 1,900.
 
+Spec 160 resolved the Amazon Orders throttle caveat, clarified date-basis reporting, and made FIFO forward-ready. A cooldown rerun checked **1,901 Amazon orders** with **0 new/updated** and no 429. Undated Amazon `ServiceFee` rows were audited and intentionally left unallocated because Amazon provides no deterministic per-row date; they remain included in total profit. Forward-only FIFO tables/engine/status reporting are live with boundary `2026-07-01T00:00:00Z`, 4 seeded lots / 8 units, 0 allocations, and no historical P&L impact; Qwen/re-review accepted the closeout.
+
 Current handoff: [[profit-engine-ebay-gap-handoff-2026-06-30]].  
 Previous handoff: [[profit-engine-handoff-2026-06-29]].
 
@@ -73,11 +75,13 @@ Platform notes:
 
 - Ads are excluded / treated as `$0` by Papi's direction.
 - Tax is excluded by Papi's direction.
-- FIFO purchase-lot COGS is deferred; current reports use active COGS observations.
-- Amazon finance repair and guarded SP-API finance refresh are accepted, but 704 undated `ServiceFee` rows totaling `-$3,149.26` are included in totals and cannot be cleanly date-bucketed.
-- Amazon Orders API hit a transient SP-API 429 during Spec 159 live sync after 1,300/1,900 orders were checked; all checked orders were unchanged and the pre-sync dry-run showed 0 order changes, but future full order-idempotency checks should be spaced out to avoid throttle exhaustion.
+- Forward-only FIFO infrastructure is live for new entries, but current accepted historical reports still use active observation-based COGS because existing sales are pre-boundary and no FIFO allocations exist yet.
+- Amazon finance repair and guarded SP-API finance refresh are accepted, but 704 undated `ServiceFee` rows totaling `-$3,149.26` are included in totals and cannot be cleanly date-bucketed. Spec 160 confirmed these are account-level fees with no deterministic allocation date; future period reports should show them as an `Unallocated Service Fees` bucket rather than inventing fake precision.
+- Amazon Orders API throttling from Spec 159 is resolved: Spec 160 cooldown dry-run checked 1,901 orders with 0 new/updated and no 429.
 - Settlement-date vs order-date differences are inherent: finance events use posted/settlement dates, while order revenue uses order dates.
+- Forward-only FIFO is available for new entries from `2026-07-01T00:00:00Z`; historical/pre-boundary sales continue using observation-based COGS. Current FIFO status: 4 lots, 8 units remaining, 0 allocations.
 - eBay TRANSFER handling is partially verified: only `CREDIT` / `TRANSFER_FROM` / `PAYOUT` variants have been observed, and those are included in P&L as adjustments. Future `DEBIT` or otherwise different TRANSFER variants should be reviewed as they appear.
+- Ads integration is not needed for Papi's current OA/wholesale model; he does not run ads and does not plan to in the near future.
 - Reports and spreadsheet views must remain aggregate-only: no buyer PII, raw order IDs, item titles, raw marketplace identifiers, addresses, secrets, or sensitive hashes.
 
 ## Source of truth and shared trail
@@ -88,6 +92,7 @@ Specs:
 - `/root/specs/154-profit-engine-spreadsheet-view-and-ebay-gaps.md` — eBay OAuth + COGS gap closed; eBay finance-events ingestion accepted.
 - `/root/specs/158-profit-engine-caveats-and-amazon-blocker-audit.md` — complete; caveats/Amazon blocker audit + eBay TRANSFER semantics accepted.
 - `/root/specs/159-profit-engine-guarded-amazon-spapi-sync-validation.md` — complete; guarded Amazon SP-API finance refresh accepted.
+- `/root/specs/160-profit-engine-date-basis-fifo-hardening.md` — complete; Amazon throttle rerun, ServiceFee allocation decision, and forward-only FIFO accepted.
 
 Key task markers:
 
@@ -100,6 +105,10 @@ Key task markers:
 - `/root/tasks/158_2-ebay-transfer-semantics.done`
 - `/root/tasks/159_1-guarded-amazon-spapi-sync-validation.done`
 - `/root/tasks/159_2-fix-servicefee-caveat-count.done`
+- `/root/tasks/160_1-amazon-orders-throttle-rerun.done`
+- `/root/tasks/160_2-undated-servicefee-allocation.done`
+- `/root/tasks/160_3-forward-only-fifo-cogs.done`
+- `/root/tasks/160_4-forward-only-fifo-integration.done`
 
 Reviews:
 
@@ -112,11 +121,13 @@ Reviews:
 - `/root/reviews/158-profit-engine-caveats-and-amazon-blocker-audit.md` — caveats/Amazon audit complete.
 - `/root/reviews/158_2-ebay-transfer-semantics.review.md` — ACCEPT.
 - `/root/reviews/159-guarded-amazon-spapi-sync-final.review.md` — ACCEPT.
+- `/root/reviews/160-profit-engine-date-basis-fifo-hardening-final.review.md` — ACCEPT.
 
 Operational DB and code:
 
 - DB: `/root/sales-data/db/sales.db`
 - Report generator: `/root/sales-data/scripts/profit_report.py`
+- FIFO engine: `/root/sales-data/lib/sales/fifo.py`
 - Spreadsheet exporter: `/root/sales-data/scripts/export_profit_spreadsheet.py`
 - COGS coverage reference: `/root/sales-data/scripts/cogs_coverage_report.py`
 - eBay sync: `/root/sales-data/lib/sales/ebay_sync_engine.py`
@@ -128,8 +139,8 @@ Operational DB and code:
 
 The first guarded Amazon SP-API finance refresh is accepted. Next useful upgrades are:
 
-1. Re-run a full Amazon Orders idempotency check after rate limits cool down, if order coverage needs a clean no-429 proof.
-2. Decide whether undated Amazon `ServiceFee` rows should stay as aggregate caveats or get a reporting allocation rule.
+1. Add/import richer purchase-lot quantities so FIFO coverage grows beyond the initial 4 lots / 8 units.
+2. Add optional dual-path COGS comparison (`observation` vs `FIFO`) before switching FIFO to primary report COGS.
 3. Build a recurring refresh workflow with cooldown-aware SP-API scheduling, automatic backups, aggregate-only logs, and report delta summaries.
 4. Improve reconciliation against Sellerboard/BoxEm exports before dashboard work.
 

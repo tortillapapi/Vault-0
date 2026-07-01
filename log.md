@@ -941,3 +941,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Undated Amazon ServiceFee caveat is now 704 rows / -$3,149.26 and report caveat text is dynamic.
 - Final Qwen/re-review accepted; tests 211 passed; DB quick_check ok / foreign_key_check 0.
 - Known caveat: Amazon Orders API hit transient 429 after 1,300/1,900 orders checked during live sync; all checked unchanged and pre-sync dry-run showed 0 order changes.
+
+## [2026-07-01 06:58 UTC] project | [hermes] Profit Engine Spec 160 accepted
+
+- Closed Spec 160: Amazon Orders throttle rerun, undated ServiceFee allocation decision, and forward-only FIFO hardening.
+- Results: 1,901 Amazon orders checked with 0 new/updated and no 429; 704 undated ServiceFee rows / -$3,149.26 remain included but unallocated because no deterministic allocation date exists.
+- FIFO: schema/engine/status live from 2026-07-01T00:00:00Z; 4 lots / 8 units seeded; 0 allocations; historical P&L unchanged at combined net profit $13,791.83.
+- Verification: final Qwen review ACCEPT; 229 tests passed; DB quick_check ok and foreign_key_check 0; report outputs aggregate-only/secret-safe.
