@@ -961,3 +961,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Resumed Spec 161 under Hermes orchestration and wrote task specs/prompts for `161_3-live-parser-backfill-canvasdon-fix` and `161_4-parser-sale-link-export-table`.
 - Archived the resolved parent `.blocked` marker and created a parent `.progress` marker; dispatched `161_3` to OpenClaw `grunt-eng` first to avoid source-sheet/parser collisions.
 - `161_4` is queued but dependency-gated until 161_3 has a done/progress marker and Hermes reviews it.
+
+## [2026-07-01 17:58 UTC] ops | [hermes] Spec 161_3 re-dispatched after DeepSeek quota failure
+
+- First `161_3` OpenClaw `grunt-eng` run failed before producing a marker because `opencode-go/deepseek-v4-pro` hit weekly 429 quota (`proc_bb80c81d16d8`, exit 1).
+- Wrote resume prompt `/root/tasks/161_3-live-parser-backfill-canvasdon-fix.resume-after-grunt-eng-rate-limit.txt` with the failure context and observed dirty parser repo state.
+- Re-dispatched `161_3` to OpenClaw `lead`/GPT-class lane as background process `proc_6ea746d28d9e`; `161_4` remains dependency-gated.
