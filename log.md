@@ -967,3 +967,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - First `161_3` OpenClaw `grunt-eng` run failed before producing a marker because `opencode-go/deepseek-v4-pro` hit weekly 429 quota (`proc_bb80c81d16d8`, exit 1).
 - Wrote resume prompt `/root/tasks/161_3-live-parser-backfill-canvasdon-fix.resume-after-grunt-eng-rate-limit.txt` with the failure context and observed dirty parser repo state.
 - Re-dispatched `161_3` to OpenClaw `lead`/GPT-class lane as background process `proc_6ea746d28d9e`; `161_4` remains dependency-gated.
+
+## [2026-07-01 18:09 UTC] ops | [hermes] Spec 161_3 blocker verified; continuation dispatched
+
+- OpenClaw `lead` completed with exit 0 but wrote `/root/tasks/161_3-live-parser-backfill-canvasdon-fix.blocked` instead of `.done`: TheCanvasDon parser fix and tests passed, but Account A W1 dry-run would append 3 cancelled rows as new source rows.
+- Hermes verified the blocker as a correct safety stop and wrote `/root/reviews/161_3-live-parser-backfill-canvasdon-fix.hermes-review.md`; no live sheet writes occurred, and source/master counts were unchanged per marker.
+- Created continuation `/root/specs/161_3a-cancelled-refund-backfill-guard.md` + `/root/tasks/161_3a-cancelled-refund-backfill-guard.txt` to add a cancelled/refunded standalone append guard, rerun dry-run, and resume guarded live backfill only if clean.
+- Dispatched `161_3a` to OpenClaw `mid`/GPT-class lane as background process `proc_539327cd8cc0`; `161_4` remains dependency-gated until 161_3 gets a clean done marker and Hermes review.
