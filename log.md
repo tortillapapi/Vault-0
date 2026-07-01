@@ -922,3 +922,15 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Updated project doc and vault handoff for eBay OAuth + COGS closure.
 - Created next-phase prompt: `/root/tasks/154_6-ebay-finance-events-ingestion.txt` for `ebay_fin_events = 0` caveat.
 - No secrets included.
+
+## [2026-07-01T04:35:23Z] task-hygiene | [hermes] Archived stale Amazon SP-API credential blocker
+- Archived resolved stale blocker `/root/tasks/136-amazon-spapi-sales-connector.blocked` to `/root/tasks/archive/hygiene-20260701T043517Z-resolved-amazon-blocker/` after Task 158 audit verified Amazon SP-API credentials are present and config-valid.
+- Evidence: `/root/reviews/158-profit-engine-caveats-and-amazon-blocker-audit.md`, `/root/tasks/158_1-profit-engine-caveats-amazon-blocker-audit.done`.
+
+
+## [2026-07-01T04:59:29Z] ops | [hermes] Spec 158 Profit Engine caveats/Amazon/TRANSFER accepted
+- Completed `/root/specs/158-profit-engine-caveats-and-amazon-blocker-audit.md`: caveats audit, Amazon SP-API blocker decision, and eBay TRANSFER semantics.
+- Amazon SP-API credentials are present/config-valid; stale 2026-06-11 credential blocker archived with manifest under `/root/tasks/archive/hygiene-20260701T043517Z-resolved-amazon-blocker/`.
+- eBay TRANSFER rows observed as CREDIT/TRANSFER_FROM/PAYOUT and accepted into P&L as adjustments after `re-review`/Qwen ACCEPT.
+- Verification: `210 passed`, SQLite `quick_check=ok`, `foreign_key_check=0 rows`; latest report `/root/sales-data/reports/profit/net-profit-v1-20260701T044751Z.{md,json}`.
+- Final headline: combined net profit `$13,888.83` / `12.9%`; eBay net profit `$1,290.38` / `40.8%`; Amazon net profit `$12,598.45` / `12.0%`.
