@@ -954,3 +954,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Results: 1,901 Amazon orders checked with 0 new/updated and no 429; 704 undated ServiceFee rows / -$3,149.26 remain included but unallocated because no deterministic allocation date exists.
 - FIFO: schema/engine/status live from 2026-07-01T00:00:00Z; 4 lots / 8 units seeded; 0 allocations; historical P&L unchanged at combined net profit $13,791.83.
 - Verification: final Qwen review ACCEPT; 229 tests passed; DB quick_check ok and foreign_key_check 0; report outputs aggregate-only/secret-safe.
+
+## [2026-07-01 17:45 UTC] project | [hermes] Spec 161 approvals received; live parser phase dispatched
+
+- Papi approved live parser backfill writes, the TheCanvasDon parser fix, and the next parser/COGS linkage phase.
+- Resumed Spec 161 under Hermes orchestration and wrote task specs/prompts for `161_3-live-parser-backfill-canvasdon-fix` and `161_4-parser-sale-link-export-table`.
+- Archived the resolved parent `.blocked` marker and created a parent `.progress` marker; dispatched `161_3` to OpenClaw `grunt-eng` first to avoid source-sheet/parser collisions.
+- `161_4` is queued but dependency-gated until 161_3 has a done/progress marker and Hermes reviews it.
