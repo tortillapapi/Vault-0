@@ -30,13 +30,15 @@ Spec 154 Phase 6 closed the eBay Sell Finances ingestion gap. `ebay_fin_events` 
 
 Spec 158 checked off the remaining caveats/Amazon blocker audit and eBay TRANSFER semantics. Amazon SP-API credentials are present/config-valid, so the old credential blocker is stale. Observed eBay TRANSFER rows are `booking_entry=CREDIT`, `transactionMemo=TRANSFER_FROM`, and `transaction_status=PAYOUT`; they are included in P&L as adjustments with a partial-verification caveat for future DEBIT variants.
 
+Spec 159 completed the guarded Amazon SP-API sync validation. The first live sync safely ingested **73 new Amazon finance events**, after a dry-run and root-only DB backup; all post-sync tests passed, DB integrity remained clean, and final Qwen/re-review accepted the closeout. Amazon Orders API hit a transient 429 after checking 1,300/1,900 orders during the live run, but finance ingestion completed fully and the pre-sync dry-run had already shown 0 new/updated orders across all 1,900.
+
 Current handoff: [[profit-engine-ebay-gap-handoff-2026-06-30]].  
 Previous handoff: [[profit-engine-handoff-2026-06-29]].
 
 ### Accepted report artifacts
 
-- Markdown: `/root/sales-data/reports/profit/net-profit-v1-20260701T044751Z.md`
-- JSON: `/root/sales-data/reports/profit/net-profit-v1-20260701T044751Z.json`
+- Markdown: `/root/sales-data/reports/profit/net-profit-v1-20260701T054025Z.md`
+- JSON: `/root/sales-data/reports/profit/net-profit-v1-20260701T054025Z.json`
 
 ### Spreadsheet artifacts
 
@@ -49,21 +51,21 @@ Previous handoff: [[profit-engine-handoff-2026-06-29]].
 
 ## Latest accepted headline numbers
 
-2026 YTD v1 after eBay finance ingestion + TRANSFER semantics acceptance:
+2026 YTD v1 after eBay finance ingestion, TRANSFER semantics acceptance, and guarded Amazon SP-API finance refresh:
 
 - Revenue: `$107,882.49`
 - COGS: `$54,211.95`
 - Gross profit: `$53,670.54`
-- Gross margin: `49.8%`
-- Marketplace fees: `$39,831.00`
-- Refunds: `$5,452.74`
+- Gross margin: `49.7%`
+- Marketplace fees: `$39,926.98`
+- Refunds: `$5,512.26`
 - Adjustments/reimbursements: `$5,560.53`
-- Net profit: `$13,888.83`
-- Net margin: `12.9%`
+- Net profit: `$13,791.83`
+- Net margin: `12.8%`
 
 Platform notes:
 
-- Amazon net profit: `$12,598.45` / `12.0%` margin on `$104,717.52` revenue. Amazon COGS matched **1,569/1,569**.
+- Amazon net profit: `$12,501.45` / `11.9%` margin on `$104,717.52` revenue. Amazon COGS matched **1,569/1,569**.
 - eBay net profit: `$1,290.38` / `40.8%` margin on `$3,164.97` revenue. eBay COGS matched **7/7**, unmatched **0**.
 - eBay finance events are live: 18 rows total, including 7 `SALE`, 6 `NON_SALE_CHARGE`, 1 `SHIPPING_LABEL`, and 4 `TRANSFER` rows. `SALE` transaction amounts are not counted as extra revenue; TRANSFER rows are included as adjustments based on observed `booking_entry=CREDIT` / `transaction_status=PAYOUT`.
 
@@ -72,7 +74,8 @@ Platform notes:
 - Ads are excluded / treated as `$0` by Papi's direction.
 - Tax is excluded by Papi's direction.
 - FIFO purchase-lot COGS is deferred; current reports use active COGS observations.
-- Amazon finance repair is accepted, but 702 undated `ServiceFee` rows totaling `-$3,144.72` are included in totals and cannot be cleanly date-bucketed.
+- Amazon finance repair and guarded SP-API finance refresh are accepted, but 704 undated `ServiceFee` rows totaling `-$3,149.26` are included in totals and cannot be cleanly date-bucketed.
+- Amazon Orders API hit a transient SP-API 429 during Spec 159 live sync after 1,300/1,900 orders were checked; all checked orders were unchanged and the pre-sync dry-run showed 0 order changes, but future full order-idempotency checks should be spaced out to avoid throttle exhaustion.
 - Settlement-date vs order-date differences are inherent: finance events use posted/settlement dates, while order revenue uses order dates.
 - eBay TRANSFER handling is partially verified: only `CREDIT` / `TRANSFER_FROM` / `PAYOUT` variants have been observed, and those are included in P&L as adjustments. Future `DEBIT` or otherwise different TRANSFER variants should be reviewed as they appear.
 - Reports and spreadsheet views must remain aggregate-only: no buyer PII, raw order IDs, item titles, raw marketplace identifiers, addresses, secrets, or sensitive hashes.
@@ -84,6 +87,7 @@ Specs:
 - `/root/specs/153-profit-engine-financial-events-net-profit.md` — complete.
 - `/root/specs/154-profit-engine-spreadsheet-view-and-ebay-gaps.md` — eBay OAuth + COGS gap closed; eBay finance-events ingestion accepted.
 - `/root/specs/158-profit-engine-caveats-and-amazon-blocker-audit.md` — complete; caveats/Amazon blocker audit + eBay TRANSFER semantics accepted.
+- `/root/specs/159-profit-engine-guarded-amazon-spapi-sync-validation.md` — complete; guarded Amazon SP-API finance refresh accepted.
 
 Key task markers:
 
@@ -94,6 +98,8 @@ Key task markers:
 - `/root/tasks/154_6-ebay-finance-events-ingestion.done`
 - `/root/tasks/158_1-profit-engine-caveats-amazon-blocker-audit.done`
 - `/root/tasks/158_2-ebay-transfer-semantics.done`
+- `/root/tasks/159_1-guarded-amazon-spapi-sync-validation.done`
+- `/root/tasks/159_2-fix-servicefee-caveat-count.done`
 
 Reviews:
 
@@ -105,6 +111,7 @@ Reviews:
 - `/root/reviews/154_6-ebay-finance-events-ingestion-final.review.md` — ACCEPT.
 - `/root/reviews/158-profit-engine-caveats-and-amazon-blocker-audit.md` — caveats/Amazon audit complete.
 - `/root/reviews/158_2-ebay-transfer-semantics.review.md` — ACCEPT.
+- `/root/reviews/159-guarded-amazon-spapi-sync-final.review.md` — ACCEPT.
 
 Operational DB and code:
 
@@ -117,15 +124,14 @@ Operational DB and code:
 
 ## Upgrade roadmap
 
-### Next immediate phase: guarded Amazon SP-API sync validation
+### Next immediate phase: post-sync reconciliation / automation hardening
 
-Amazon SP-API credentials are present/config-valid as of Spec 158. The next implementation task should be guarded and reversible:
+The first guarded Amazon SP-API finance refresh is accepted. Next useful upgrades are:
 
-1. Run Amazon SP-API sync dry-run/status checks with aggregate-only output.
-2. Create a SQLite backup before any live DB mutation.
-3. Run the first guarded live Amazon SP-API sync if dry-run passes.
-4. Re-run tests, DB integrity checks, and net profit report generation.
-5. Compare report deltas and verify no secrets/PII/raw marketplace identifiers are exposed.
+1. Re-run a full Amazon Orders idempotency check after rate limits cool down, if order coverage needs a clean no-429 proof.
+2. Decide whether undated Amazon `ServiceFee` rows should stay as aggregate caveats or get a reporting allocation rule.
+3. Build a recurring refresh workflow with cooldown-aware SP-API scheduling, automatic backups, aggregate-only logs, and report delta summaries.
+4. Improve reconciliation against Sellerboard/BoxEm exports before dashboard work.
 
 ### Later upgrades
 

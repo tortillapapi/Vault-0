@@ -934,3 +934,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - eBay TRANSFER rows observed as CREDIT/TRANSFER_FROM/PAYOUT and accepted into P&L as adjustments after `re-review`/Qwen ACCEPT.
 - Verification: `210 passed`, SQLite `quick_check=ok`, `foreign_key_check=0 rows`; latest report `/root/sales-data/reports/profit/net-profit-v1-20260701T044751Z.{md,json}`.
 - Final headline: combined net profit `$13,888.83` / `12.9%`; eBay net profit `$1,290.38` / `40.8%`; Amazon net profit `$12,598.45` / `12.0%`.
+
+## [2026-07-01 05:46 UTC] status | [hermes] Profit Engine Spec 159 accepted
+- Completed guarded Amazon SP-API sync validation and ServiceFee caveat fix.
+- Finance sync ingested 73 new Amazon finance events after dry-run + DB backup; combined net profit now $13,791.83, Amazon $12,501.45, eBay unchanged $1,290.38.
+- Undated Amazon ServiceFee caveat is now 704 rows / -$3,149.26 and report caveat text is dynamic.
+- Final Qwen/re-review accepted; tests 211 passed; DB quick_check ok / foreign_key_check 0.
+- Known caveat: Amazon Orders API hit transient 429 after 1,300/1,900 orders checked during live sync; all checked unchanged and pre-sync dry-run showed 0 order changes.
