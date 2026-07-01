@@ -3,6 +3,12 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-07-01T13:52:00Z] ops | [hermes] Profit Engine FIFO/date views/parser linkage accepted
+- Closed Papi's forward-only FIFO activation request: `python scripts/profit_report.py --with-fifo` is guarded, creates an automatic DB backup before writable allocation, preserves ordinary read-only reports, and has 0 current allocations / no P&L impact because no post-boundary sales exist yet.
+- Spec 161_1 date-basis views accepted by Qwen/re-review: `--basis order-date|statement-date|both` emits labeled operational and cash-reconciliation Markdown/JSON views with embedded guidance and reconciliation to accepted YTD net profit `$13,791.83`.
+- Spec 161_2 parser/COGS linkage pass accepted by Qwen/re-review: aggregate-only coverage report shows 1,576/1,576 current 2026 sold items have COGS coverage; W1 parser backfill stayed dry-run only.
+- Parent Spec 161 remains blocked only on Papi approval for live Google Sheet parser backfill writes, TheCanvasDon parser fix, and next linkage table/export implementation phase. Handoff: `/root/reviews/161-profit-engine-date-views-parser-cogs-linkage.md`.
+
 ## [2026-06-15T22:47:42Z] ops | [hermes] Spec 137 eBay live read-only sync verified
 - Papi captured the eBay OAuth user token locally with `/root/bin/store-ebay-oauth-token`; helper status verified healthy permissions and sanitized metadata only.
 - Live validation passed: `sales ebay-status --json` reported configured/valid, `sales sync-ebay --dry-run` saw 3 orders and 3 items without DB mutation, then live read-only sync wrote 3 eBay orders and 3 eBay order items locally.

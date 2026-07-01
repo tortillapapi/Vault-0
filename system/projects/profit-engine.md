@@ -34,6 +34,10 @@ Spec 159 completed the guarded Amazon SP-API sync validation. The first live syn
 
 Spec 160 resolved the Amazon Orders throttle caveat, clarified date-basis reporting, and made FIFO forward-ready. A cooldown rerun checked **1,901 Amazon orders** with **0 new/updated** and no 429. Undated Amazon `ServiceFee` rows were audited and intentionally left unallocated because Amazon provides no deterministic per-row date; they remain included in total profit. Forward-only FIFO tables/engine/status reporting are live with boundary `2026-07-01T00:00:00Z`, 4 seeded lots / 8 units, 0 allocations, and no historical P&L impact; Qwen/re-review accepted the closeout.
 
+Spec 160_5 completed the explicit forward-only FIFO activation requested by Papi. `python scripts/profit_report.py --with-fifo` is the guarded writable activation path and creates an automatic DB backup before allocation; ordinary reports remain read-only. Current live data has no post-boundary eligible sale items yet, so activation exercised the path with 0 allocations and no P&L impact.
+
+Spec 161_1 and 161_2 completed the first date-basis/reporting and parser-linkage pass. `profit_report.py --basis order-date|statement-date|both` now emits clearly labeled operational and cash-reconciliation views with embedded guidance and reconciliation back to the accepted aggregate P&L. Parser/COGS coverage reporting is aggregate-only and shows 100% COGS coverage for current 2026 sales; parser backfill remained dry-run only pending Papi approval for live Google Sheet writes.
+
 Current handoff: [[profit-engine-ebay-gap-handoff-2026-06-30]].  
 Previous handoff: [[profit-engine-handoff-2026-06-29]].
 
@@ -109,6 +113,10 @@ Key task markers:
 - `/root/tasks/160_2-undated-servicefee-allocation.done`
 - `/root/tasks/160_3-forward-only-fifo-cogs.done`
 - `/root/tasks/160_4-forward-only-fifo-integration.done`
+- `/root/tasks/160_5-forward-only-fifo-activation.done`
+- `/root/tasks/161_1-profit-engine-date-basis-views.done`
+- `/root/tasks/161_2-parser-cogs-linkage-backfill.done`
+- `/root/tasks/161-profit-engine-date-views-parser-cogs-linkage.blocked` — parent spec blocked only on Papi approval for live parser backfill writes / next linkage implementation phase.
 
 Reviews:
 
@@ -122,6 +130,10 @@ Reviews:
 - `/root/reviews/158_2-ebay-transfer-semantics.review.md` — ACCEPT.
 - `/root/reviews/159-guarded-amazon-spapi-sync-final.review.md` — ACCEPT.
 - `/root/reviews/160-profit-engine-date-basis-fifo-hardening-final.review.md` — ACCEPT.
+- `/root/reviews/160_5-forward-only-fifo-activation-final.review.md` — ACCEPT.
+- `/root/reviews/161_1-profit-engine-date-basis-views-qwen.review.md` — ACCEPT.
+- `/root/reviews/161_2-parser-cogs-linkage-backfill-qwen.review.md` — ACCEPT.
+- `/root/reviews/161-profit-engine-date-views-parser-cogs-linkage.md` — handoff / pending approvals.
 
 Operational DB and code:
 
