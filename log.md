@@ -3,6 +3,12 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-07-01T19:02:06Z] ops | [hermes] Spec 161 completed and accepted
+- Closed parent Spec 161 after verifying 161_4 completion marker and independent ACCEPT review: `/root/reviews/161_4-parser-sale-link-export-table.review.md`.
+- 161_4 built the read-only parser source export, hashed local linkage builder, and additive `parser_sale_link` table/export. DB was backed up before apply at `/root/sales-data/backups/sales.db.bak-20260701T184403Z-pre-161_4-parser-sale-link`.
+- Verification rerun by Hermes: parser source export/fixtures/all parser tests passed, Profit Engine full suite `249 passed`, SQLite `quick_check=ok` / FK `0`, restricted artifact permissions `0600`, and secret/PII scan clean on user-facing/handoff artifacts.
+- Final linkage remains conservative: 3 medium/title-fingerprint/pending links and 1,573 review-needed/unmatched rows; no COGS/P&L semantics changed. Parent marker: `/root/tasks/161-profit-engine-date-views-parser-cogs-linkage.done`.
+
 ## [2026-07-01T13:52:00Z] ops | [hermes] Profit Engine FIFO/date views/parser linkage accepted
 - Closed Papi's forward-only FIFO activation request: `python scripts/profit_report.py --with-fifo` is guarded, creates an automatic DB backup before writable allocation, preserves ordinary read-only reports, and has 0 current allocations / no P&L impact because no post-boundary sales exist yet.
 - Spec 161_1 date-basis views accepted by Qwen/re-review: `--basis order-date|statement-date|both` emits labeled operational and cash-reconciliation Markdown/JSON views with embedded guidance and reconciliation to accepted YTD net profit `$13,791.83`.
