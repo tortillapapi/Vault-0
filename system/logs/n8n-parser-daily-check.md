@@ -236,3 +236,10 @@
 - Recall: 4 order emails | 4 matched | MISSES: none
 - Precision: 4 recent rows | 3 confirmed | FALSE POSITIVES: Sakuras Card Shop no order-last4 2026-06-29 (store-wide ORDER UPDATE/preorder notice, not a specific order)
 - Verdict: ANOMALIES
+- Resolution 2026-07-01: added a sender-aware Sakuras Card Shop `ORDER UPDATE` subject gate plus fixture, pruned account_b row 49/source msg `19f14844516707ba`, rebuilt Master (`account_a_rows=18`, `account_b_rows=47`, `output_rows=64`, `deduped=1`), and verified no malformed Sakuras blank-order rows remain.
+
+## 2026-07-01
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 4 order emails | 4 matched | MISSES: none
+- Precision: 5 recent rows | 5 confirmed | FALSE POSITIVES: none
+- Verdict: OK
