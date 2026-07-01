@@ -968,6 +968,12 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Wrote resume prompt `/root/tasks/161_3-live-parser-backfill-canvasdon-fix.resume-after-grunt-eng-rate-limit.txt` with the failure context and observed dirty parser repo state.
 - Re-dispatched `161_3` to OpenClaw `lead`/GPT-class lane as background process `proc_6ea746d28d9e`; `161_4` remains dependency-gated.
 
+## [2026-07-01 18:35 UTC] ops | [hermes] Spec 161_3 accepted; 161_4 dispatched
+- Independent re-review accepted `161_3/161_3a`: `/root/reviews/161_3a-cancelled-refund-backfill-guard-qwen.review.md` (`VERDICT: ACCEPT`).
+- Qwen/re-review lane was quota-blocked, so GPT-class fallback performed the independent review and wrote the requested review file.
+- Cleared `161_4` dependency gate and dispatched `/root/tasks/161_4-parser-sale-link-export-table.txt` to OpenClaw `mid` as background process `proc_90a4f63e5ade`.
+- Updated progress markers: `/root/tasks/161_4-parser-sale-link-export-table.progress` and parent `/root/tasks/161-profit-engine-date-views-parser-cogs-linkage.progress`.
+
 ## [2026-07-01 18:09 UTC] ops | [hermes] Spec 161_3 blocker verified; continuation dispatched
 
 - OpenClaw `lead` completed with exit 0 but wrote `/root/tasks/161_3-live-parser-backfill-canvasdon-fix.blocked` instead of `.done`: TheCanvasDon parser fix and tests passed, but Account A W1 dry-run would append 3 cancelled rows as new source rows.
