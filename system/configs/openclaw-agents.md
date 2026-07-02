@@ -30,7 +30,7 @@ Use this table to choose the right OpenClaw agent before dispatching work. It su
 
 ## Dispatch Notes
 
-- **Live roster is authoritative via `openclaw agents list --json`; this table last verified 2026-07-01 during temporary OpenCode Go outage routing.**
+- **Live roster is authoritative via `openclaw agents list --json`; this table last verified 2026-07-02 UTC during temporary OpenCode Go outage routing.**
 - Use `openclaw agent --agent <id> --local --thinking <level> --message "..." --json` for CLI dispatches.
 - Current outage-mode routing avoids `opencode-go/*` lanes until weekly usage resets.
 - Prefer `grunt` for large-context mechanical work and `grunt-eng` for bounded code/config work.
