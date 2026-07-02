@@ -3,6 +3,11 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-07-02T00:23:12Z] ops | [hermes] OpenClaw routing aligned to Claude CLI Anthropic lanes
+- Updated `/root/.openclaw/openclaw.json` routing: `grunt` -> `google/gemini-2.5-flash-lite`, `grunt-eng` -> `openai/gpt-5.4-mini`, `re-review` -> `anthropic/claude-haiku-4-5`, `mid` -> `anthropic/claude-sonnet-4-6`, `lead` -> `openai/gpt-5.4`, `sonnet-review` -> `anthropic/claude-sonnet-5`, `main` left on default GPT-5.5.
+- Added `/root/bin/openclaw-claude-lane` wrapper for Anthropic-class lanes through Claude Code CLI: `re-review` low/Haiku 4.5, `mid` medium/Sonnet 4.6, `sonnet-review` high/Sonnet 5.
+- Verified `openclaw agents list --json` reports the intended roster; wrapper dry-runs passed and a live `re-review` probe through Claude Code CLI succeeded. Do not dispatch Anthropic lanes through `openclaw agent` while the Anthropic API provider remains credit-blocked; use the wrapper and keep Hermes/Janus as final checkpoint.
+
 ## [2026-07-02T00:11:20Z] ops | [hermes] Claude Code CLI approved as Anthropic-class fallback
 - Verified `/usr/bin/claude` v2.1.198 on this VPS with `claude -p --model sonnet --effort low --output-format json`; probe succeeded and resolved to `claude-sonnet-5`.
 - Updated OpenClaw routing docs: when an Anthropic-class reviewer/worker would normally be used, Hermes should prefer direct Claude Code CLI supervision (`claude -p --model sonnet --effort <level>`) instead of Anthropic API routes while API credits are unavailable.
