@@ -3,6 +3,11 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-07-02T00:01:13Z] ops | [hermes] OpenClaw outage-mode model hierarchy updated
+- Re-routed OpenClaw away from `opencode-go/*` while weekly usage is exhausted: `grunt` -> Gemini 2.5 Flash-Lite, `grunt-eng` -> GPT-5.4-mini, `re-review` -> Gemini 2.5 Flash, `mid`/`lead` -> GPT-5.4 medium.
+- Added `sonnet-review` strong-review role for `mid`/`lead` outputs before Hermes/Janus final checkpoint. Live Claude Sonnet/Haiku health checks failed due low Anthropic credits, so the active fallback model is Gemini 2.5 Pro until Anthropic access is restored.
+- Updated shared OC roster docs/cheatsheet and refreshed Google model catalog files for affected agent directories so Gemini routes resolve.
+
 ## [2026-07-01T19:02:06Z] ops | [hermes] Spec 161 completed and accepted
 - Closed parent Spec 161 after verifying 161_4 completion marker and independent ACCEPT review: `/root/reviews/161_4-parser-sale-link-export-table.review.md`.
 - 161_4 built the read-only parser source export, hashed local linkage builder, and additive `parser_sale_link` table/export. DB was backed up before apply at `/root/sales-data/backups/sales.db.bak-20260701T184403Z-pre-161_4-parser-sale-link`.

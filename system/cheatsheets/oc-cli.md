@@ -65,12 +65,13 @@ openclaw agent --agent <id> --local --message "prompt" --json
 ```
 
 ### Available agents
-- `main` — openai/gpt-5.5 (default top-tier: complex coding, multi-file work; identity "Alfred", legacy "Grunt")
-- `lead` — openai/gpt-5.5 (complex tasks, `--thinking high`; GPT review lane for important DeepSeek output)
-- `mid` — openai/gpt-5.5 (medium tasks, `--thinking medium`; GPT review lane for medium-to-high-level DeepSeek output)
-- `grunt-eng` — opencode-go/deepseek-v4-pro (stronger DeepSeek lane for code/config/parser work and bounded mid-level implementation)
-- `grunt` — opencode-go/deepseek-v4-flash (basic execution: non-code grunt work, log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
-- `re-review` — opencode-go/qwen3.6-plus (first-pass QA over all grunt/grunt-eng output; for medium-to-high-level or important work, also use OC GPT `mid`/`lead` review by default when quota allows)
+- `main` — openai/gpt-5.5 (default top-tier; conserve during OpenCode Go outage unless explicitly needed)
+- `lead` — openai/gpt-5.4 (`--thinking medium`; architecture/deep-debug lane during outage; route output through `sonnet-review`/strong-review)
+- `mid` — openai/gpt-5.4 (`--thinking medium`; medium tasks and important review lane; route output through `sonnet-review`/strong-review)
+- `sonnet-review` — google/gemini-2.5-pro (`--thinking medium`; active strong-review fallback for `mid`/`lead` output while Anthropic/Sonnet credits are unavailable; preferred Claude Sonnet target once restored)
+- `grunt-eng` — openai/gpt-5.4-mini (`--thinking low`; bounded code/config/parser work and low-risk implementation slices)
+- `grunt` — google/gemini-2.5-flash-lite (basic execution: non-code grunt work, log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
+- `re-review` — google/gemini-2.5-flash (first-pass QA over all grunt/grunt-eng output during OpenCode Go outage; Anthropic Haiku rejected live calls due low Anthropic credits)
 - `email-parser` — google/gemini-2.5-flash (email parsing only)
 
 ### NEVER use `openclaw agent --deliver` for simple message relay. Use `message send`.
