@@ -68,7 +68,7 @@ openclaw agent --agent <id> --local --message "prompt" --json
 - `main` — openai/gpt-5.5 (default top-tier; conserve during OpenCode Go outage unless explicitly needed)
 - `lead` — openai/gpt-5.4 (`--thinking medium`; architecture/deep-debug lane during outage; route output through `sonnet-review`/strong-review)
 - `mid` — openai/gpt-5.4 (`--thinking medium`; medium tasks and important review lane; route output through `sonnet-review`/strong-review)
-- `sonnet-review` — google/gemini-2.5-pro (`--thinking medium`; active strong-review fallback for `mid`/`lead` output while Anthropic/Sonnet credits are unavailable; preferred Claude Sonnet target once restored)
+- `sonnet-review` — google/gemini-2.5-pro (`--thinking medium`; OpenClaw fallback strong-review lane for `mid`/`lead` output; when Anthropic-class review is desired, prefer direct Claude Code CLI: `claude -p --model sonnet --effort <level> --output-format json`)
 - `grunt-eng` — openai/gpt-5.4-mini (`--thinking low`; bounded code/config/parser work and low-risk implementation slices)
 - `grunt` — google/gemini-2.5-flash-lite (basic execution: non-code grunt work, log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
 - `re-review` — google/gemini-2.5-flash (first-pass QA over all grunt/grunt-eng output during OpenCode Go outage; Anthropic Haiku rejected live calls due low Anthropic credits)

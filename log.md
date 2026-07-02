@@ -3,6 +3,11 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-07-02T00:11:20Z] ops | [hermes] Claude Code CLI approved as Anthropic-class fallback
+- Verified `/usr/bin/claude` v2.1.198 on this VPS with `claude -p --model sonnet --effort low --output-format json`; probe succeeded and resolved to `claude-sonnet-5`.
+- Updated OpenClaw routing docs: when an Anthropic-class reviewer/worker would normally be used, Hermes should prefer direct Claude Code CLI supervision (`claude -p --model sonnet --effort <level>`) instead of Anthropic API routes while API credits are unavailable.
+- `sonnet-review` remains available as an OpenClaw Gemini Pro fallback; Hermes/Janus remains final checkpoint.
+
 ## [2026-07-02T00:01:13Z] ops | [hermes] OpenClaw outage-mode model hierarchy updated
 - Re-routed OpenClaw away from `opencode-go/*` while weekly usage is exhausted: `grunt` -> Gemini 2.5 Flash-Lite, `grunt-eng` -> GPT-5.4-mini, `re-review` -> Gemini 2.5 Flash, `mid`/`lead` -> GPT-5.4 medium.
 - Added `sonnet-review` strong-review role for `mid`/`lead` outputs before Hermes/Janus final checkpoint. Live Claude Sonnet/Haiku health checks failed due low Anthropic credits, so the active fallback model is Gemini 2.5 Pro until Anthropic access is restored.
