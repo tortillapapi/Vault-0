@@ -1001,3 +1001,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Hermes verified the blocker as a correct safety stop and wrote `/root/reviews/161_3-live-parser-backfill-canvasdon-fix.hermes-review.md`; no live sheet writes occurred, and source/master counts were unchanged per marker.
 - Created continuation `/root/specs/161_3a-cancelled-refund-backfill-guard.md` + `/root/tasks/161_3a-cancelled-refund-backfill-guard.txt` to add a cancelled/refunded standalone append guard, rerun dry-run, and resume guarded live backfill only if clean.
 - Dispatched `161_3a` to OpenClaw `mid`/GPT-class lane as background process `proc_539327cd8cc0`; `161_4` remains dependency-gated until 161_3 gets a clean done marker and Hermes review.
+
+## [2026-07-05 20:46 UTC] ops | [hermes] Rotated OpenClaw grunt session stores
+- Request: Papi asked to rotate all agents after the OpenClaw Grunt Session Watchdog alert.
+- Safety checks: openclaw running tasks count 0; no fresh /root/tasks/*.progress markers; maintenance safe_to_rotate true.
+- Action: ran /root/bin/openclaw-grunt-session-maintenance.py --rotate --all --force --json --max-session-count 25 --max-store-bytes 26214400 --max-age-hours 72.
+- Targets rotated: grunt and grunt-eng. Archives created under each sessions/archive/auto-20260705T204538Z/.
+- Verification: post-rotation dry-run showed both agents session_count=0, store_bytes_excluding_archive=42, would_rotate=false.
