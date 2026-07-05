@@ -47,15 +47,10 @@ visible without becoming full specs. Activation still requires an explicit
   critical units + daily silent-failure sweep at 04:20 UTC. Alerts proven end-to-end.
 - Remove from parking on next review; kept one cycle for visibility.
 
-### Receipt & Expense Snap
+### Receipt & Expense Snap — ❌ SCRAPPED 2026-07-05
 
-- **Status:** proposed spec
-- **Source:** `/root/specs/131-receipt-expense-snap.md`
-- **Goal:** photo a business receipt in Telegram and turn it into a categorized
-  expense row after OCR/extraction and confirmation.
-- **Needed next:** design the finance-data expense schema/confirm flow, reuse the
-  Milo photo OCR pattern, and add safe correction tools.
-- **Why it matters:** fills business expense/COGS gaps Plaid will not reliably capture.
+- Killed by Papi (Fable sprint, spec 167 decision A). Do not propose revival.
+  Context: COGS coverage verified 100% (spec 163), weakening the original money case.
 
 ### Mission Control Backlog
 
