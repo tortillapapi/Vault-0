@@ -3,7 +3,7 @@ type: system-project
 title: Parked Backlog
 slug: parked-backlog
 created: 2026-06-16
-last_updated: 2026-06-29
+last_updated: 2026-07-05
 status: parked
 priority: review-weekly
 tags: [project, backlog, parking-lot, agents]
@@ -31,7 +31,8 @@ visible without becoming full specs. Activation still requires an explicit
 
 ### Bookmark Hell Pipeline
 
-- **Status:** parked MVP idea
+- **Status:** NEXT-UP — Papi confirmed 2026-07-05 (Fable sprint, spec 167) as the next
+  activation once sprint wrap-up tasks land. No build starts until then.
 - **Source:** `system/projects/bookmark-hell-pipeline.md`
 - **Goal:** turn X/TikTok/YouTube/article bookmarks and shared links into categorized,
   searchable, resurfaced knowledge with summaries and next actions.
@@ -40,14 +41,11 @@ visible without becoming full specs. Activation still requires an explicit
   URL-in -> structured record + summary -> confirmation.
 - **Why it matters:** Papi saves useful ideas, but they currently disappear.
 
-### VPS Watchdog Alerts
+### VPS Watchdog Alerts — ✅ SHIPPED 2026-07-02
 
-- **Status:** proposed spec
-- **Source:** `/root/specs/130-vps-watchdog-alerts.md`
-- **Goal:** send Telegram alerts only when critical VPS automations fail or go stale.
-- **Needed next:** create/install `OnFailure` alert drop-ins and a daily silent-failure
-  sweep for timers, failed services, disk, backups, and stale snapshots.
-- **Why it matters:** the VPS is healthy now, but failures can be silent.
+- **Status:** ACTIVATED and verified (spec 164, Fable sprint): OnFailure drop-ins on 6
+  critical units + daily silent-failure sweep at 04:20 UTC. Alerts proven end-to-end.
+- Remove from parking on next review; kept one cycle for visibility.
 
 ### Receipt & Expense Snap
 
@@ -69,28 +67,19 @@ visible without becoming full specs. Activation still requires an explicit
   richer full-text search.
 - **Why it matters:** makes the agent fleet easier to steer and audit.
 
-### Orders Dashboard v2
-
-- **Status:** low-priority parked backlog
-- **Source:** `system/projects/orders-dashboard.md`
-- **Goal:** improve the shipped orders dashboard only when Papi asks for it or a
-  real workflow pain appears.
-- **Possible next:** per-row totals override, email-thread linkback, date presets,
-  CSV export, compact Notion-friendly view, token rotation, or multi-user views.
-- **Why it matters:** useful polish, but v1 is stable and should not distract from
-  higher-value work.
-
 ## Not parked: active or decision-bound work
 
 These are not "someday" ideas; they need a decision or focused project continuation.
 
-- **Spec 145 parser backfill:** Papi needs to approve or reject one verified Pokemon
-  ETB append row. Todd Snyder apparel is excluded unless Papi explicitly reclassifies
-  it as resale inventory.
-- **Profit Engine:** now evergreen-active, not parked. Source: `system/projects/profit-engine.md`; current state is accepted 2026 YTD net-profit v1 plus spreadsheet in `mramirez021111` Drive. Next focused upgrade is Spec 154 Phase 2: eBay finance events + missing eBay COGS, then rerun report/spreadsheet.
-- **Order parser Spec 135 repo cleanup:** deployed parser changes appear to be on disk
-  but uncommitted in `/root/n8n/local-files/order-parser`; clean this before more
-  parser work stacks on top.
+- ~~Spec 145 parser backfill ETB decision~~ — RESOLVED: appended 2026-06-18 by spec 147
+  (verified in account_b + master); this entry was stale. Todd Snyder stays excluded.
+- **Profit Engine:** evergreen-active, no upgrade queued. eBay finance events complete
+  (spec 162); COGS coverage verified 100% — 1576/1576 sales costed (spec 163, 2026-07-05).
+  The parser-linkage "review queue" is provenance-only noise, pending removal from
+  operator-close packages (Hermes handoff, spec 167 decision 1).
+- ~~Order parser Spec 135 repo cleanup~~ — RESOLVED: spec 166 committed all deployed
+  drift (`2126a0c`, 2026-07-05); repo clean, 12/12 fixtures pass. No git remote yet
+  (spec 167 decision 3).
 
 ## Agent guidance
 
