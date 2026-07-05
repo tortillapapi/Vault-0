@@ -1008,3 +1008,16 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Action: ran /root/bin/openclaw-grunt-session-maintenance.py --rotate --all --force --json --max-session-count 25 --max-store-bytes 26214400 --max-age-hours 72.
 - Targets rotated: grunt and grunt-eng. Archives created under each sessions/archive/auto-20260705T204538Z/.
 - Verification: post-rotation dry-run showed both agents session_count=0, store_bytes_excluding_archive=42, would_rotate=false.
+
+## 2026-07-05 dispatch | [hermes] Claimed and dispatched Spec 170 in isolated OC lane
+- Papi requested Hermes/Janus dispatch Spec 170 separately from Metis/Spec 168 worker context.
+- Claimed `/root/specs/170-sales-sync-idempotency-cursor-hardening.md` for `owner: hermes`.
+- Created isolated worktree `/root/worktrees/sales-data-spec170` on branch `spec170-idempotency-hardening`.
+- Created task `/root/tasks/170-sales-sync-idempotency-cursor-hardening.txt` and progress marker with session key `agent:grunt-eng:spec170-20260705T213825Z`.
+
+## [2026-07-05T22:05:00Z] data | [metis] Profit Engine headline restated after Spec 168 (Papi-approved)
+- Fable review found Amazon reimbursements double-counted in the report layer: fin_client emits both event-level `Adjustment` and per-item `AdjustmentItem` rows for the same AdjustmentEvent; profit_report summed both. Verified overlap: all 51 AdjustmentItem rows ($2,790.24) had event-level twins.
+- Spec 168 fix (grunt-eng, commit `73b659c`, pushed): group-wise dedupe in both aggregate and date-basis paths — event-level wins, item-only groups still count. +3 regression tests (258 passing). DB untouched (24,088 amazon_fin_events rows before/after).
+- Restated 2026 YTD (Papi approved): combined net profit `$13,791.83` → `$11,001.59` (`10.2%`); Amazon `$9,711.21` / `9.3%`; adjustments `$5,560.53` → `$2,770.29`. Report: `/root/sales-data/reports/profit/net-profit-v1-20260705T213603Z.{md,json}`.
+- Known remaining overstatement: eBay final-value fees missing from ingestion (Spec 169, approved, queued behind Spec 170). Spec 170 (sync idempotency/cursor hardening) in flight under Hermes in isolated worktree `spec170-idempotency-hardening`.
+- Vault updated: `system/projects/profit-engine.md` headline block.

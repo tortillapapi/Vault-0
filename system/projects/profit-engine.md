@@ -57,7 +57,10 @@ Previous handoff: [[profit-engine-ebay-gap-handoff-2026-06-30]].
 
 ## Latest accepted headline numbers
 
-2026 YTD v1 after eBay finance ingestion, TRANSFER semantics acceptance, and guarded Amazon SP-API finance refresh:
+2026 YTD v1 restated 2026-07-05 (Spec 168, Papi-approved): Amazon Adjustment/AdjustmentItem
+double-count removed — reimbursements were counted twice (event-level + per-item rows,
+exactly `$2,790.24`). Report layer fix only; DB unchanged; commit `73b659c`.
+Report: `/root/sales-data/reports/profit/net-profit-v1-20260705T213603Z.{md,json}`.
 
 - Revenue: `$107,882.49`
 - COGS: `$54,211.95`
@@ -65,14 +68,18 @@ Previous handoff: [[profit-engine-ebay-gap-handoff-2026-06-30]].
 - Gross margin: `49.7%`
 - Marketplace fees: `$39,926.98`
 - Refunds: `$5,512.26`
-- Adjustments/reimbursements: `$5,560.53`
-- Net profit: `$13,791.83`
-- Net margin: `12.8%`
+- Adjustments/reimbursements: `$2,770.29`
+- Net profit: `$11,001.59`
+- Net margin: `10.2%`
 
 Platform notes:
 
-- Amazon net profit: `$12,501.45` / `11.9%` margin on `$104,717.52` revenue. Amazon COGS matched **1,569/1,569**.
+- Amazon net profit: `$9,711.21` / `9.3%` margin on `$104,717.52` revenue. Amazon COGS matched **1,569/1,569**.
 - eBay net profit: `$1,290.38` / `40.8%` margin on `$3,164.97` revenue. eBay COGS matched **7/7**, unmatched **0**.
+  ⚠️ eBay net is known-overstated: final-value fees are missing from ingestion (Spec 169, approved,
+  queued behind Spec 170 hardening). Expect this to drop to roughly `$600–900` once fixed.
+- 51 `AdjustmentItem` detail rows are excluded from totals as duplicates of event-level
+  `Adjustment` amounts (Spec 168 caveat carried in every report).
 - eBay finance events are live: 18 rows total, including 7 `SALE`, 6 `NON_SALE_CHARGE`, 1 `SHIPPING_LABEL`, and 4 `TRANSFER` rows. `SALE` transaction amounts are not counted as extra revenue; TRANSFER rows are included as adjustments based on observed `booking_entry=CREDIT` / `transaction_status=PAYOUT`.
 
 ## Data quality caveats to carry forward
