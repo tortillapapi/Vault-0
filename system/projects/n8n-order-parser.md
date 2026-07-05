@@ -125,3 +125,19 @@ marketing emails, and some classify() keyword misses.
   non-inventory CONCETTA order was corrected/pruned from account_a and master follow-up state:
   the malformed blank-order tracking row was removed and the corrected Walmart row was verified
   as the sole CONCETTA/tracking match.
+
+## Repo cleanup + committed drift (spec 166 — 2026-07-05)
+
+Spec 166 (owner metis, Fable sprint) committed previously-undocumented deployed
+changes that were live on disk but uncommitted (spec-135 debt). Commit `2126a0c`
+in `/root/n8n/local-files/order-parser` (repo has NO git remote — local only):
+
+- Parser exclusions: Capital One Business shipment notices, Robinhood Credit Card
+  delivery notices, Sakuras store-wide preorder announcements (subject gate).
+- `refunded` is a terminal status; standalone cancelled/refunded rows are no longer
+  appended (guard + fixtures).
+- TheCanvasDon inline-qty item extraction supported.
+- Source export helpers + tests (feeds profit-engine parser-source export).
+- `run_fixtures.js` now runs the full fixture suite (12/12 passing as of 2026-07-05).
+
+Full pre-commit diff snapshot: `/root/reviews/166-parser-repo-diff-snapshot.md` (0600).
