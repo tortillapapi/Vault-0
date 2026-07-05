@@ -180,3 +180,18 @@ The first guarded Amazon SP-API finance refresh is accepted. Next useful upgrade
 - Any final report or new spreadsheet version must reconcile to source JSON/DB and pass safety scans.
 - If code or finance logic changes, run tests and independent review before final closeout.
 - Do not print or log eBay Cert ID, client secret, refresh/access tokens, Google creds, DB creds, order IDs, buyer PII, addresses, or sensitive hashes.
+
+## Fable sprint verification + repo backup (2026-07-05, specs 163/166/167)
+
+- **COGS coverage verified 100%**: 1576/1576 sale items resolve to active COGS; $0.00
+  of $107,882.49 revenue uncosted (spec 163, read-only). Net-profit baseline fully costed.
+- **Parser-linkage review queue is NOT actionable**: parser source export has 105 records
+  with zero ASIN/title-fp overlap vs the 1573 queued sales; 3 conservative links are the
+  ceiling. Queue = provenance-only noise, no P&L impact.
+- **Pending Hermes**: remove review-queue tabs from operator-close packages, replace with
+  COGS-coverage stat — handoff at `/root/context/metis-handoff-hermes-cogs-stat-2026-07-05.md`.
+- **Code now off-box**: `/root/sales-data` is a git repo (code only; db/backups/reports/
+  imports excluded) pushed to private `github.com/tortillapapi/sales-data` (master).
+- Quarantined artifacts from a rejected grunt scoring attempt: `reports/parser-sale-link/
+  *20260702T213818Z*` + `parser_sale_link_builder.py` gained an unused `score_candidate`
+  path (harmless; revisit only if candidate artifacts are ever needed).
