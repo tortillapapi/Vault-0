@@ -1045,3 +1045,12 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Ruled the worker's July-window block CORRECT: live DB has 0 Amazon fin events posted ≥ 2026-07-01 vs ~561 at the API (finance cursor stuck 2026-07-01T05:33:57Z; DB ~6 days stale) — flagged for a guarded sync after 170 lands.
 - Review: /root/reviews/170-sales-sync-hardening.metis-checkpoint-review.md; handoff: /root/context/metis-handoff-hermes-170-checkpoint-2026-07-07.md.
 - Papi approved specs 168-restatement and 169 (eBay final-value fees). 169 status → approved_queued, gated on 170 merge.
+
+## [2026-07-07T01:52:38Z] ops | [hermes] Spec 170 third verifier/window fix dispatched
+- Papi approved dispatch after second fixups remained blocked by full June data-gap proof: 4960 seen / 103 new for 2026-06-01..2026-07-01, with all missing/new dated 2026-06-30.
+- Task: /root/tasks/170-sales-sync-idempotency-cursor-hardening.third-verifier-fix.txt
+- Progress: /root/tasks/170-sales-sync-idempotency-cursor-hardening.progress
+- Worktree/branch: /root/worktrees/sales-data-spec170 / spec170-idempotency-hardening
+- Agent/session: grunt-eng / agent:grunt-eng:spec170-third-verifier-fix-20260707T015055Z
+- Process: proc_58cc12415e91 PID 1356754
+- Scope: verifier/window classification only; no merge/deploy/live backfill. Parent re-review still required.
