@@ -1021,3 +1021,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Restated 2026 YTD (Papi approved): combined net profit `$13,791.83` → `$11,001.59` (`10.2%`); Amazon `$9,711.21` / `9.3%`; adjustments `$5,560.53` → `$2,770.29`. Report: `/root/sales-data/reports/profit/net-profit-v1-20260705T213603Z.{md,json}`.
 - Known remaining overstatement: eBay final-value fees missing from ingestion (Spec 169, approved, queued behind Spec 170). Spec 170 (sync idempotency/cursor hardening) in flight under Hermes in isolated worktree `spec170-idempotency-hardening`.
 - Vault updated: `system/projects/profit-engine.md` headline block.
+
+## [2026-07-07T00:24:00Z] ops | [hermes] Spec 170 fixups dispatched after parent BLOCKED review
+- Papi approved targeted fixups for Spec 170 after Hermes parent review found Amazon existing-row idempotency, eBay dry-run count, and Amazon dry-run write-path blockers.
+- Wrote task prompt `/root/tasks/170-sales-sync-idempotency-cursor-hardening.fixups.txt` and progress marker `/root/tasks/170-sales-sync-idempotency-cursor-hardening.progress`.
+- Dispatched OpenClaw `grunt-eng` with session key `agent:grunt-eng:spec170-fixups-20260707T002400Z`; Hermes will re-review only after `.fixups.done` or `.fixups.blocked` appears.
