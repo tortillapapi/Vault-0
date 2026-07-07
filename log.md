@@ -1054,3 +1054,11 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Agent/session: grunt-eng / agent:grunt-eng:spec170-third-verifier-fix-20260707T015055Z
 - Process: proc_58cc12415e91 PID 1356754
 - Scope: verifier/window classification only; no merge/deploy/live backfill. Parent re-review still required.
+
+## [2026-07-07T02:13:05Z] ops | [hermes] Spec 170 third verifier/window fix accepted
+- OC grunt-eng completed third verifier fix at fe0ebef on spec170-idempotency-hardening.
+- Hermes parent gates passed: 271 tests, compile OK, DB integrity OK, cursor unchanged, full June no-auto now blocked_data_gap, auto-proof verifies 2026-06-01..2026-06-30 exclusive with fin_events_new=0.
+- Preferred re-review and mid lanes failed before work due Anthropic billing; same prompt rerouted to lead OpenAI lane and accepted.
+- Parent review: /root/reviews/170-sales-sync-idempotency-cursor-hardening.parent-review-third-verifier-fix.md
+- Marker updated: /root/tasks/170-sales-sync-idempotency-cursor-hardening.review accepted; .progress removed; spec status complete.
+- No merge/deploy/backfill performed. June 30 live data gap remains separate decision.
