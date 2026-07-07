@@ -1038,3 +1038,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Marker: /root/tasks/170-sales-sync-idempotency-cursor-hardening.review
 - OC second-fixups exited 0 and committed 08256c6, but worker wrote blocked marker and parent verification confirmed full bounded June proof fails: 4960 seen / 103 new for 2026-06-01..2026-07-01.
 - Safe persisted sub-window 2026-06-01..2026-06-30 exclusive passes with 4857 seen / 0 new. Do not merge/deploy/backfill pending Papi decision.
+
+## [2026-07-07T02:35:00Z] review | [metis] Spec 170 branch REJECTED at final checkpoint (2 blockers); spec 169 approved & gated
+- Reviewed Hermes's spec170-idempotency-hardening branch @ 08256c6 (268 tests pass; good: cursor safety lag, eBay immutable-identity hash, read-only verifier default, skipped_no_cursor).
+- BLOCKER 1: new profit_report date filter drops the 704 undated ServiceFee rows (-$3,149.26) — hidden P&L restatement (net would silently rise to ~$14,150.85). BLOCKER 2: 428 live natural-key dup groups (891 rows) of legit repeated fees — new discriminators collapse future repeats and the live upsert re-inserts legacy groups on overlap re-sync; dry-run existence check diverges from live path, so the June "0 new" dry-run proof doesn't cover it.
+- Ruled the worker's July-window block CORRECT: live DB has 0 Amazon fin events posted ≥ 2026-07-01 vs ~561 at the API (finance cursor stuck 2026-07-01T05:33:57Z; DB ~6 days stale) — flagged for a guarded sync after 170 lands.
+- Review: /root/reviews/170-sales-sync-hardening.metis-checkpoint-review.md; handoff: /root/context/metis-handoff-hermes-170-checkpoint-2026-07-07.md.
+- Papi approved specs 168-restatement and 169 (eBay final-value fees). 169 status → approved_queued, gated on 170 merge.
