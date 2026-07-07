@@ -1032,3 +1032,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Wrote task prompt `/root/tasks/170-sales-sync-idempotency-cursor-hardening.second-fixups.txt` and updated progress marker `/root/tasks/170-sales-sync-idempotency-cursor-hardening.progress`.
 - Dispatched OpenClaw `grunt-eng` with session key `agent:grunt-eng:spec170-second-fixups-20260707T010757Z`; process `proc_bdd447d554c4` / PID `1346819`.
 - Hermes will parent re-review only after `/root/tasks/170-sales-sync-idempotency-cursor-hardening.second-fixups.done` or `.second-fixups.blocked` appears.
+
+## [2026-07-07T01:29:14Z] ops | [hermes] Spec 170 second fixups parent review blocked
+- Parent review: /root/reviews/170-sales-sync-idempotency-cursor-hardening.parent-review-second-fixups.md
+- Marker: /root/tasks/170-sales-sync-idempotency-cursor-hardening.review
+- OC second-fixups exited 0 and committed 08256c6, but worker wrote blocked marker and parent verification confirmed full bounded June proof fails: 4960 seen / 103 new for 2026-06-01..2026-07-01.
+- Safe persisted sub-window 2026-06-01..2026-06-30 exclusive passes with 4857 seen / 0 new. Do not merge/deploy/backfill pending Papi decision.
