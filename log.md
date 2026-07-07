@@ -1026,3 +1026,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Papi approved targeted fixups for Spec 170 after Hermes parent review found Amazon existing-row idempotency, eBay dry-run count, and Amazon dry-run write-path blockers.
 - Wrote task prompt `/root/tasks/170-sales-sync-idempotency-cursor-hardening.fixups.txt` and progress marker `/root/tasks/170-sales-sync-idempotency-cursor-hardening.progress`.
 - Dispatched OpenClaw `grunt-eng` with session key `agent:grunt-eng:spec170-fixups-20260707T002400Z`; Hermes will re-review only after `.fixups.done` or `.fixups.blocked` appears.
+
+## [2026-07-07T01:07:57Z] ops | [hermes] Spec 170 second fixups dispatched
+- Papi approved second targeted fixups after first fixup pass blocked on an invalid July zero-new proof window and Hermes found remaining live-upsert/verifier dry-run issues.
+- Wrote task prompt `/root/tasks/170-sales-sync-idempotency-cursor-hardening.second-fixups.txt` and updated progress marker `/root/tasks/170-sales-sync-idempotency-cursor-hardening.progress`.
+- Dispatched OpenClaw `grunt-eng` with session key `agent:grunt-eng:spec170-second-fixups-20260707T010757Z`; process `proc_bdd447d554c4` / PID `1346819`.
+- Hermes will parent re-review only after `/root/tasks/170-sales-sync-idempotency-cursor-hardening.second-fixups.done` or `.second-fixups.blocked` appears.
