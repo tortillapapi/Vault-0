@@ -1062,3 +1062,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Parent review: /root/reviews/170-sales-sync-idempotency-cursor-hardening.parent-review-third-verifier-fix.md
 - Marker updated: /root/tasks/170-sales-sync-idempotency-cursor-hardening.review accepted; .progress removed; spec status complete.
 - No merge/deploy/backfill performed. June 30 live data gap remains separate decision.
+
+## [2026-07-08T20:15:00Z] data | [metis] Specs 169+170 complete — eBay fees captured, sync hardened, headline now $9,756.60
+- Spec 170 merged to master (`e48057b`) after Metis checkpoint caught 2 blockers in Hermes's branch: undated ServiceFee rows dropped from P&L (-$3,149.26 hidden restatement) and dead-code legacy-hash migration (0/200 live hashes matched) that would have mass-duplicated rows on overlap re-syncs. 170_1 fixups (grunt-eng) implemented count-aware ordinal idempotency with identical dry-run/live logic; parity held at $11,001.59; 273 tests.
+- Spec 169 complete (commit `9ddbd89`): eBay final-value fees extracted from SALE transactions as SALE_FEE events (21 rows, -$627.74); guarded live eBay re-sync idempotent (2nd run 0 new); Amazon finance catch-up ingested 718 July events (2nd run 0 new); pre-sync backups taken; quick_check ok / fk 0 both platforms; 276 tests.
+- New accepted 2026 YTD (Papi pre-approved restatement): combined net `$9,756.60` / `8.6%`; Amazon `$9,093.96` / `8.3%`; eBay `$662.64` / `20.9%` (landed in the predicted $600–900 band). Revenue `$112,842.09` (includes ~$4.9k fully-costed July orders from an incidental orders catch-up). Delta trail: $13,791.83 → −2,790.24 (168) → −627.74 (eBay fees) → −617.25 (July fees) → $9,756.60.
+- Verified independently: fin event counts reconcile exactly (24,806 Amazon / 44 eBay), dup-group audit clean (428→429, legit), master pushed.
+- Reports: /root/sales-data/reports/profit/net-profit-{v1,order-date,statement-date}-20260708T195024Z.*

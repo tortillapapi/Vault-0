@@ -57,29 +57,31 @@ Previous handoff: [[profit-engine-ebay-gap-handoff-2026-06-30]].
 
 ## Latest accepted headline numbers
 
-2026 YTD v1 restated 2026-07-05 (Spec 168, Papi-approved): Amazon Adjustment/AdjustmentItem
-double-count removed — reimbursements were counted twice (event-level + per-item rows,
-exactly `$2,790.24`). Report layer fix only; DB unchanged; commit `73b659c`.
-Report: `/root/sales-data/reports/profit/net-profit-v1-20260705T213603Z.{md,json}`.
+2026 YTD v1 as of 2026-07-08 (Specs 168+169+170 complete, Papi-approved): adjustment
+double-count removed (168), sync idempotency/cursors hardened (170, merge `e48057b`),
+eBay final-value fees now captured as `SALE_FEE` events + Amazon finance catch-up
+through 2026-07-08 (169, commit `9ddbd89`).
+Report: `/root/sales-data/reports/profit/net-profit-v1-20260708T195024Z.{md,json}`
+(+ order-date and statement-date views, same timestamp).
 
-- Revenue: `$107,882.49`
-- COGS: `$54,211.95`
-- Gross profit: `$53,670.54`
-- Gross margin: `49.7%`
-- Marketplace fees: `$39,926.98`
-- Refunds: `$5,512.26`
-- Adjustments/reimbursements: `$2,770.29`
-- Net profit: `$11,001.59`
-- Net margin: `10.2%`
+- Revenue: `$112,842.09`
+- COGS: `$55,633.06`
+- Marketplace fees: `$44,826.15`
+- Net profit: `$9,756.60`
+- Net margin: `8.6%`
 
 Platform notes:
 
-- Amazon net profit: `$9,711.21` / `9.3%` margin on `$104,717.52` revenue. Amazon COGS matched **1,569/1,569**.
-- eBay net profit: `$1,290.38` / `40.8%` margin on `$3,164.97` revenue. eBay COGS matched **7/7**, unmatched **0**.
-  ⚠️ eBay net is known-overstated: final-value fees are missing from ingestion (Spec 169, approved,
-  queued behind Spec 170 hardening). Expect this to drop to roughly `$600–900` once fixed.
-- 51 `AdjustmentItem` detail rows are excluded from totals as duplicates of event-level
+- Amazon net profit: `$9,093.96` / `8.3%` margin on `$109,677.12` revenue. COGS coverage **100%**.
+- eBay net profit: `$662.64` / `20.9%` margin on `$3,164.97` revenue. COGS coverage **100%**.
+  eBay marketplace fees now real: `$743.08` total incl. 21 `SALE_FEE` rows (`$627.74` final-value fees).
+- Delta trail from the pre-review `$13,791.83`: −`$2,790.24` (168 double-count) −`$627.74`
+  (169 eBay fees) −`$617.25` (169 Amazon July catch-up — largely late-posting fees for
+  June revenue, plus a first orders catch-up adding `~$4.9k` fully-costed July revenue).
+- 51 `AdjustmentItem` detail rows remain excluded from totals as duplicates of event-level
   `Adjustment` amounts (Spec 168 caveat carried in every report).
+- Idempotency now count-aware (spec 170): overlapping re-syncs are safe; dup-group audit
+  2026-07-08: 429 legit repeated-fee groups, no spurious duplication after live syncs.
 - eBay finance events are live: 18 rows total, including 7 `SALE`, 6 `NON_SALE_CHARGE`, 1 `SHIPPING_LABEL`, and 4 `TRANSFER` rows. `SALE` transaction amounts are not counted as extra revenue; TRANSFER rows are included as adjustments based on observed `booking_entry=CREDIT` / `transaction_status=PAYOUT`.
 
 ## Data quality caveats to carry forward
