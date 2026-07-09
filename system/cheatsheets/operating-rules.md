@@ -37,7 +37,7 @@ Codex, and OpenClaw equally (and Hermes once installed).
   but hosted models can still misread current date/time. Always inject exact dates
   in task prompts and require `date -u` for completion markers; verify `.done`
   times with `stat -c %y` when audit accuracy matters. OpenAI agents
-  (`lead` on GPT-5.5 high, `mid` on GPT-5.4 medium, `pa` on GPT-5.5 medium) are unaffected.
+  (`lead` on GPT-5.5 high, `mid` on GPT-5.4 medium) are unaffected.
 - **Verification checks must match unique content text**, not numeric prefixes or
   assumed file/process structure. Use `pgrep -af <name>` not `systemctl is-active`
   unless the target is confirmed a systemd unit (OpenClaw runs many plain
@@ -54,7 +54,7 @@ Codex, and OpenClaw equally (and Hermes once installed).
 - **Dispatch cost discipline — keep OpenAI for judgment.** OpenClaw's connected
   OpenAI/ChatGPT account is separate from Hermes/Janus's OpenAI account, so an
   OpenClaw GPT rolling-window burn does not affect Hermes availability. Within
-  OpenClaw, OpenAI quota is still the scarce pool (`lead`/`mid`/`pa`);
+  OpenClaw, OpenAI quota is still the scarce pool (`lead`/`mid`);
   DeepSeek (`grunt`/`grunt-eng`) and GLM (`re-review`) are separate pools. Default
   mechanical/coding work to `grunt-eng` and docs/formatting to `grunt`; reserve
   OpenClaw `lead`/`mid` for genuine synthesis, cross-file judgment, or

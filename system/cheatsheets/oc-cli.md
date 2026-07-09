@@ -71,7 +71,6 @@ openclaw agent --agent <id> --local --message "prompt" --json
 - `grunt` — opencode-go/deepseek-v4-flash (`--thinking low`; basic execution: non-code grunt work, log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
 - `re-review` — opencode-go/glm-5.2 (`--thinking low`; first-pass QA over all grunt/grunt-eng output)
 - `email-parser` — google/gemini-2.5-flash (email parsing only)
-- `pa` — openai/gpt-5.5 (`--thinking medium`; dedicated Telegram personal-assistant profile)
 
 ### Current review chain
 ```bash
@@ -79,7 +78,7 @@ openclaw agent --agent re-review --local --thinking low --message "..." --json  
 openclaw agent --agent mid --local --thinking medium --message "..." --json      # GPT-5.4 medium review/escalation
 openclaw agent --agent lead --local --thinking high --message "..." --json       # GPT-5.5 high-stakes escalation/default
 ```
-`sonnet-review` is no longer configured. Hermes/Janus remains the final checkpoint after OC review.
+`sonnet-review` and `pa` are no longer configured. Hermes/Janus remains the final checkpoint after OC review; Mnemosyne PA lives separately in Hermes profile `papipa`.
 
 ### NEVER use `openclaw agent --deliver` for simple message relay. Use `message send`.
 

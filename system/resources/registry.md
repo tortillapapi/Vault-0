@@ -55,7 +55,7 @@ native pointer.
 | Service | Reached via | Notes |
 |---|---|---|
 | Telegram default | `openclaw message send` (chat ID 1207164084) | Alfred/default bot; use `message send`, never `agent --deliver` |
-| Telegram PA | Telegram account `pa` bound to OpenClaw agent `pa` | Separate token file and allowlisted DM access for personal-assistant workflows; no wildcard binding |
+| Telegram PA | Hermes profile `papipa` / Mnemosyne | OpenClaw `pa` agent and Telegram `pa` route were removed 2026-07-09; personal-assistant workflows live under Hermes/Mnemosyne instead. |
 | Gmail / Calendar / Drive | MCP connectors (CC) + n8n OAuth creds | Drive enough for now; Calendar/Docs deprioritized |
 | Notion | MCP connector + `notion/` mirror | mirror is sink, not source |
 | Web | search/fetch tools (CC) | — |

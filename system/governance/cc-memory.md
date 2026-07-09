@@ -548,7 +548,6 @@ openclaw agent --agent <id> --local --message "prompt" --json
 - `grunt` — opencode-go/deepseek-v4-flash (`--thinking low`; non-code grunt: log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
 - `re-review` — opencode-go/glm-5.2 (`--thinking low`; first-pass QA over grunt/grunt-eng output)
 - `email-parser` — google/gemini-2.5-flash (email parsing only)
-- `pa` — openai/gpt-5.5 (`--thinking medium`; Telegram PA profile)
 
 ### NEVER use `openclaw agent --deliver` for simple message relay. Use `message send`.
 

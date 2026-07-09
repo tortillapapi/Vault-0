@@ -1095,4 +1095,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Cron job `cbcef468213a` (`Mnemosyne Due Reminder Dispatcher`) failed because relative script `mnemo-due-dispatch.py` resolved under `/root/.hermes/scripts/`, but the canonical dispatcher lives under the `papipa` profile at `/root/.hermes/profiles/papipa/scripts/mnemo-due-dispatch.py`.
 - Added `/root/.hermes/scripts/mnemo-due-dispatch.py` shim that execs the papipa dispatcher, chmod 755, compiled both scripts, and verified controlled no-due run with `--now 1970-01-01T00:00:00-08:00` exited 0 with 0 stdout bytes.
 - Manually ran cron job once through Hermes cron; result `last_status=ok`, `execution_success=true`, next run scheduled normally. Updated Mnemosyne PA config doc with shim note.
+## [2026-07-09T05:37:23Z] ops | [hermes] Removed unused OpenClaw PA lane
+- Papi confirmed the OpenClaw `pa` agent is no longer used. Removed `pa` from `/root/.openclaw/openclaw.json`, removed the Telegram `pa` route/account binding from OpenClaw config, and archived the inactive agent state directory to `/root/.openclaw/agents/archive/pa-removed-20260709T053723Z/`. Backup: `/root/.openclaw/openclaw.json.bak-remove-pa-20260709T053723Z`.
+- Verified `openclaw config validate` passes and live roster is now exactly: `lead`, `mid`, `grunt-eng`, `grunt`, `re-review`, `email-parser`; `main`, `sonnet-review`, and `pa` are absent.
+- Updated active routing docs and the OpenClaw cost-control skill. The separate Hermes `papipa` / Mnemosyne profile and reminder cron jobs were intentionally left intact.
 
