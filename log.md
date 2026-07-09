@@ -1075,3 +1075,11 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Spec: /root/specs/171-bookmark-hell-pipeline-mvp1.md (6 phases: repo/schema/ingest → taxonomy/classifier → live bulk-50 checkpoint → Telegram capture → Notion mirror → parked backlog/digests).
 - Session handoff for fresh build session: /root/context/metis-handoff-bookmark-hell-2026-07-09.md. Project page updated.
 - Prior chain (specs 168/169/170) fully closed; Profit Engine evergreen at $9,756.60 / 8.6%.
+
+## [2026-07-09T02:44:13Z] ops | [hermes] Rotated all OpenClaw agent session stores
+- Papi requested rotation of all OC agents.
+- Safety checks passed: 0 running OC tasks, no fresh /root/tasks/*.progress blockers, safe_to_rotate=true.
+- Rotated explicit live roster: main, email-parser, lead, mid, grunt-eng, grunt, re-review, pa, sonnet-review.
+- Archives created under /root/.openclaw/agents/<agent>/sessions/archive/auto-20260709T024317Z.
+- Post-check: all targeted sessions.json reset, usage caches reset/absent as applicable, session_count=0, would_rotate=false, 0 running OC tasks.
+- Audit marker: /root/tasks/openclaw-all-agent-rotation-20260709T024248Z.done
