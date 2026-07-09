@@ -62,7 +62,7 @@ Write a small task file at `/root/tasks/notion-query-<slug>.txt`:
 ```
 Execute this task now:
 
-TIER: Grunt (Kimi K2.5)
+TIER: Grunt (DSv4 Flash)
 TASK: notion-query-<slug>
 
 OBJECTIVE:
@@ -106,7 +106,7 @@ whether to trigger `notion-ingest` on that page.
 
 ## Rules
 - Never fetch more than 3 Notion pages directly in one CC turn —
-  delegate to Grunt instead. CC context stays lean; Grunt has 256k ctx.
+  delegate to Grunt instead. CC context stays lean; Grunt is the DSv4 Flash mechanical lane.
 - Never call `notion-search` with broad unscoped queries like "stuff"
   or a single generic word. If the query is too broad, ask the user to
   narrow it before searching.

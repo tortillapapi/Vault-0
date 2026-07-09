@@ -23,8 +23,8 @@ tags: [governance, mirror, audit]
 - [Always Check OC Cheatsheet](feedback_always_check_oc_cheatsheet.md) — MUST read OC cheatsheet before every OpenClaw interaction, no exceptions
 - [Agent Dispatch Rules](reference_agent_dispatch.md) — Which OC agent (lead/mid/grunt) to use for which task complexity
 - [User Role & Orchestration](user_role_orchestrator.md) — User uses CC as orchestrator brain, OC as execution layer; accounts and contact info
-- [Kimi Weak Clock](feedback_kimi_timestamps.md) — Grunt agent (Kimi K2.5) writes wrong dates in .done files; verify with stat if audit matters
-- [OC Main Self-Orchestration](feedback_oc_main_self_orchestration.md) — Dispatch multi-phase specs to OC main in one call with pre-approved handoffs; saves ~10k CC tokens, 3× faster
+- [Provider Weak Clock](feedback_kimi_timestamps.md) — OpenCode-Go grunt lanes can write wrong dates in .done files; verify with stat if audit matters
+- [OC Lead Self-Orchestration](feedback_oc_main_self_orchestration.md) — Dispatch multi-phase specs to OC lead in one call with pre-approved handoffs; saves ~10k CC tokens, 3× faster
 - [Check systemd before run tasks](feedback_check_systemd_before_run_tasks.md) — On projects with a systemd/ dir, check timer state first; live timers silently race your work
 - [n8n Order Parser](project_n8n_order_parser.md) — Gmail→Sheets automation: 3 workflows, account_b=eBay; auto-deactivates on errors, won't self-re-enable
 - [Orders Dashboard v1.0](project_order_dashboard.md) — DECOMMISSIONED 2026-06-24 (spec 151); Flask + SQLite dashboard was on VPS port 5002, now stopped/disabled/masked. Legacy sheet trashed.
@@ -91,7 +91,7 @@ description: The grunt agent (opencode-go/kimi-k2.5) writes wrong dates in .done
 type: feedback
 originSessionId: f2acb00a-a3ae-402a-8fbc-68352a4bb5c0
 ---
-Kimi K2.5 running under the `grunt` OC agent does not have reliable
+OpenCode-Go models running under the `grunt`/`grunt-eng` OC agents do not have reliable
 access to current date/time. Observed on 2026-04-21: Kimi wrote
 `TIMESTAMP: 2026-01-15T00:00:00Z` in a .done file when the actual
 completion time was that same April day — ~3 months off.
@@ -452,7 +452,7 @@ ask. If pressed for ideas, candidate upgrades worth considering later:
 
 ---
 name: Agent dispatch rules for tiered OC system
-description: Which OC agent to use for which task complexity — lead (GPT 5.4), mid (GPT 5.3), grunt-eng (GLM 5.1), grunt (Kimi K2.5). Always check before delegating.
+description: Which OC agent to use for which task complexity — lead (GPT 5.5 high), mid (GPT 5.4 medium), grunt-eng/grunt (DSv4 Flash), re-review (GLM 5.2). Always check before delegating.
 type: reference
 originSessionId: a238ce87-1da8-45a0-bbab-7159be6a51a6
 ---
@@ -460,17 +460,16 @@ originSessionId: a238ce87-1da8-45a0-bbab-7159be6a51a6
 
 | Agent ID | Model | Thinking | Use For |
 |----------|-------|----------|---------|
-| `main` | openai/gpt-5.5 | default | Top-tier default: complex coding, multi-file work, multi-phase self-orchestration (identity now "Alfred"; legacy "Grunt" naming) |
-| `lead` | openai-codex/gpt-5.4 | `--thinking high` | Complex coding, architecture, multi-file, deep debugging |
-| `mid` | openai-codex/gpt-5.3-codex | `--thinking medium` | Single-file edits, wiring, config, tests, medium bugs |
-| `grunt-eng` | opencode-go/glm-5.1 | default | Grunt-level coding/engineering: simple code edits, script writing, small fixes (200k ctx) |
-| `grunt` | opencode-go/kimi-k2.5 | default | Non-code grunt work: file ops, docs, formatting, large-context tasks (256k ctx; sessionKey `agent:grunt:main`) |
+| `lead` | openai/gpt-5.5 | `--thinking high` | Top-tier/default: complex coding, architecture, multi-file work, deep debugging, multi-phase self-orchestration |
+| `mid` | openai/gpt-5.4 | `--thinking medium` | Medium edits, wiring, config, tests, structured review/escalation |
+| `grunt-eng` | opencode-go/deepseek-v4-flash | `--thinking low` | Bounded coding/engineering slices; keep tight and verify aggressively |
+| `grunt` | opencode-go/deepseek-v4-flash | `--thinking low` | Non-code grunt work: file ops, docs, formatting, large-context mechanical tasks (sessionKey `agent:grunt:main`) |
 | `email-parser` | google/gemini-2.5-flash | — | Email parsing only (live state verified 2026-05-21) |
-| `re-review` | opencode-go/qwen3.6-plus | — | Second-opinion re-parse for low-confidence emails (replaces mid in `_run_mid_review_pass`) |
+| `re-review` | opencode-go/glm-5.2 | `--thinking low` | First-pass QA over grunt/grunt-eng output |
 
 ## Grunt tier split
-- **`grunt-eng`** (GLM 5.1): any grunt task that involves writing or editing code
-- **`grunt`** (Kimi K2.5): non-code tasks, or tasks that need the larger 256k context window
+- **`grunt-eng`** (DSv4 Flash): bounded grunt task that involves writing or editing code
+- **`grunt`** (DSv4 Flash): non-code tasks, docs, formatting, and bulk mechanical transforms
 
 ## Execution syntax
 ```bash
@@ -543,12 +542,13 @@ openclaw agent --agent <id> --local --message "prompt" --json
 ```
 
 ### Available agents
-- `main` — openai/gpt-5.5 (default top-tier: complex coding, multi-file work, multi-phase self-orchestration; identity now "Alfred", legacy "Grunt")
-- `lead` — openai-codex/gpt-5.4 (complex tasks, `--thinking high`)
-- `mid` — openai-codex/gpt-5.3-codex (medium tasks, `--thinking medium`)
-- `grunt-eng` — opencode-go/glm-5.1 (grunt-level coding/engineering, 200k ctx)
-- `grunt` — opencode-go/kimi-k2.5 (non-code grunt: log edits, doc updates, formatting, ingest prep; 256k ctx; sessionKey `agent:grunt:main`)
+- `lead` — openai/gpt-5.5 (`--thinking high`; default/top-tier: complex coding, multi-file work, multi-phase self-orchestration)
+- `mid` — openai/gpt-5.4 (`--thinking medium`; medium tasks and structured review/escalation)
+- `grunt-eng` — opencode-go/deepseek-v4-flash (`--thinking low`; bounded code/config/parser work)
+- `grunt` — opencode-go/deepseek-v4-flash (`--thinking low`; non-code grunt: log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
+- `re-review` — opencode-go/glm-5.2 (`--thinking low`; first-pass QA over grunt/grunt-eng output)
 - `email-parser` — google/gemini-2.5-flash (email parsing only)
+- `pa` — openai/gpt-5.5 (`--thinking medium`; Telegram PA profile)
 
 ### NEVER use `openclaw agent --deliver` for simple message relay. Use `message send`.
 

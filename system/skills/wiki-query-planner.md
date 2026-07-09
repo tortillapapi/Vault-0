@@ -60,11 +60,11 @@ more than 15, tighten the query.
 ### 3. Decide Tier
 
 - **Lookup**: CC reads the page(s) and answers inline. No OC task needed.
-- **Comparison**: Route to Mid. GPT 5.3 is good at structured comparison.
-- **Synthesis**: Route to Lead. GPT 5.4 does real thinking.
+- **Comparison**: Route to Mid. GPT 5.4 is good at structured comparison.
+- **Synthesis**: Route to Lead. GPT 5.5 handles high-judgment synthesis.
 - **Gap-finding**: Route to Lead.
 - **Artifact generation**: Route to Grunt for the bulk transformation,
-  then Mid to review format.
+  then Re-review/GLM for first-pass QA and Mid for elevated-risk review.
 
 ### 4. Write the Query Task
 For non-lookup queries, create `/root/tasks/query-<slug>.txt`:

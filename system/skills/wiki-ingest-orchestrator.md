@@ -84,10 +84,11 @@ Create `/root/specs/ingest-<source-slug>.md`:
 - log.md: append ingest entry
 
 ## Tier Assignments
-- Task 01 (read + summary + updates): Grunt / Kimi K2.5
-- Task 02 (reviewer): Mid / GPT 5.3
-- Task 03 (fix pass, if needed): Grunt / Kimi K2.5
-- Task 04 (final sign-off): CC self-review
+- Task 01 (read + summary + updates): Grunt / DSv4 Flash
+- Task 02 (first-pass reviewer): Re-review / GLM 5.2
+- Task 03 (elevated-risk reviewer, if needed): Mid / GPT 5.4
+- Task 04 (fix pass, if needed): Grunt / DSv4 Flash
+- Task 05 (final sign-off): CC self-review
 
 ## Acceptance Criteria
 - [ ] Summary page created with required frontmatter
@@ -103,7 +104,7 @@ Create `/root/tasks/ingest-<source-slug>-grunt.txt`:
 ```
 Execute this task now:
 
-TIER: Grunt (Kimi K2.5)
+TIER: Grunt (DSv4 Flash)
 TASK: ingest-<source-slug>
 
 OBJECTIVE:
@@ -156,7 +157,7 @@ Create `/root/tasks/ingest-<source-slug>-review.txt`:
 ```
 Execute this task now:
 
-TIER: Mid (GPT 5.3 Codex)
+TIER: Re-review (GLM 5.2)
 TASK: review-ingest-<source-slug>
 SKILL: wiki-reviewer
 
@@ -193,7 +194,7 @@ file before the next:
    [paste into OC TUI]
    [wait for /root/tasks/ingest-<slug>-grunt.done]
 
-2. Mid review (route to agent:mid):
+2. First-pass review (route to agent:re-review:main):
    cat /root/tasks/ingest-<slug>-review.txt
    [paste into OC TUI]
    [wait for /root/tasks/ingest-<slug>.review]
@@ -216,7 +217,7 @@ When the user confirms `.review` is written, read it and decide:
 
 ## Rules
 
-- Never implement wiki edits yourself. You plan; Grunt executes; Mid reviews.
+- Never implement wiki edits yourself. You plan; Grunt executes; Re-review/GLM checks first, and Mid reviews elevated-risk work.
 - Always inline the schema contract into Grunt tasks. OC has no memory between
   tasks — a task must be self-contained.
 - Always specify the tier in the task file's header. This is how the human

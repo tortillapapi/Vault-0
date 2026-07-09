@@ -95,16 +95,16 @@ Create `/root/tasks/ingest-notion-<slug>-grunt.txt`. Instruct Grunt to:
    - Source: raw/notion/<slug>-<date>.md (Notion page <uuid>)
    - Pages touched: <count>
    - Contradictions: <none | list>
-   - Tier: grunt (Kimi K2.5) → mid-review pending
+   - Tier: grunt (DSv4 Flash) → re-review/GLM first-pass pending
    ```
 
-### 6. Write the Mid Review Task
+### 6. Write the Review Task
 Same as the standard ingest review flow. Inline the spec and the Grunt
 .done file. Write output to
 `/root/tasks/ingest-notion-<slug>.review`.
 
 ### 7. Hand Off to User
-Output the sequence (Grunt → Mid → CC sign-off) matching the
+Output the sequence (Grunt → Re-review/GLM → Mid if needed → CC sign-off) matching the
 wiki-ingest-orchestrator §7 pattern.
 
 ### 8. After Review

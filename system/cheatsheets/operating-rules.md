@@ -21,8 +21,8 @@ Codex, and OpenClaw equally (and Hermes once installed).
   exceptions, even if you think you remember the syntax.
 
 ## Dispatch & verification
-- **OC main can self-orchestrate multi-phase specs (3+ phases).** Dispatch the
-  whole spec to `main` with pre-approved handoffs + a `.progress` file instead of
+- **OC lead can self-orchestrate multi-phase specs (3+ phases).** Dispatch the
+  whole spec to `lead` with pre-approved handoffs + a `.progress` file instead of
   CC driving each phase (~10k tokens / ~3× faster). Not for single-phase work or
   phases needing CC judgment between them.
 - **OpenClaw grunt session watchdog is installed.** `/root/bin/openclaw-grunt-session-maintenance.py`
@@ -33,11 +33,11 @@ Codex, and OpenClaw equally (and Hermes once installed).
   It refuses rotation when targeted OpenClaw tasks are running or fresh
   `/root/tasks/*.progress` markers exist.
 - **OpenCode-Go agents have a weak clock (provider-wide, not just Kimi).** `grunt`
-  and `grunt-eng` now run DeepSeek V4 Flash by default and `re-review` runs Qwen3.6,
+  and `grunt-eng` now run DeepSeek V4 Flash by default and `re-review` runs GLM 5.2,
   but hosted models can still misread current date/time. Always inject exact dates
   in task prompts and require `date -u` for completion markers; verify `.done`
   times with `stat -c %y` when audit accuracy matters. OpenAI agents
-  (main/lead/mid on gpt-5.5) are unaffected.
+  (`lead` on GPT-5.5 high, `mid` on GPT-5.4 medium, `pa` on GPT-5.5 medium) are unaffected.
 - **Verification checks must match unique content text**, not numeric prefixes or
   assumed file/process structure. Use `pgrep -af <name>` not `systemctl is-active`
   unless the target is confirmed a systemd unit (OpenClaw runs many plain
@@ -45,8 +45,8 @@ Codex, and OpenClaw equally (and Hermes once installed).
 - **Check systemd state before dispatching run-type tasks** on any project with a
   `systemd/` dir — a live timer can silently race your work.
 - **Two-stage review chain over grunt work.** Grunt-tier output (`grunt`,
-  `grunt-eng`) goes through `re-review` (Qwen3.6) for first-pass QA, then `mid`
-  (GPT-5.5, medium) as a second review, before the orchestrator approves. Applies
+  `grunt-eng`) goes through `re-review` (GLM 5.2) for first-pass QA, then `mid`
+  (GPT-5.4, medium) as a second review when risk warrants it, before the orchestrator approves. Applies
   to all grunt work, not just the email parser. **Bound every review prompt to the
   spec, the changed files/diff, test output, and the `.done` marker** — never broad
   project/session history; inherited context is the main review-cost leak.
@@ -54,10 +54,10 @@ Codex, and OpenClaw equally (and Hermes once installed).
 - **Dispatch cost discipline — keep OpenAI for judgment.** OpenClaw's connected
   OpenAI/ChatGPT account is separate from Hermes/Janus's OpenAI account, so an
   OpenClaw GPT rolling-window burn does not affect Hermes availability. Within
-  OpenClaw, OpenAI/gpt-5.5 quota is still the scarce pool (`main`/`lead`/`mid`/`pa`);
-  DeepSeek (`grunt`/`grunt-eng`) and Qwen (`re-review`) are separate pools. Default
+  OpenClaw, OpenAI quota is still the scarce pool (`lead`/`mid`/`pa`);
+  DeepSeek (`grunt`/`grunt-eng`) and GLM (`re-review`) are separate pools. Default
   mechanical/coding work to `grunt-eng` and docs/formatting to `grunt`; reserve
-  OpenClaw `main`/`lead`/`mid` for genuine synthesis, cross-file judgment, or
+  OpenClaw `lead`/`mid` for genuine synthesis, cross-file judgment, or
   multi-phase self-orchestration. If OpenClaw GPT is burned but GPT is still needed
   for low/medium work, Janus may use Hermes delegation/subagents on the Hermes
   account with lower reasoning while keeping Janus itself on the high-reasoning
@@ -74,14 +74,14 @@ Codex, and OpenClaw equally (and Hermes once installed).
   quota-point deltas (e.g. one session moving the weekly window ≥2 points), not on
   raw-token thresholds.
 - **One project = one pre-approved dispatch, not many sequential GPT sessions.**
-  Bundle a project's phases into a single self-orchestrated `main` dispatch (or a
+  Bundle a project's phases into a single self-orchestrated `lead` dispatch (or a
   bounded `mid`/grunt chain). Re-opening a fresh GPT session per phase replays the
   full instruction/tool payload each time — the specs 105-110 usage-tracker sprint
   opened 7 sequential `main`/xhigh sessions for one project, the clearest avoidable
   burn to date.
 - **Scheduled GPT crons need a justified tier.** Any recurring `openclaw cron` /
   systemd job that wakes an OpenAI agent must run at the lowest tier that does the
-  job: default recurring audits/reviews to `mid`/medium or `re-review`/Qwen; reserve
+  job: default recurring audits/reviews to `mid`/medium or `re-review`/GLM; reserve
   `lead`/`high`+ for jobs that demonstrably need it; re-audit periodically.
   (2026-06-09: `parser-daily-audit` moved lead/high → mid/medium.)
 - **Don't run heavy introspective usage reports on the paid OpenAI account.**
@@ -90,8 +90,8 @@ Codex, and OpenClaw equally (and Hermes once installed).
   instead; if a narrative report is genuinely needed, run it on a cheaper agent.
 
 ## Session hygiene
-- **Manage OC main's context proactively.** Don't ask every session, but check
-  OC main's context % before a heavy/multi-phase dispatch, and recommend `/clear`
+- **Manage OC lead's context proactively.** Don't ask every session, but check
+  OC lead's context % before a heavy/multi-phase dispatch, and recommend `/clear`
   (not `/compact`) after a multi-phase spec completes — disk state is canonical.
 
 ## Project guardrails

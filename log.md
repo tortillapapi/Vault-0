@@ -1087,4 +1087,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Papi confirmed Metis completed Specs 169 and 170; archived stale Spec 170 fixup blockers under `/root/tasks/archive/stale-169-170-metis-complete-20260709T043301Z/` and added matching parent marker `/root/tasks/169-profit-engine-ebay-final-value-fees-missing.done`.
 - Updated live OpenClaw routing: `lead` is default/top lane on `openai/gpt-5.5` high; `mid` is `openai/gpt-5.4` medium; `grunt` and `grunt-eng` both use `opencode-go/deepseek-v4-flash`; `re-review` uses `opencode-go/glm-5.2`.
 - Removed `main` and `sonnet-review` from the configured active roster; verified `openclaw config validate` and `openclaw agents list --json`. Metis/Spec 171 was not touched.
+## [2026-07-09T04:41:18Z] ops | [hermes] Aligned shared orchestrator routing materials
+- Papi asked that all orchestrator model instructions follow the new hierarchy. Patched active shared routing docs (`operating-rules`, `tier-routing`, OC CLI/agent config already current), wiki/notion routing skills/templates, and the CC memory mirror sections that listed stale Kimi/GPT-5.3/Qwen/main lanes.
+- Patched OpenClaw workspace docs/skills (`AGENTS.md`, wiki quick-reference, Claude additions, wiki page editor/reviewer) after creating `.bak-20260709T044118Z` backups for non-vault instruction files.
+- Patched Hermes project guidance `/root/.hermes.md` and the OpenClaw cost-control skill so future Hermes/Janus sessions route to: lead GPT-5.5 high, mid GPT-5.4 medium, grunt/grunt-eng DSv4 Flash low, re-review GLM 5.2 low; `main` and `sonnet-review` remain removed. Historical logs/archives and Metis-owned active Spec 171 were intentionally left untouched.
 
