@@ -65,23 +65,21 @@ openclaw agent --agent <id> --local --message "prompt" --json
 ```
 
 ### Available agents
-- `main` — openai/gpt-5.5 (leave alone; do not burn unless explicitly needed)
-- `lead` — openai/gpt-5.4 (`--thinking medium`; leave unchanged but avoid dispatch unless needed; route output through Sonnet 5 review)
-- `mid` — anthropic/claude-sonnet-4-6 (`--thinking medium`; use Claude Code CLI while Anthropic API credits are unavailable: `openclaw-claude-lane mid`)
-- `sonnet-review` — anthropic/claude-sonnet-5 (`--thinking high`; strong reviewer for `mid`/`lead` output before Hermes/Janus final checkpoint; use `openclaw-claude-lane sonnet-review`)
-- `grunt-eng` — openai/gpt-5.4-mini (`--thinking low`; bounded code/config/parser work and low-risk implementation slices)
-- `grunt` — google/gemini-2.5-flash-lite (basic execution: non-code grunt work, log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
-- `re-review` — anthropic/claude-haiku-4-5 (`--thinking low`; first-pass QA over all grunt/grunt-eng output; use Claude Code CLI while Anthropic API credits are unavailable: `openclaw-claude-lane re-review`)
+- `lead` — openai/gpt-5.5 (`--thinking high`; default/top OpenClaw reasoning lane; `main` has been merged into this lane)
+- `mid` — openai/gpt-5.4 (`--thinking medium`; medium review/escalation lane)
+- `grunt-eng` — opencode-go/deepseek-v4-flash (`--thinking low`; bounded code/config/parser work and low-risk implementation slices)
+- `grunt` — opencode-go/deepseek-v4-flash (`--thinking low`; basic execution: non-code grunt work, log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
+- `re-review` — opencode-go/glm-5.2 (`--thinking low`; first-pass QA over all grunt/grunt-eng output)
 - `email-parser` — google/gemini-2.5-flash (email parsing only)
+- `pa` — openai/gpt-5.5 (`--thinking medium`; dedicated Telegram personal-assistant profile)
 
-### Claude Code CLI lanes for Anthropic models
-When the routing plan calls for an Anthropic model, do **not** dispatch through `openclaw agent` while the Anthropic API provider is credit-blocked. Use the authenticated Claude Code CLI wrapper instead:
+### Current review chain
 ```bash
-openclaw-claude-lane re-review < /root/tasks/<task>.review.txt      # claude-haiku-4-5, low
-openclaw-claude-lane mid < /root/tasks/<task>.mid-review.txt        # claude-sonnet-4-6, medium
-openclaw-claude-lane sonnet-review < /root/reviews/<task>-mid.md    # claude-sonnet-5, high
+openclaw agent --agent re-review --local --thinking low --message "..." --json   # GLM 5.2 first-pass review
+openclaw agent --agent mid --local --thinking medium --message "..." --json      # GPT-5.4 medium review/escalation
+openclaw agent --agent lead --local --thinking high --message "..." --json       # GPT-5.5 high-stakes escalation/default
 ```
-Hermes/Janus remains the final checkpoint after the CLI review.
+`sonnet-review` is no longer configured. Hermes/Janus remains the final checkpoint after OC review.
 
 ### NEVER use `openclaw agent --deliver` for simple message relay. Use `message send`.
 

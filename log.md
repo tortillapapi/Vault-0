@@ -1083,3 +1083,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Archives created under /root/.openclaw/agents/<agent>/sessions/archive/auto-20260709T024317Z.
 - Post-check: all targeted sessions.json reset, usage caches reset/absent as applicable, session_count=0, would_rotate=false, 0 running OC tasks.
 - Audit marker: /root/tasks/openclaw-all-agent-rotation-20260709T024248Z.done
+## [2026-07-09T04:33:01Z] ops | [hermes] OpenClaw hierarchy rerouted after weekly limits recovered
+- Papi confirmed Metis completed Specs 169 and 170; archived stale Spec 170 fixup blockers under `/root/tasks/archive/stale-169-170-metis-complete-20260709T043301Z/` and added matching parent marker `/root/tasks/169-profit-engine-ebay-final-value-fees-missing.done`.
+- Updated live OpenClaw routing: `lead` is default/top lane on `openai/gpt-5.5` high; `mid` is `openai/gpt-5.4` medium; `grunt` and `grunt-eng` both use `opencode-go/deepseek-v4-flash`; `re-review` uses `opencode-go/glm-5.2`.
+- Removed `main` and `sonnet-review` from the configured active roster; verified `openclaw config validate` and `openclaw agents list --json`. Metis/Spec 171 was not touched.
+
