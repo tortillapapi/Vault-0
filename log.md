@@ -1069,3 +1069,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - New accepted 2026 YTD (Papi pre-approved restatement): combined net `$9,756.60` / `8.6%`; Amazon `$9,093.96` / `8.3%`; eBay `$662.64` / `20.9%` (landed in the predicted $600–900 band). Revenue `$112,842.09` (includes ~$4.9k fully-costed July orders from an incidental orders catch-up). Delta trail: $13,791.83 → −2,790.24 (168) → −627.74 (eBay fees) → −617.25 (July fees) → $9,756.60.
 - Verified independently: fin event counts reconcile exactly (24,806 Amazon / 44 eBay), dup-group audit clean (428→429, legit), master pushed.
 - Reports: /root/sales-data/reports/profit/net-profit-{v1,order-date,statement-date}-20260708T195024Z.*
+
+## [2026-07-09T01:30:00Z] project | [metis] Bookmark Hell Pipeline ACTIVATED — spec 171 written, handoff prepared
+- Papi locked all decisions: SQLite source-of-truth + one-way Notion visual mirror (status-only read-back); `<url> [note]` capture; bulk-50 calibration run first; 6 seed categories + tags mined from 66 TikTok collection names; transcript-first + confidence gate; categories grow by cluster-proposal only.
+- Spec: /root/specs/171-bookmark-hell-pipeline-mvp1.md (6 phases: repo/schema/ingest → taxonomy/classifier → live bulk-50 checkpoint → Telegram capture → Notion mirror → parked backlog/digests).
+- Session handoff for fresh build session: /root/context/metis-handoff-bookmark-hell-2026-07-09.md. Project page updated.
+- Prior chain (specs 168/169/170) fully closed; Profit Engine evergreen at $9,756.60 / 8.6%.

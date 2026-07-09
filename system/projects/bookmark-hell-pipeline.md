@@ -1,8 +1,19 @@
 # Bookmark Hell Pipeline
 
-Status: **ingestion + extraction core BUILT & piloted (2026-06-23)**; export automation + resurfacing still parked
+Status: **ACTIVATED 2026-07-09 — MVP v1 spec ready** (`/root/specs/171-bookmark-hell-pipeline-mvp1.md`); ingestion+extraction core built & piloted 2026-06-23
 Owner/orchestrator: Hermes/Janus (plan) · Metis/CC (2026-06-23 build)
 Captured: 2026-06-10T20:03:15Z · Updated: 2026-06-23
+
+## 2026-07-09 activation (Metis/CC)
+
+Papi activated the project and locked all open decisions:
+hybrid storage (SQLite source of truth + one-way Notion visual mirror w/
+status-only read-back), `<url> [note]` Telegram capture, bulk-50 calibration
+run first (then checkpoint before the 2,011 backlog), seed taxonomy of 6
+categories + tags mined from his 66 TikTok collection names, transcript-first
+classification with a confidence gate, categories grow only by cluster
+proposal. Full plan: spec 171 (6 phases; digests/resurfacing parked as Phase 6).
+Handoff for the build session: `/root/context/metis-handoff-bookmark-hell-2026-07-09.md`.
 
 ## 2026-06-23 update — the engine is built (Metis/CC)
 
