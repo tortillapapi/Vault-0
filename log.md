@@ -1100,3 +1100,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Verified `openclaw config validate` passes and live roster is now exactly: `lead`, `mid`, `grunt-eng`, `grunt`, `re-review`, `email-parser`; `main`, `sonnet-review`, and `pa` are absent.
 - Updated active routing docs and the OpenClaw cost-control skill. The separate Hermes `papipa` / Mnemosyne profile and reminder cron jobs were intentionally left intact.
 
+
+## [2026-07-09T08:00:00Z] project | [hermes] Bookmark Hell Pipeline paused after MVP core + 150 TikTok calibration
+- Papi asked to put a pin in Spec 171 after choosing Janus/Hermes as the Phase 4 capture surface instead of Metis/Alfred Telegram.
+- Built `/root/bookmark-pipeline` through Phase 4: SQLite schema/store/ingest, taxonomy/classifier, bulk runner, Gemini visual fallback, and `scripts/capture.py` for pasted URL capture/classify.
+- Processed 150 TikTok favorites from `/root/bookmarks-data/tiktok-export-2026-06-24.json`: 134 triaged, 16 needs_sorting. Category counts: Personal Improvement 40, Business/Reselling 33, AI/Automation 26, Recipes/Food 15, Funny/Low-Priority 11, Places/Travel 9.
+- Gemini video describe via OpenClaw recovered most silent/music-only low-confidence items; remaining needs_sorting are mostly TikTok download/format/IP/stale/private failures.
+- Resume handoff: `/root/context/bookmark-hell-pipeline-pause-2026-07-09.md`; project page updated at `/root/obsidian-vault/system/projects/bookmark-hell-pipeline.md`.

@@ -15,6 +15,61 @@ classification with a confidence gate, categories grow only by cluster
 proposal. Full plan: spec 171 (6 phases; digests/resurfacing parked as Phase 6).
 Handoff for the build session: `/root/context/metis-handoff-bookmark-hell-2026-07-09.md`.
 
+## 2026-07-09 pause point — MVP core built, 150 TikToks calibrated (Hermes/Janus)
+
+Papi asked to put a pin in the project after Phase 4 capture became usable in the Janus/Hermes chat.
+
+**Current implementation:**
+
+- Repo: `/root/bookmark-pipeline` (git repo; code only)
+- Data dir: `/root/bookmarks-data` (not git)
+- DB: `/root/bookmarks-data/bookmarks.db`
+- Export source: `/root/bookmarks-data/tiktok-export-2026-06-24.json`
+- Resume handoff: `/root/context/bookmark-hell-pipeline-pause-2026-07-09.md`
+
+**Completed under Spec 171:**
+
+| Phase | Status | Notes |
+|---|---|---|
+| Phase 1 | complete | SQLite schema, store, canonicalization/dedupe, ingest CLI |
+| Phase 2 | complete | Taxonomy from collection names + strict JSON classifier |
+| Phase 3 | complete/calibrated | 150 TikTok favorites processed; Gemini visual fallback added |
+| Phase 4 | minimally live | Janus/Hermes can run `scripts/capture.py <url> [note]` for pasted URLs |
+| Phase 5 | not started | Notion mirror blocked on future decision/token setup |
+| Phase 6 | parked | Full backlog/digests/resurfacing remain future specs |
+
+**Current DB state (`source='bulk_export'`):**
+
+| Status | Count |
+|---|---:|
+| triaged | 134 |
+| needs_sorting | 16 |
+| total | 150 |
+
+**Category distribution:**
+
+| Category | Count |
+|---|---:|
+| Personal Improvement | 40 |
+| Business/Reselling | 33 |
+| AI/Automation | 26 |
+| Recipes/Food | 15 |
+| Funny/Low-Priority | 11 |
+| Places/Travel | 9 |
+| needs_sorting / NULL | 16 |
+
+**Important implementation notes:**
+
+- Gemini video describe is available through OpenClaw without new setup: `openclaw infer video describe --file <mp4> --json`.
+- Visual fallback recovered most silent/music-only TikToks that transcript-only classification could not classify.
+- Remaining `needs_sorting` items are mostly video download failures: TikTok format unavailable, IP block, HTTP 500, stale/private content.
+- Capture is currently routed through Janus/Hermes, not Metis/Alfred Telegram. Working command:
+  `PYTHONPATH=/root/bookmark-pipeline BOOKMARKS_DATA_DIR=/root/bookmarks-data python3 /root/bookmark-pipeline/scripts/capture.py '<url>' '<optional note>'`
+- Last code commit at pause: `a988542` (`Spec 171 Phase 4: capture.py — one-command bookmark capture + classify for Telegram`).
+
+**Next recommended resume step:** review/tune the 16 `needs_sorting` rows or decide whether to continue another batch vs. move to Notion mirror / digest design.
+
+
 ## 2026-06-23 update — the engine is built (Metis/CC)
 
 The hard middle of this plan — capture → transcript → summary → category →
