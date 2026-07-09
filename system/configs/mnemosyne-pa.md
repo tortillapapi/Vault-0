@@ -126,11 +126,21 @@ reminders.
 
 ## Due reminder dispatcher
 
-Spec 114 installed:
+Spec 114 installed canonical dispatcher:
 
 ```text
 /root/.hermes/profiles/papipa/scripts/mnemo-due-dispatch.py
 ```
+
+The default-profile cron scheduler resolves relative script names under
+`/root/.hermes/scripts/`, so keep this shim present too:
+
+```text
+/root/.hermes/scripts/mnemo-due-dispatch.py
+```
+
+The shim execs the canonical papipa dispatcher and prevents the cron failure
+`Script not found: /root/.hermes/scripts/mnemo-due-dispatch.py`.
 
 Behavior:
 

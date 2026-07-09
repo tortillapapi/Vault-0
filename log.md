@@ -1091,4 +1091,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Papi asked that all orchestrator model instructions follow the new hierarchy. Patched active shared routing docs (`operating-rules`, `tier-routing`, OC CLI/agent config already current), wiki/notion routing skills/templates, and the CC memory mirror sections that listed stale Kimi/GPT-5.3/Qwen/main lanes.
 - Patched OpenClaw workspace docs/skills (`AGENTS.md`, wiki quick-reference, Claude additions, wiki page editor/reviewer) after creating `.bak-20260709T044118Z` backups for non-vault instruction files.
 - Patched Hermes project guidance `/root/.hermes.md` and the OpenClaw cost-control skill so future Hermes/Janus sessions route to: lead GPT-5.5 high, mid GPT-5.4 medium, grunt/grunt-eng DSv4 Flash low, re-review GLM 5.2 low; `main` and `sonnet-review` remain removed. Historical logs/archives and Metis-owned active Spec 171 were intentionally left untouched.
+## [2026-07-09T05:29:40Z] ops | [hermes] Fixed Mnemosyne due dispatcher cron shim
+- Cron job `cbcef468213a` (`Mnemosyne Due Reminder Dispatcher`) failed because relative script `mnemo-due-dispatch.py` resolved under `/root/.hermes/scripts/`, but the canonical dispatcher lives under the `papipa` profile at `/root/.hermes/profiles/papipa/scripts/mnemo-due-dispatch.py`.
+- Added `/root/.hermes/scripts/mnemo-due-dispatch.py` shim that execs the papipa dispatcher, chmod 755, compiled both scripts, and verified controlled no-due run with `--now 1970-01-01T00:00:00-08:00` exited 0 with 0 stdout bytes.
+- Manually ran cron job once through Hermes cron; result `last_status=ok`, `execution_success=true`, next run scheduled normally. Updated Mnemosyne PA config doc with shim note.
 
