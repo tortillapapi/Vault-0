@@ -243,3 +243,9 @@
 - Recall: 4 order emails | 4 matched | MISSES: none
 - Precision: 5 recent rows | 5 confirmed | FALSE POSITIVES: none
 - Verdict: OK
+
+## 2026-07-09
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 9 order emails | 2 matched | MISSES: Alibaba …0582 2026-07-09 (2 orders)
+- Precision: 1 recent rows | 1 confirmed | FALSE POSITIVES: none
+- Verdict: ANOMALIES
