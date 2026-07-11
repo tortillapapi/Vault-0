@@ -1107,3 +1107,7 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Processed 150 TikTok favorites from `/root/bookmarks-data/tiktok-export-2026-06-24.json`: 134 triaged, 16 needs_sorting. Category counts: Personal Improvement 40, Business/Reselling 33, AI/Automation 26, Recipes/Food 15, Funny/Low-Priority 11, Places/Travel 9.
 - Gemini video describe via OpenClaw recovered most silent/music-only low-confidence items; remaining needs_sorting are mostly TikTok download/format/IP/stale/private failures.
 - Resume handoff: `/root/context/bookmark-hell-pipeline-pause-2026-07-09.md`; project page updated at `/root/obsidian-vault/system/projects/bookmark-hell-pipeline.md`.
+
+## [2026-07-09T23:58:08Z] project | [hermes] Parked Spec 181 reseller SaaS replacement idea
+- Captured X/Twitter idea as parked backlog only: `/root/specs/181-reseller-saas-replacement-backlog.md`.
+- No implementation dispatched; activation requires Papi approval phrase: `Start Spec 181 discovery: build the SaaS Replacement ROI Matrix.`

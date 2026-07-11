@@ -255,3 +255,9 @@
 - Recall: 0 order emails | 0 matched | MISSES: none
 - Precision: 1 recent rows | 1 confirmed | FALSE POSITIVES: none
 - Verdict: OK
+
+## 2026-07-11
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 3 order emails | 2 matched | MISSES: LACourt …8292 2026-07-10
+- Precision: 2 recent rows | 2 confirmed | FALSE POSITIVES: none
+- Verdict: ANOMALIES
