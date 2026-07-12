@@ -261,3 +261,9 @@
 - Recall: 3 order emails | 2 matched | MISSES: LACourt …8292 2026-07-10
 - Precision: 2 recent rows | 2 confirmed | FALSE POSITIVES: none
 - Verdict: ANOMALIES
+
+## 2026-07-12
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 0 order emails | 0 matched | MISSES: none
+- Precision: 2 recent rows | 0 confirmed | FALSE POSITIVES: Alibaba …0582 2026-07-08 (2 rows)
+- Verdict: ANOMALIES
