@@ -141,3 +141,19 @@ in `/root/n8n/local-files/order-parser` (repo has NO git remote — local only):
 - `run_fixtures.js` now runs the full fixture suite (12/12 passing as of 2026-07-05).
 
 Full pre-commit diff snapshot: `/root/reviews/166-parser-repo-diff-snapshot.md` (0600).
+
+## Parser escalation follow-up (2026-07-13)
+
+- Root cause of the 2026-07-13 parser escalation: scheduled `order-parser.service`
+  completed account_a/account_b but the Master rebuild hit a transient Google
+  Sheets API `A:K:clear` HTTP 500. Master was manually refreshed afterward:
+  account_a 47 + account_b 63 -> Master 109 rows, 1 deduped.
+- `order_parser.js` now retries transient Google API `429`/`5xx` responses with
+  exponential backoff before failing the run. Local parser repo commit: `4407ae5`.
+- `/root/scripts/refresh-master.sh` now writes a sanitized recovery marker at
+  `/var/lib/order-parser/master-refresh-status.json`; `/root/scripts/parser-run-status.sh`
+  treats a later successful Master refresh as recovery for that day's Master step.
+- `parser-cc-review.timer` is disabled because its isolated Claude Code home is
+  unauthenticated (`Not logged in · Please run /login`) and was sending false
+  failure alerts. `parser-codex-review.timer` remains enabled and healthy at
+  09:40 America/Los_Angeles.
