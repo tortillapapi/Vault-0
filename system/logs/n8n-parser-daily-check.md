@@ -267,3 +267,10 @@
 - Recall: 0 order emails | 0 matched | MISSES: none
 - Precision: 2 recent rows | 0 confirmed | FALSE POSITIVES: Alibaba …0582 2026-07-08 (2 rows)
 - Verdict: ANOMALIES
+
+## 2026-07-13
+- Workflows: account_a=success | account_b=success | master=error
+- Recall: 1 order emails | 1 matched | MISSES: none
+- Precision: 1 recent rows | 1 confirmed | FALSE POSITIVES: none
+- Verdict: ANOMALIES
+- Finding: master failed on Google Sheets clear/write (`A:K:clear` HTTP 500 INTERNAL); likely transient Sheets API failure per parser master path.
