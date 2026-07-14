@@ -1116,3 +1116,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Fixed Milo Telegram image handling by setting `/root/.hermes/profiles/milo/config.yaml` auxiliary vision to Anthropic `claude-sonnet-4.6`; the previous `auto` setting failed on the cached menu image with `No LLM provider configured for task=vision`.
 - Updated Milo's `SOUL.md` and nutrition skill so package labels route to exact `label_photo` extraction, while restaurant/menu photos route through visible-item extraction and explicit `user_provided` or `web_estimate` `label-json` previews.
 - Verification: nutrition kernel compile ok, isolated self-test `61/61` passed, Anthropic `vision_analyze` read cached image `/root/.hermes/profiles/milo/cache/images/img_f77ef2e18e14.jpg`; `hermes-gateway-milo.service` restarted and returned active/running with Telegram connected and no new vision-provider error.
+
+## [2026-07-14T03:46:30Z] ops | [codex] Milo vision/web lookup follow-up fixed live gateway path
+- Papi's live retry still failed because Telegram image pre-analysis runs before Milo's per-turn `.env` load; systemd also did not expose Anthropic credentials. Anthropic then reported insufficient credits, so the final vision backend moved to OpenAI/Codex `gpt-5.4`.
+- Added `/root/.config/systemd/user/hermes-gateway-milo.service.d/override.conf` with `EnvironmentFile=/root/.hermes/profiles/milo/.env`; removed the temporary Anthropic key copy from Milo `.env`; kept normal Telegram/OpenCode env vars service-visible.
+- Enabled web lookup by installing `ddgs` in the Hermes venv and setting Milo `web.backend=ddgs` plus `web.search_backend=ddgs`.
+- Verification: `vision_analyze` on `/root/.hermes/profiles/milo/cache/images/img_2a39801a1500.jpg` could inspect the menu image; `web_search` returned Panda Express nutrition facts via DDGS; `hermes-gateway-milo.service` restarted active/running and Telegram connected.

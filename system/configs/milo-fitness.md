@@ -164,10 +164,18 @@ The nutrition kernel supports food logging, daily totals, undo, saved meals,
 saved foods, and nutrition-label text/JSON ingestion. Nutrition label photo
 handling was activated under Specs 118-119 on June 6, 2026.
 On July 14, 2026, Milo's auxiliary vision backend was set explicitly to
-Anthropic `claude-sonnet-4.6` after Telegram photo pre-analysis failed with
-`No LLM provider configured for task=vision provider=auto`. The main chat model
-remains `opencode-go/deepseek-v4-pro`; only image extraction uses the vision
-backend.
+OpenAI/Codex `gpt-5.4` after Telegram photo pre-analysis failed with
+`No LLM provider configured for task=vision provider=auto`; an attempted
+Anthropic vision route was also rejected by low account credits. The main chat
+model remains `opencode-go/deepseek-v4-pro`; only image extraction uses the
+vision backend. The gateway service has a systemd drop-in that loads
+`/root/.hermes/profiles/milo/.env` at process start, because Telegram image
+pre-analysis runs before the normal per-turn agent env load.
+
+Web lookup flow: Milo uses DDGS (`web.backend=ddgs`,
+`web.search_backend=ddgs`) for no-key web searches. This fixes restaurant and
+chain nutrition lookups without relying on the browser fallback, which had no
+Chrome installed.
 
 Visual nutrition flow:
 
@@ -217,16 +225,17 @@ Vision verification:
 python3 -m py_compile /root/.hermes/profiles/milo/nutrition/milo_nutrition.py
 MILO_DISABLE_SHEET=1 MILO_NUTRITION_HOME=$(mktemp -d) \
   python3 /root/.hermes/profiles/milo/nutrition/milo_nutrition.py --self-test
-hermes --profile milo -z 'Use vision_analyze on ...' \
-  --provider anthropic --model claude-sonnet-4.6 -t vision
+hermes --profile milo -z 'Use vision_analyze on ...' -t vision
+hermes --profile milo -z 'Use web_search for ...' -t web
 systemctl --user restart hermes-gateway-milo
 systemctl --user status hermes-gateway-milo
 ```
 
-July 14 verification: nutrition self-test `61/61` passed; Anthropic
-`vision_analyze` could read the cached menu image at
-`/root/.hermes/profiles/milo/cache/images/img_f77ef2e18e14.jpg`; gateway restart
-returned active/running.
+July 14 verification: nutrition self-test `61/61` passed; `vision_analyze`
+could inspect cached menu image
+`/root/.hermes/profiles/milo/cache/images/img_2a39801a1500.jpg`; `web_search`
+returned Panda Express nutrition facts through DDGS; gateway restart returned
+active/running and Telegram connected.
 
 ## Change Documentation Rule
 
