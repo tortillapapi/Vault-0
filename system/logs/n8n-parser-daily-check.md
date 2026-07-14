@@ -274,3 +274,9 @@
 - Precision: 1 recent rows | 1 confirmed | FALSE POSITIVES: none
 - Verdict: ANOMALIES
 - Finding: master failed on Google Sheets clear/write (`A:K:clear` HTTP 500 INTERNAL); likely transient Sheets API failure per parser master path.
+
+## 2026-07-14
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 0 order emails | 0 matched | MISSES: none
+- Precision: 2 recent rows | 0 confirmed | FALSE POSITIVES: Loaded Sales …2032 2026-07-12; Amazon …0265 2026-07-14
+- Verdict: ANOMALIES
