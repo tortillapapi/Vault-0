@@ -4,7 +4,7 @@ title: Milo Fitness Bot
 slug: milo-fitness
 owner: hermes
 created: 2026-06-10
-last_updated: 2026-06-10
+last_updated: 2026-07-14
 derived_from:
   - /root/.hermes/profiles/milo/SOUL.md
   - /root/.hermes/profiles/milo/profile.yaml
@@ -163,6 +163,23 @@ Primary code and state:
 The nutrition kernel supports food logging, daily totals, undo, saved meals,
 saved foods, and nutrition-label text/JSON ingestion. Nutrition label photo
 handling was activated under Specs 118-119 on June 6, 2026.
+On July 14, 2026, Milo's auxiliary vision backend was set explicitly to
+Anthropic `claude-sonnet-4.6` after Telegram photo pre-analysis failed with
+`No LLM provider configured for task=vision provider=auto`. The main chat model
+remains `opencode-go/deepseek-v4-pro`; only image extraction uses the vision
+backend.
+
+Visual nutrition flow:
+
+- package nutrition labels -> extract exact visible label fields and pass them
+  to `label-json` with `source=label_photo`;
+- restaurant menus/menu boards/receipts -> extract visible item names,
+  descriptions, ingredients, portion clues, prices, and printed calories/macros;
+- menu images with printed calories/macros -> pass exact visible values through
+  `label-json` with `source=user_provided`;
+- menu images with only descriptions/ingredients -> build a labeled menu
+  estimate via `label-json` with `source=web_estimate`, preview first, and log
+  only after Papi confirms item, serving, meal type, date, and macros.
 
 Hard rules:
 
@@ -193,6 +210,23 @@ Self-tests must set `MILO_DISABLE_SHEET=1` and use a temporary
 `MILO_WORKOUT_HOME` or `MILO_NUTRITION_HOME`. Never run mutation smoke tests
 against live local state. Live Sheet tests must use obvious `TEST` rows and
 clean them immediately.
+
+Vision verification:
+
+```bash
+python3 -m py_compile /root/.hermes/profiles/milo/nutrition/milo_nutrition.py
+MILO_DISABLE_SHEET=1 MILO_NUTRITION_HOME=$(mktemp -d) \
+  python3 /root/.hermes/profiles/milo/nutrition/milo_nutrition.py --self-test
+hermes --profile milo -z 'Use vision_analyze on ...' \
+  --provider anthropic --model claude-sonnet-4.6 -t vision
+systemctl --user restart hermes-gateway-milo
+systemctl --user status hermes-gateway-milo
+```
+
+July 14 verification: nutrition self-test `61/61` passed; Anthropic
+`vision_analyze` could read the cached menu image at
+`/root/.hermes/profiles/milo/cache/images/img_f77ef2e18e14.jpg`; gateway restart
+returned active/running.
 
 ## Change Documentation Rule
 

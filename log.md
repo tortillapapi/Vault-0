@@ -1111,3 +1111,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 ## [2026-07-09T23:58:08Z] project | [hermes] Parked Spec 181 reseller SaaS replacement idea
 - Captured X/Twitter idea as parked backlog only: `/root/specs/181-reseller-saas-replacement-backlog.md`.
 - No implementation dispatched; activation requires Papi approval phrase: `Start Spec 181 discovery: build the SaaS Replacement ROI Matrix.`
+
+## [2026-07-14T02:59:44Z] ops | [codex] Milo visual nutrition tools enabled
+- Fixed Milo Telegram image handling by setting `/root/.hermes/profiles/milo/config.yaml` auxiliary vision to Anthropic `claude-sonnet-4.6`; the previous `auto` setting failed on the cached menu image with `No LLM provider configured for task=vision`.
+- Updated Milo's `SOUL.md` and nutrition skill so package labels route to exact `label_photo` extraction, while restaurant/menu photos route through visible-item extraction and explicit `user_provided` or `web_estimate` `label-json` previews.
+- Verification: nutrition kernel compile ok, isolated self-test `61/61` passed, Anthropic `vision_analyze` read cached image `/root/.hermes/profiles/milo/cache/images/img_f77ef2e18e14.jpg`; `hermes-gateway-milo.service` restarted and returned active/running with Telegram connected and no new vision-provider error.
