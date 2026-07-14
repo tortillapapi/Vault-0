@@ -84,6 +84,45 @@ Platform notes:
   2026-07-08: 429 legit repeated-fee groups, no spurious duplication after live syncs.
 - eBay finance events are live: 18 rows total, including 7 `SALE`, 6 `NON_SALE_CHARGE`, 1 `SHIPPING_LABEL`, and 4 `TRANSFER` rows. `SALE` transaction amounts are not counted as extra revenue; TRANSFER rows are included as adjustments based on observed `booking_entry=CREDIT` / `transaction_status=PAYOUT`.
 
+## Business Command Center (Spec 182, 2026-07-14)
+
+Spec 182 (owner: cc — Metis/Fable orchestrating, grunt-eng implementing,
+GLM re-review QA) extended the Profit Engine into a private command center.
+All seven phases accepted 2026-07-14. Root-only layer at
+`/root/command-center/` (bridge.db + scripts + tests, local git, no remote).
+
+Verified headline reconciliations (window 2026-01-01→07-04, finance
+freshness 2026-07-05, aggregate-only):
+
+- Card debt $57,810.40 vs cash $11,351.85 → net debt $46,458.55.
+- YTD debt grew +$25,083.33 while reported net profit was $9,756.60:
+  card inventory $81,005 + interest/fees $5,085 + personal $4,050 +
+  unknown $9,376 vs payments $67,668 + refunds ≈$8.8k. Debt-bridge
+  equation exact with a surfaced −$50.00 classification residual;
+  implied 2026-01-01 opening debt $32,727.07 (no true snapshot exists).
+- Financing costs $5,084.83 YTD = 52% of net profit → profit after
+  financing $4,686.77. Highest-APR balance $15,000.22 @28.49%.
+- Payout gap: marketplace proceeds $128,695 vs bank payout deposits
+  $77,175 → $51.5k cumulative in-flight estimate; deposits are mostly
+  Payability advances (factoring fee invisible in bank data — DATA GAP).
+- Purchase log = intake slice only: 110 rows / $54,230.33 (line-total
+  semantics proven empirically); 61/102 non-cancelled lines matched to
+  card charges (T1 15 accepted, T2 8, T3 38 review-only proposals);
+  cancelled-PO exposure $10,871.52 pending refund audit.
+- Classification ruleset v2: 1,859 transactions, ≈93% dollar coverage;
+  unknown remainder $63,790.77 honestly surfaced.
+
+Artifacts (root-only, 0600): `reports/command-center-v1-20260714T075108Z.{xlsx,json,-handoff.md}` + reconciliation/classification/match run reports.
+55/55 tests; zero over-allocation (SQL-audited); PII cell-scan 0 hits.
+
+Papi-gated next steps: cancelled-PO refund audit, P2P/person-transfer
+identification ($36.9k), 28.49% APR paydown priority, Payability statement
+pull, unknown-bucket classification session, guarded Plaid/SP-API re-sync
+before refreshed numbers, T3 match proposals review.
+
+Trail: specs/182*.md, tasks/182*, reviews/182_*.re-review.md,
+tasks/182-profit-engine-business-command-center.progress.
+
 ## Data quality caveats to carry forward
 
 - Ads are excluded / treated as `$0` by Papi's direction.
