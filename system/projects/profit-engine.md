@@ -3,7 +3,7 @@ type: system-project
 title: Profit Engine
 slug: profit-engine
 created: 2026-06-29
-last_updated: 2026-07-01
+last_updated: 2026-07-14
 status: evergreen-active
 priority: high
 owner: hermes
