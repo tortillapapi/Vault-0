@@ -30,7 +30,7 @@ deletes anything.
 | Thing | Detail |
 |---|---|
 | Location | `/root/mission-control` |
-| Service | `mission-control.service` (systemd user) |
+| Service | `mission-control.service` (system-level systemd) |
 | Bind | `127.0.0.1:5003` |
 | Auth | Token-in-URL (token stored at `/root/secrets/mission-control/url-token.txt`, mode 0600) |
 
@@ -48,7 +48,7 @@ deletes anything.
 - `/root/context/` — session-resume state
 - OpenClaw agent roster (`openclaw agents list --json`) and session status
 - Cron job state (`openclaw cron list`)
-- Systemd timer status (`systemctl --user list-timers`)
+- Systemd timer status (`systemctl list-timers`, specifically `mission-control-usage.timer`)
 - Lock files (`.lock`, `.progress`) for concurrency awareness
 
 ## Usage Tracker
