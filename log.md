@@ -1122,3 +1122,12 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Added `/root/.config/systemd/user/hermes-gateway-milo.service.d/override.conf` with `EnvironmentFile=/root/.hermes/profiles/milo/.env`; removed the temporary Anthropic key copy from Milo `.env`; kept normal Telegram/OpenCode env vars service-visible.
 - Enabled web lookup by installing `ddgs` in the Hermes venv and setting Milo `web.backend=ddgs` plus `web.search_backend=ddgs`.
 - Verification: `vision_analyze` on `/root/.hermes/profiles/milo/cache/images/img_2a39801a1500.jpg` could inspect the menu image; `web_search` returned Panda Express nutrition facts via DDGS; `hermes-gateway-milo.service` restarted active/running and Telegram connected.
+
+## [2026-07-14T08:05:29Z] ops | [hermes] Mission Control live multi-account usage tracker accepted
+- Spec 183 accepted: Mission Control Usage page now shows authoritative live subscription quota for Claude, both ChatGPT/Codex accounts (mramirez021111, themetalman13), and OpenCode. Gemini card removed.
+- Anthropic: live OAuth usage API with dynamic limits (Current session, All models weekly, Fable-only weekly) and real reset timestamps.
+- OpenAI: two isolated WHAM endpoint cards, each with its own credential store (`/root/.codex/auth.json`, `/root/.hermes/auth.json`); no account-id or token leakage.
+- Resets render in America/Los_Angeles (PDT/PST). `usage_limits.yaml` deprecated to stub; no fabricated quota fallback.
+- 56/56 tests pass; independent ACCEPT review; live snapshot produces 4 cards (Anthropic, openai-mramirez, openai-themetalman13, OpenCode) with dynamic values.
+- Service/API/page health verified; `mission-control.service` and `mission-control-usage.timer` healthy.
+- Mission Control repo has no remote; local commits: 4a69856, 3cc28c7, c54a69a (current HEAD).
