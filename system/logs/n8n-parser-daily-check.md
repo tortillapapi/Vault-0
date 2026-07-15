@@ -79,6 +79,12 @@
 - Precision: 12 recent rows | 12 confirmed | FALSE POSITIVES: none
 - Verdict: ANOMALIES
 
+## 2026-07-15
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 1 order email | 1 matched | MISSES: none
+- Precision: 2 recent rows | 1 confirmed | FALSE POSITIVES: Julien's a Lifestyle Store order-last4 unavailable 2026-07-14
+- Verdict: ANOMALIES
+
 ## 2026-06-05
 - Workflows: account_a=success | account_b=success | master=success
 - Recall: 3 order emails | 3 matched | MISSES: none
