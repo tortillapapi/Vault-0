@@ -79,6 +79,12 @@
 - Precision: 12 recent rows | 12 confirmed | FALSE POSITIVES: none
 - Verdict: ANOMALIES
 
+## 2026-07-16
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 0 order emails | 0 matched | MISSES: none
+- Precision: 3 recent rows | 0 confirmed | FALSE POSITIVES: Amazon.com …6259 2026-04-23; Julien's a Lifestyle Store order-last4 unavailable 2026-07-14; Pinehurst Coins Payments …2438 2026-07-16
+- Verdict: ANOMALIES
+
 ## 2026-07-15
 - Workflows: account_a=success | account_b=success | master=success
 - Recall: 1 order email | 1 matched | MISSES: none
