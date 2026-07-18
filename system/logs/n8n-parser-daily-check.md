@@ -61,6 +61,7 @@
 - Recall: 4 order emails | 4 matched | MISSES: none
 - Precision: 6 recent rows | 6 confirmed | FALSE POSITIVES: none
 - Verdict: OK
+
 ## 2026-06-02
 - Workflows: account_a=success | account_b=success | master=success
 - Recall: 4 order emails | 4 matched | MISSES: none
@@ -77,18 +78,6 @@
 - Workflows: account_a=success | account_b=success | master=success
 - Recall: 4 order emails | 3 matched | MISSES: J.Crew order-last4 unavailable 2026-06-03
 - Precision: 12 recent rows | 12 confirmed | FALSE POSITIVES: none
-- Verdict: ANOMALIES
-
-## 2026-07-16
-- Workflows: account_a=success | account_b=success | master=success
-- Recall: 0 order emails | 0 matched | MISSES: none
-- Precision: 3 recent rows | 0 confirmed | FALSE POSITIVES: Amazon.com …6259 2026-04-23; Julien's a Lifestyle Store order-last4 unavailable 2026-07-14; Pinehurst Coins Payments …2438 2026-07-16
-- Verdict: ANOMALIES
-
-## 2026-07-15
-- Workflows: account_a=success | account_b=success | master=success
-- Recall: 1 order email | 1 matched | MISSES: none
-- Precision: 2 recent rows | 1 confirmed | FALSE POSITIVES: Julien's a Lifestyle Store order-last4 unavailable 2026-07-14
 - Verdict: ANOMALIES
 
 ## 2026-06-05
@@ -118,13 +107,6 @@
 ## 2026-06-09
 - Workflows: account_a=error (OAuth invalid_grant) | account_b=success | master=error (OAuth invalid_grant)
 - Recall: 1 observable order email | 1 matched | MISSES: none; account_a probe unavailable
-
-## 2026-07-17
-- Workflows: account_a=success | account_b=success | master=success
-- Recall: 0 order emails | 0 matched | MISSES: none
-- Precision: 4 recent rows | 0 confirmed | FALSE POSITIVES: Amazon.com …6259 2026-04-23; Julien's a Lifestyle Store order-last4 unavailable 2026-07-14; Pinehurst Coins Payments …2438 2026-07-16; Staples Customer Experience order-last4 unavailable 2026-07-17
-- Verdict: ANOMALIES
-- Resolution 2026-07-18: added parser guards/fixtures for Loaded.com game-code purchases, Julien marketing, Pinehurst payment/check emails, and Staples purchase-experience surveys; pruned 1 account_a false-positive row and 4 account_b false-positive rows; rebuilt Master to 108 output rows; reran Codex parser review -> healthy/no escalations. Kept Amazon.com …6259 because the source message was a real delivery-estimate update for an existing card order, not a false positive.
 - Precision: 1 observable recent row | 1 confirmed | FALSE POSITIVES: none; account_a and master probes unavailable
 - Findings: account_a `FAILED account a` after OAuth refresh returned `invalid_grant` (`Token has been expired or revoked.`); master `FAILED master` for the same cause. Likely OAuth credential failure; diagnose via `n8n-parser-triage` only.
 - Verdict: ANOMALIES
@@ -299,3 +281,22 @@
 - Recall: 0 order emails | 0 matched | MISSES: none
 - Precision: 2 recent rows | 0 confirmed | FALSE POSITIVES: Loaded Sales …2032 2026-07-12; Amazon …0265 2026-07-14
 - Verdict: ANOMALIES
+
+## 2026-07-15
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 1 order email | 1 matched | MISSES: none
+- Precision: 2 recent rows | 1 confirmed | FALSE POSITIVES: Julien's a Lifestyle Store order-last4 unavailable 2026-07-14
+- Verdict: ANOMALIES
+
+## 2026-07-16
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 0 order emails | 0 matched | MISSES: none
+- Precision: 3 recent rows | 0 confirmed | FALSE POSITIVES: Amazon.com …6259 2026-04-23; Julien's a Lifestyle Store order-last4 unavailable 2026-07-14; Pinehurst Coins Payments …2438 2026-07-16
+- Verdict: ANOMALIES
+
+## 2026-07-17
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 0 order emails | 0 matched | MISSES: none
+- Precision: 4 recent rows | 0 confirmed | FALSE POSITIVES: Amazon.com …6259 2026-04-23; Julien's a Lifestyle Store order-last4 unavailable 2026-07-14; Pinehurst Coins Payments …2438 2026-07-16; Staples Customer Experience order-last4 unavailable 2026-07-17
+- Verdict: ANOMALIES
+- Resolution 2026-07-18: added parser guards/fixtures for Loaded.com game-code purchases, Julien marketing, Pinehurst payment/check emails, and Staples purchase-experience surveys; pruned 1 account_a false-positive row and 4 account_b false-positive rows; rebuilt Master to 108 output rows; reran Codex parser review -> healthy/no escalations. Kept Amazon.com …6259 because the source message was a real delivery-estimate update for an existing card order, not a false positive.

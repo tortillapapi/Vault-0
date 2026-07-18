@@ -74,6 +74,8 @@ For each account (`account_a`, `account_b`):
 ## 4. Write the log (PII-redacted — this file is pushed to GitHub)
 Append to `/root/obsidian-vault/system/logs/n8n-parser-daily-check.md`
 (create dir + file with an `# n8n Parser Daily Audit Log` header if missing):
+Always append the new block at EOF. Do not insert by date or rewrite existing
+entries; prior agents have split older entries by trying to place dates in order.
 ```
 ## <YYYY-MM-DD>
 - Workflows: account_a=<status> | account_b=<status> | master=<status>
