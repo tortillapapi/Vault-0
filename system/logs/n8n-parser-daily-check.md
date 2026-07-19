@@ -306,3 +306,9 @@
 - Recall: 2 order emails | 2 matched | MISSES: none
 - Precision: 2 recent rows | 2 confirmed | FALSE POSITIVES: none
 - Verdict: OK
+
+## 2026-07-19
+- Workflows: account_a=OK | account_b=OK | master=OK
+- Recall: 2 order emails | 2 matched | MISSES: none
+- Precision: 3 recent rows | 2 confirmed | FALSE POSITIVES: Pokémon Center | no-order# | 2026-07-17
+- Verdict: ANOMALIES
