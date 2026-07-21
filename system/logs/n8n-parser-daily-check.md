@@ -318,3 +318,9 @@
 - Recall: 2 order emails | 1 matched | MISSES: Tixr | no-order# | 2026-07-20
 - Precision: 2 recent rows | 2 confirmed | FALSE POSITIVES: none
 - Verdict: ANOMALIES
+
+## 2026-07-21
+- Workflows: account_a=OK | account_b=OK | master=OK
+- Recall: 1 order email | 1 matched | MISSES: none
+- Precision: 2 recent rows | 1 confirmed | FALSE POSITIVES: Amazon.com …6259 2026-04-23
+- Verdict: ANOMALIES
