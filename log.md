@@ -3,6 +3,23 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-07-21T03:15:00Z] ops | [hermes] Spec 184 accepted — TCG Inventory → Command Center
+- Completed 11-phase build adding Pokémon TCG inventory + market-value tracking to the Business Command Center.
+- **TCG Position**: 127 items across 3 categories — 32 raw singles ($2,004 cost / $2,221 market), 21 sealed ($4,559 cost / $6,970 market, +40.7%), 74 other (at cost).
+- **Name resolution**: 50/51 items resolved via PPT API + TCGPlayer web search + Papi manual links. 1 Chinese Gengar parked (PriceCharting only).
+- **Price refresh**: systemd timer installed at `/etc/systemd/system/tcg-price-refresh.timer` (daily 06:30 ET). PPT API v2 (pokemonpricetracker.com) with Bearer auth. 90/req daily budget guard. Sealed products use individual TCGPlayer prices (PPT returns case-level — corrected in refresh logic).
+- **Incoming inventory**: $739,500 tracked from 24 TCG-tagged purchase lines (note: dominated by Chinese bulk orders — verify purchase log entries for accuracy).
+- **Photo capture**: intake plumbing at `/root/command-center/tcg/photo-batches/` — idempotent batch processing, collision detection, dry-run default.
+- **Sheet append**: helper at `/root/command-center/scripts/tcg/sheet_append.py` — allowlist-gated, `--approve` required for V4 writes. Canonical names can be written back to V4 on Papi's command.
+- **Tests**: 109/109 passing (55 existing Spec 182 + 54 new Spec 184).
+- **COGS**: 20 of 21 TCG items have costs; Paradox Rift Booster Box parked (purchase not found).
+- **MTG items reclassified**: 2 MTG Spiderman items moved to other_inventory.
+- **Noted pricing bug**: PPT sealed-products endpoint returns case-level prices; sealed refresh must use TCGPlayer individual product lookups or manual web data.
+- **API**: PPT credits ~50 remaining after P3a test run. UTC midnight reset.
+- Workbook at `/root/command-center/reports/command-center-v1-20260721T214205Z.xlsx`.
+- Spec trail: `/root/specs/184-tcg-inventory-command-center.md`, `/root/tasks/184-*.done`.
+- Hermes signoffs: `/root/reviews/184_0-p0-hermes-signoff.md`, `/root/reviews/184_1-p1-hermes-signoff.md`.
+
 ## [2026-07-02T00:23:12Z] ops | [hermes] OpenClaw routing aligned to Claude CLI Anthropic lanes
 - Updated `/root/.openclaw/openclaw.json` routing: `grunt` -> `google/gemini-2.5-flash-lite`, `grunt-eng` -> `openai/gpt-5.4-mini`, `re-review` -> `anthropic/claude-haiku-4-5`, `mid` -> `anthropic/claude-sonnet-4-6`, `lead` -> `openai/gpt-5.4`, `sonnet-review` -> `anthropic/claude-sonnet-5`, `main` left on default GPT-5.5.
 - Added `/root/bin/openclaw-claude-lane` wrapper for Anthropic-class lanes through Claude Code CLI: `re-review` low/Haiku 4.5, `mid` medium/Sonnet 4.6, `sonnet-review` high/Sonnet 5.
