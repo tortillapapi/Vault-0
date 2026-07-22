@@ -324,3 +324,9 @@
 - Recall: 1 order email | 1 matched | MISSES: none
 - Precision: 2 recent rows | 1 confirmed | FALSE POSITIVES: Amazon.com …6259 2026-04-23
 - Verdict: ANOMALIES
+
+## 2026-07-22
+- Workflows: account_a=OK | account_b=OK | master=OK
+- Recall: 2 order emails | 2 matched | MISSES: none
+- Precision: 1 recent rows | 1 confirmed | FALSE POSITIVES: none
+- Verdict: OK
