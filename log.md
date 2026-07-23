@@ -3,6 +3,20 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-07-23T01:10:00Z] ops | [hermes] Spec 185 accepted — Unified Inventory Pipeline
+- Built a 10-stage inventory pipeline tracking every item from purchase through prep center, house, FBA, and sold.
+- **Pipeline**: 313 rows across 6 active stages; $49,916 floating in non-sold inventory.
+- **Breakdown**: TCG/collectibles $37,462 (100 items), inbound to house $12,348 (29 items), prep→FBA $106 (11 items), at/inbound prep $0 (15 items — costs not yet linked to purchase log).
+- **Prep center sheet** (Tortilla Papi Rare Force One X Prep Pal): 17 items imported, 3 stages tracked (inbound_prep → at_prep → prep_to_fba). Name-similarity cost matching recovered 2 items. 15 remaining at $0.
+- **TCG items**: 49 items from tcg_items table ($7,939) integrated into at_house_collecting stage.
+- **Workbook**: new "Inventory Pipeline" tab (Tab 11) in the operator workbook. Uploaded to Google Drive at [03] Business.
+- **Tests**: 135/135 (109 existing + 26 new).
+- **Data cleanup**: 26 personal/mistake rows purged from Master Purchase Log + bridge.db. Drive backup created.
+- **OC agents**: all 6 lanes rotated (fresh archives under sessions/archive/auto-20260723T000603Z/).
+- Spec trail: /root/specs/185-unified-inventory-pipeline.md, /root/tasks/185_*.done.
+- **TCG polish**: 56 TCGPlayer URLs + 4 PriceCharting URLs added; 72 other_inventory names cleaned up; Charizard UPC cost fixed (avg $392+$120=$256/unit); Gengar TG06 properly identified; Chinese 151 products named from PriceCharting.
+- **Workbook**: 12 tabs, uploaded to [03] Business. 139 tests.
+
 ## [2026-07-21T03:15:00Z] ops | [hermes] Spec 184 accepted — TCG Inventory → Command Center
 - Completed 11-phase build adding Pokémon TCG inventory + market-value tracking to the Business Command Center.
 - **TCG Position**: 127 items across 3 categories — 32 raw singles ($2,004 cost / $2,221 market), 21 sealed ($4,559 cost / $6,970 market, +40.7%), 74 other (at cost).
