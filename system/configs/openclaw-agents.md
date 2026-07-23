@@ -2,7 +2,7 @@
 type: system-config
 title: OpenClaw Agents
 slug: openclaw-agents
-last_synced: 2026-06-04
+last_synced: 2026-07-23
 maintainer: cc-oc-orchestrator
 derived_from:
   - /root/.claude/projects/-root/memory/reference_oc_cli_cheatsheet.md
@@ -43,3 +43,14 @@ Grunt-tier output (`grunt`, `grunt-eng`) is QA'd before the orchestrator approve
 3. **`lead` / GPT-5.5** — high-stakes final escalation inside OpenClaw when needed.
 4. **Hermes/Janus** — final checkpoint and independent verification before user-facing approval.
 This applies to all grunt-agent work, not only the email parser.
+
+## OpenAI Subscription Binding
+
+All VPS OpenAI agents are unified under `themetalman13@gmail.com` ChatGPT Business workspace.
+
+- **Account**: `8c334dd3-05ab-4d1d-b862-6a7743b46bcd`, plan claim `chatgpt_plan_type=team`
+- **OpenClaw `lead`/`mid`**: per-agent auth order restricted to `openai:themetalman13@gmail.com` only. Legacy Plus profiles in the non-configured `main` store are archived and unreachable from effective selection.
+- **Codex CLI**: standalone, migrated to `themetalman13@gmail.com` Business workspace.
+- **Hermes/default**: uses `themetalman13@gmail.com` Business workspace.
+- **Hermes/milo**: has no own OpenAI credential; remains `opencode-go/DeepSeek`. Inherited CLI display may show default Business, but milo's own configured pool is empty.
+- **Verification**: use JWT workspace/plan claims and `effectiveProfiles` from `/v1/accounts` / `/v1/dashboard`. Email address alone is insufficient. Never include OAuth tokens, device codes, or secrets.

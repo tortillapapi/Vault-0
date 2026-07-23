@@ -1180,3 +1180,26 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Smoke test: house_to_fba shows 1 item / $50 correctly. at_fba derives 6 items / 70 units from current pipeline.
 - 147 tests pass (139 + 8 new). DB backup at bridge.db.backup-20260723-188-pre.
 - Papi to populate stages manually as he audits physical inventory.
+
+## [2026-07-23T17:28:00Z] ops | [hermes] TCG Inventory Data Cleanup — 16 items recategorized + sheet sync
+- Moved 16 items from other_inventory → sealed_tcg with corrected names and purchase costs.
+- Chinese 151 Gather split into 3 distinct products (Slim Booster 9×$99.48, Jumbo 2×$180, Coin Case 2×$185).
+- Deleted 151 Ultra-Premium Collection (Papi doesn't have one) + Japan Illustration Contest duplicate from DB and Google Sheet.
+- Deleted Crown Zenith from other_inventory (already tracked in TCG inventory).
+- Fixed Google Sheets sync: workbook rebuilt + uploaded to Drive ([03] Business folder).
+- TCG inventory now: 131 items across 3 categories, $13,111 total cost basis.
+- DB soft-deletes (is_active=0) used for removals; no hard deletes.
+- 147 tests pass.
+- Known: 2 Evolving Skies ETB variants + Paradox Rift ETB have unknown costs; 54 items remain in other_inventory for review.
+- Session handoff written to /root/context/hermes-session-handoff-2026-07-23-session2.md.
+
+## [2026-07-23T22:23:00Z] ops | [hermes] Spec 189 — VPS OpenAI agents unified on Business workspace
+- Hermes/default preserved on `themetalman13@gmail.com` ChatGPT Business workspace (plan `team`, account `8c334dd3-05ab-4d1d-b862-6a7743b46bcd`).
+- OpenClaw `lead`/`mid` migrated from legacy Plus to Business-only; per-agent auth order restricted to `openai:themetalman13@gmail.com`; legacy Plus profiles archived/unreachable.
+- Standalone Codex CLI migrated to Business workspace.
+- Milo stale Plus credential removed (no own OpenAI pool); remains opencode-go/DeepSeek.
+- Live smokes passed: effective profiles, JWT workspace claims, plan type, /v1/accounts endpoint, token creation.
+- Backups of OpenClaw auth configs and Codex auth store restricted to `0600`.
+- Reviews: `/root/reviews/189_0-p0-hermes-review.md`, `/root/reviews/189_1-p1-mid-review.md` (+ task-level reviews).
+- Canonical done: `/root/tasks/189-vps-openai-business-account-unification.tasks.done`.
+- Docs complete: `/root/tasks/189-vps-openai-business-account-unification.docs-complete`.
