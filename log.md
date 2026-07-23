@@ -1162,3 +1162,21 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - 56/56 tests pass; independent ACCEPT review; live snapshot produces 4 cards (Anthropic, openai-mramirez, openai-themetalman13, OpenCode) with dynamic values.
 - Service/API/page health verified; `mission-control.service` and `mission-control-usage.timer` healthy.
 - Mission Control repo has no remote; local commits: 4a69856, 3cc28c7, c54a69a (current HEAD).
+
+## [2026-07-23T04:59:00Z] ops | [hermes] Specs 187 + 188 accepted — Sealed Pricing Fix + Missing Pipeline Stages
+
+### Spec 187 — Sealed Pricing Case-Filter Fix
+- PPT sealed-products endpoint returns both individual AND case-level results. The old code used `limit=1` and grabbed case prices (e.g., 151 UPC showed $3,359.82 instead of $928.33).
+- Fixed `ppt_fetch_sealed()` in refresh_prices.py: added `tcgplayer_id` parameter, increased limit to 5, prefers TCGPlayer ID match, filters "Case"/"Display"/"Pack of" keywords.
+- Same fix applied to `ppt_search_sealed()` in resolve_names.py.
+- Verified: 151 UPC now $928.33 (individual), Charizard UPC $585.42, case reference $3,359.82.
+- 139 tests pass.
+
+### Spec 188 — Pipeline Stages: house_to_fba, fba_direct, at_fba
+- Added `fba_shipments` + `fba_shipment_items` tables to bridge.db — manual FBA shipment tracking.
+- Added `purchase_lines.fba_direct` column — flag items going direct to FBA.
+- Three new routes in build_pipeline.py: `house_to_fba` (from shipment items), `fba_direct` (from flagged purchase lines), `at_fba` (derived: fba_inbound minus sold).
+- Created `/root/command-center/scripts/inventory/migrate_stages.py` for idempotent schema migration.
+- Smoke test: house_to_fba shows 1 item / $50 correctly. at_fba derives 6 items / 70 units from current pipeline.
+- 147 tests pass (139 + 8 new). DB backup at bridge.db.backup-20260723-188-pre.
+- Papi to populate stages manually as he audits physical inventory.
