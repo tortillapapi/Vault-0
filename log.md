@@ -1238,3 +1238,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Live DB and uploaded Sheet readback match Papi's requested inventory mutations; independent Hermes tests passed 147/147.
 - Re-review rejected the persisted replay script/evidence: seven canonical-name copy/paste errors, non-delta-aware FK handling, and a claimed timestamped backup that does not exist.
 - Dispatched narrow `/root/tasks/192-tcg-other-inventory-cleanup-batch2.fixups.txt` to `grunt-eng`; live DB, workbook, and Google Sheet are read-only during fixups.
+
+## [2026-07-24T05:02:37Z] ops | [hermes] Spec 192 accepted and closed
+- Applied three soft-deletes, five other-inventory cost updates, and 19 sealed-TCG moves; live Google Sheet: `1quf_9cYo-YeYyD0TwfYyA8Fku0ZuX_qF9UQBSAiZCGU`.
+- Final active TCG inventory: 32 other_inventory / 91 units / $1,221.00; 38 raw_single / 94 / $3,055.82; 58 sealed_tcg / 120 / $11,690.52; total 305 units / $15,967.34 cost basis.
+- Independent verification: 147/147 tests, quick_check ok, zero new FK violations, verify-only DB hash/mtime unchanged, live Sheet readback correct.
+- Re-review accepted the repaired audit script and docs. Open link decisions: White Future PKC has no exact TCGPlayer page; Sword & Shield ETB needs Zacian vs Zamazenta confirmation. Three pre-existing price-history FK orphans remain separate debt.
