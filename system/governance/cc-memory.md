@@ -452,7 +452,7 @@ ask. If pressed for ideas, candidate upgrades worth considering later:
 
 ---
 name: Agent dispatch rules for tiered OC system
-description: Which OC agent to use for which task complexity — lead (GPT 5.5 high), mid (GPT 5.4 medium), grunt-eng/grunt (DSv4 Flash), re-review (GLM 5.2). Always check before delegating.
+description: Which OC agent to use for which task complexity — mid (openai/gpt-5.6-sol xhigh, default GPT escalation/review), lead (openai/gpt-5.6-sol xhigh, explicit-only exceptionally hard/stuck escalation), grunt-eng/grunt (DSv4 Flash), re-review (GLM 5.2). Always check before delegating.
 type: reference
 originSessionId: a238ce87-1da8-45a0-bbab-7159be6a51a6
 ---
@@ -542,8 +542,8 @@ openclaw agent --agent <id> --local --message "prompt" --json
 ```
 
 ### Available agents
-- `lead` — openai/gpt-5.5 (`--thinking high`; default/top-tier: complex coding, multi-file work, multi-phase self-orchestration)
-- `mid` — openai/gpt-5.4 (`--thinking medium`; medium tasks and structured review/escalation)
+- `lead` — openai/gpt-5.6-sol (`--thinking xhigh`; explicit-only escalation for exceptionally hard architecture/strategy or when other agents are stuck)
+- `mid` — openai/gpt-5.6-sol (`--thinking xhigh`; default GPT lane for review, synthesis, and judgment-heavy work)
 - `grunt-eng` — opencode-go/deepseek-v4-flash (`--thinking low`; bounded code/config/parser work)
 - `grunt` — opencode-go/deepseek-v4-flash (`--thinking low`; non-code grunt: log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
 - `re-review` — opencode-go/glm-5.2 (`--thinking low`; first-pass QA over grunt/grunt-eng output)

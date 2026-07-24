@@ -42,4 +42,4 @@ Every tool call passes through a **PreToolUse hook**:
 ## Roster
 Add/confirm a line wherever the agent/orchestrator roster is noted: **Metis** =
 Telegram-reachable CC orchestrator (`@RareForce_Metis_Bot`), alongside Janus
-(Hermes/GPT-5.5), Mnemosyne (PA), Milo (fitness).
+(Hermes/GPT-5.6-sol), Mnemosyne (PA), Milo (fitness).

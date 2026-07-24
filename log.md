@@ -1215,3 +1215,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Reviews: `/root/reviews/189_0-p0-hermes-review.md`, `/root/reviews/189_1-p1-mid-review.md` (+ task-level reviews).
 - Canonical done: `/root/tasks/189-vps-openai-business-account-unification.tasks.done`.
 - Docs complete: `/root/tasks/189-vps-openai-business-account-unification.docs-complete`.
+
+## [2026-07-24T02:50:00Z] ops | [hermes] Docs correction — stale Spec 190 live guidance
+- Corrected stale frontmatter description and Available agent bullets in `system/governance/cc-memory.md` (lead/mid models/thinking/roles).
+- Updated multi-phase dispatch rule in `system/cheatsheets/operating-rules.md`: routine specs use `mid` with pre-approved handoffs; `lead` is explicit-only.
+- Updated roster label `Janus (Hermes/GPT-5.6-sol)` in `system/configs/metis-gateway.md`.
+- Docs only; no runtime config changes. Spec 190 routing policy unchanged.

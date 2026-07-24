@@ -21,10 +21,10 @@ Codex, and OpenClaw equally (and Hermes once installed).
   exceptions, even if you think you remember the syntax.
 
 ## Dispatch & verification
-- **OC lead can self-orchestrate multi-phase specs (3+ phases).** Dispatch the
-  whole spec to `lead` with pre-approved handoffs + a `.progress` file instead of
-  CC driving each phase (~10k tokens / ~3× faster). Not for single-phase work or
-  phases needing CC judgment between them.
+- **Routine multi-phase specs (3+ phases) use `mid` with pre-approved handoffs**
+  + a `.progress` file, not CC driving each phase. `lead` is explicit-only for
+  exceptionally hard architecture/strategy or when grunt/re-review/mid are stuck.
+  Not for single-phase work or phases needing CC judgment between them.
 - **OpenClaw grunt session watchdog is installed.** `/root/bin/openclaw-grunt-session-maintenance.py`
   is the guarded manual dry-run/rotate tool for `grunt` and `grunt-eng` only;
   `/root/.hermes/scripts/openclaw-grunt-session-watchdog.py` runs every 6h via
