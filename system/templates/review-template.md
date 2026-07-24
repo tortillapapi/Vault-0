@@ -22,7 +22,7 @@ Use this template for Mid-tier review outputs and their companion `.done` marker
 WIKI REVIEW REPORT
 =====================================
 Task: <task-name>
-Reviewer: agent:re-review (GLM 5.2) or agent:mid (GPT 5.6-sol xhigh) or agent:lead (GPT 5.6-sol xhigh)
+Reviewer: agent:re-review (GLM 5.2 medium) or agent:mid (GPT 5.6-luna xhigh) or agent:lead (GPT 5.6-sol xhigh)
 Reviewed: <ISO timestamp>
 Grunt completion: <path to grunt done marker>
 

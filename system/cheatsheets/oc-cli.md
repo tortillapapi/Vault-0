@@ -65,17 +65,17 @@ openclaw agent --agent <id> --local --message "prompt" --json
 ```
 
 ### Available agents
-- `mid` — openai/gpt-5.6-sol (`--thinking xhigh`; **default** GPT escalation and judgment-heavy review lane; `isDefault=true`)
+- `mid` — openai/gpt-5.6-luna (`--thinking xhigh`; **default** GPT escalation and judgment-heavy review lane; `isDefault=true`)
 - `lead` — openai/gpt-5.6-sol (`--thinking xhigh`; **explicit-only** escalation lane for exceptionally hard tasks; `isDefault=false`)
-- `grunt-eng` — opencode-go/deepseek-v4-flash (`--thinking low`; bounded code/config/parser work and low-risk implementation slices)
-- `grunt` — opencode-go/deepseek-v4-flash (`--thinking low`; basic execution: non-code grunt work, log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
-- `re-review` — opencode-go/glm-5.2 (`--thinking low`; first-pass QA over all grunt/grunt-eng output)
+- `grunt-eng` — opencode-go/deepseek-v4-flash (`--thinking medium`; bounded code/config/parser work and low-risk implementation slices)
+- `grunt` — opencode-go/deepseek-v4-flash (`--thinking medium`; basic execution: non-code grunt work, log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
+- `re-review` — opencode-go/glm-5.2 (`--thinking medium`; first-pass QA over all grunt/grunt-eng output)
 - `email-parser` — google/gemini-2.5-flash (email parsing only)
 
 ### Current review chain
 ```bash
-openclaw agent --agent re-review --local --thinking low --message "..." --json     # GLM 5.2 first-pass review
-openclaw agent --agent mid --local --thinking xhigh --message "..." --json         # GPT-5.6-sol default reviewe escalation
+openclaw agent --agent re-review --local --thinking medium --message "..." --json   # GLM 5.2 first-pass review
+openclaw agent --agent mid --local --thinking xhigh --message "..." --json         # GPT-5.6-luna default review escalation
 openclaw agent --agent lead --local --thinking xhigh --message "..." --json        # GPT-5.6-sol explicit-only exceptional escalation
 ```
 `mid` (isDefault=true) is the default GPT lane; `lead` (isDefault=false) is explicit-only. `main`, `sonnet-review`, and the old OpenClaw `pa` lane are no longer configured. Hermes/Janus remains the final checkpoint after OC review; Mnemosyne/Nemo (Hermes profile `papipa`) lives separately and remains active.

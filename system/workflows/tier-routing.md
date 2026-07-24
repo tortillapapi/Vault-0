@@ -17,10 +17,10 @@ Use this page when deciding which OC tier should own a task. It turns the agent 
 
 ## Routing Rule
 
-- Route to **grunt** (`opencode-go/deepseek-v4-flash`, low) for non-code, mechanical, or large-context document work.
-- Route to **grunt-eng** (`opencode-go/deepseek-v4-flash`, low) for tightly bounded code/config/parser work that stays at grunt complexity.
-- Route to **re-review** (`opencode-go/glm-5.2`, low) for first-pass QA over grunt/grunt-eng output.
-- Route to **mid** (`openai/gpt-5.6-sol`, xhigh) for default GPT escalation, judgment-heavy review, structured review when GLM review is insufficient or risk is elevated. This is the primary GPT lane.
+- Route to **grunt** (`opencode-go/deepseek-v4-flash`, medium) for non-code, mechanical, or large-context document work.
+- Route to **grunt-eng** (`opencode-go/deepseek-v4-flash`, medium) for tightly bounded code/config/parser work that stays at grunt complexity.
+- Route to **re-review** (`opencode-go/glm-5.2`, medium) for first-pass QA over grunt/grunt-eng output.
+- Route to **mid** (`openai/gpt-5.6-luna`, xhigh) for default GPT escalation, judgment-heavy review, structured review when GLM review is insufficient or risk is elevated. This is the primary GPT lane.
 - Route to **lead** (`openai/gpt-5.6-sol`, xhigh) **only** for exceptionally hard tasks, architecture/strategy with unusually high uncertainty, or when grunt/re-review/mid are stuck. This is an explicit-only escalation lane — not for routine or scheduled work.
 - `main` and `sonnet-review` are no longer active OpenClaw lanes. `mid` is now the default OpenClaw agent.
 

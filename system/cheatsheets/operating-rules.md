@@ -45,8 +45,8 @@ Codex, and OpenClaw equally (and Hermes once installed).
 - **Check systemd state before dispatching run-type tasks** on any project with a
   `systemd/` dir — a live timer can silently race your work.
 - **Review chain over grunt work.** Grunt-tier output (`grunt`,
-  `grunt-eng`) goes through `re-review` (GLM 5.2) for first-pass QA, then `mid`
-  (GPT-5.6-sol, xhigh) as the default GPT escalation when risk warrants it, before the orchestrator approves. `lead`
+  `grunt-eng`) goes through `re-review` (GLM 5.2, medium) for first-pass QA, then `mid`
+  (GPT-5.6-luna, xhigh) as the default GPT escalation when risk warrants it, before the orchestrator approves. `lead`
   (GPT-5.6-sol, xhigh) is only for exceptionally hard tasks or when other agents
   are stuck — never route routine review directly to lead. **Bound every review prompt to the
   spec, the changed files/diff, test output, and the `.done` marker** — never broad
@@ -59,8 +59,8 @@ Codex, and OpenClaw equally (and Hermes once installed).
   DeepSeek (`grunt`/`grunt-eng`) and GLM (`re-review`) are separate pools. Default
   mechanical/coding work to `grunt-eng` and docs/formatting to `grunt`; use `mid`
   for review and judgment work; reserve `lead` only for genuinely exceptional
-  problems when mid is stuck. Both GPT lanes run `openai/gpt-5.6-sol` with
-  `xhigh` thinking. If OpenClaw GPT is burned but GPT is still needed
+  problems when mid is stuck. `mid` runs `openai/gpt-5.6-luna` with
+  `xhigh` thinking; `lead` runs `openai/gpt-5.6-sol` with `xhigh` thinking. If OpenClaw GPT is burned but GPT is still needed
   for low/medium work, Janus may use Hermes delegation/subagents on the Hermes
   account with lower reasoning while keeping Janus itself on the high-reasoning
   orchestration lane. Do
@@ -84,7 +84,7 @@ Codex, and OpenClaw equally (and Hermes once installed).
   systemd job that wakes an OpenAI agent must run at the lowest tier that does the
   job: default recurring audits/reviews to `mid` or `re-review`/GLM; reserve
   `lead` for jobs that demonstrably need it; re-audit periodically.
-  (2026-07-24: `parser-daily-audit` runs on `mid` at `xhigh` per Spec 190.)
+  (2026-07-24: `parser-daily-audit` runs on `mid` at `xhigh` per Spec 191.)
 - **Don't run heavy introspective usage reports on the paid OpenAI account.**
   Generating a full token-usage analysis itself once burned ~5 points of a 5h
   window. Pull usage from the Mission Control trackers / `rate_limits` fields

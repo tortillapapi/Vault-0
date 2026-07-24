@@ -1221,3 +1221,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Updated multi-phase dispatch rule in `system/cheatsheets/operating-rules.md`: routine specs use `mid` with pre-approved handoffs; `lead` is explicit-only.
 - Updated roster label `Janus (Hermes/GPT-5.6-sol)` in `system/configs/metis-gateway.md`.
 - Docs only; no runtime config changes. Spec 190 routing policy unchanged.
+
+## [2026-07-24T03:21:00Z] ops | [hermes] Spec 191 — OpenClaw Luna and medium execution lanes
+- mid model migrated from `openai/gpt-5.6-sol` → `openai/gpt-5.6-luna`; thinking remains `xhigh`; stays default.
+- lead unchanged at `openai/gpt-5.6-sol` `xhigh`; stays explicit-only.
+- grunt, grunt-eng, re-review thinking raised from `low` → `medium`; models unchanged.
+- OpenClaw config updated, validated, agents list verified. Backup at `/root/.openclaw/backups/spec191/` (0600).
+- Routing guidance updated in `.hermes.md`, agent-table, tier-routing, OC CLI cheatsheet, operating-rules, review-template, registry.
