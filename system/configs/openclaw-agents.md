@@ -2,7 +2,7 @@
 type: system-config
 title: OpenClaw Agents
 slug: openclaw-agents
-last_synced: 2026-07-23
+last_synced: 2026-07-24
 maintainer: cc-oc-orchestrator
 derived_from:
   - /root/.claude/projects/-root/memory/reference_oc_cli_cheatsheet.md
@@ -18,8 +18,8 @@ Use this table to choose the right OpenClaw agent before dispatching work. It su
 
 | Agent ID | Model | Thinking level | Session key | Tier | When to use |
 |---|---|---|---|---|---|
-| `lead` | `openai/gpt-5.5` | high | `agent:lead:main` | lead/default | Top OpenClaw reasoning lane. `main` has been merged into this lane; use sparingly for high-judgment orchestration/review. |
-| `mid` | `openai/gpt-5.4` | medium | `agent:mid:main` | mid | Medium-complexity review/escalation lane when GLM re-review is not enough. |
+| `lead` | `openai/gpt-5.6-sol` | xhigh | `agent:lead:main` | lead | **Explicit-only** escalation lane for exceptionally hard tasks, architecture/strategy with unusually high uncertainty, or when grunt/re-review/mid are stuck. Not for routine use. |
+| `mid` | `openai/gpt-5.6-sol` | xhigh | `agent:mid:main` | mid | Default/normal GPT escalation and judgment-heavy review lane. First GPT tier for review and synthesis. |
 | `grunt-eng` | `opencode-go/deepseek-v4-flash` | low | `agent:grunt-eng:main` | grunt-eng | Bounded code/config/parser work and low-risk implementation slices; deliberately kept on DSv4 Flash for now. |
 | `grunt` | `opencode-go/deepseek-v4-flash` | low | `agent:grunt:main` | grunt | Basic mechanical work, document transforms, formatting, ingest prep, and low-risk file churn. |
 | `re-review` | `opencode-go/glm-5.2` | low | `agent:re-review:main` | specialist | First-pass QA re-review over grunt/grunt-eng output. |
@@ -27,20 +27,19 @@ Use this table to choose the right OpenClaw agent before dispatching work. It su
 
 ## Dispatch Notes
 
-- **Live roster is authoritative via `openclaw agents list --json`; this table last verified 2026-07-09 UTC after merging `main` into `lead` and removing `sonnet-review` plus the unused `pa` lane.**
-- Use `openclaw agent --agent <id> --local --thinking <level> --message "..." --json` for OpenClaw CLI dispatches.
-- `main` is no longer a configured lane; default/high-reasoning OpenClaw work should target `lead` on GPT-5.5/high.
-- `sonnet-review` and `pa` are no longer configured lanes. Use `mid` for medium review and reserve `lead` for high-stakes review/escalation.
-- `grunt` and `grunt-eng` both run DSv4 Flash. Keep tasks tightly bounded, and escalate to `mid` or `lead` if DSv4 Flash misses code/config details.
+- **Live roster is authoritative via `openclaw agents list --json`; this table last verified 2026-07-24 UTC.**
+- Both GPT lanes (`mid`, `lead`) now run `openai/gpt-5.6-sol` with `xhigh` thinking. `mid` is the default agent (`isDefault=true`); `lead` is explicit-only (`isDefault=false`).
+- `main` is no longer a configured lane. `lead` is no longer the default — `mid` fills that role.
+- `sonnet-review` and the old OpenClaw `pa` lane are no longer configured lanes. Hermes profile `papipa` (Mnemosyne/Nemo) continues separately and remains active, unaffected by OpenClaw changes.
+- `grunt` and `grunt-eng` both run DSv4 Flash. Keep tasks tightly bounded, and escalate to `mid` (or `lead` only if mid is stuck) if DSv4 Flash misses code/config details.
 - `re-review`/GLM 5.2 is the first-pass QA lane over grunt output.
 - Use `message send` instead of `agent --deliver` when the job is simple message relay.
-- The old OpenClaw Telegram `pa` route/account was removed; Mnemosyne continues separately under Hermes profile `papipa`.
 
 ## Review Chain
 Grunt-tier output (`grunt`, `grunt-eng`) is QA'd before the orchestrator approves it:
 1. **`re-review` / GLM 5.2** — first-pass review of any grunt work.
-2. **`mid` / GPT-5.4** — medium-to-high-level or important work review when GLM is insufficient or risk is elevated.
-3. **`lead` / GPT-5.5** — high-stakes final escalation inside OpenClaw when needed.
+2. **`mid` / GPT-5.6-sol (xhigh)** — judgment-heavy or elevated-risk review when GLM is insufficient. Default GPT escalation tier.
+3. **`lead` / GPT-5.6-sol (xhigh)** — **exceptional only**: when grunt/re-review/mid are stuck, or for architecture/strategy with unusually high uncertainty.
 4. **Hermes/Janus** — final checkpoint and independent verification before user-facing approval.
 This applies to all grunt-agent work, not only the email parser.
 

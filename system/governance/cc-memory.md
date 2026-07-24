@@ -460,8 +460,8 @@ originSessionId: a238ce87-1da8-45a0-bbab-7159be6a51a6
 
 | Agent ID | Model | Thinking | Use For |
 |----------|-------|----------|---------|
-| `lead` | openai/gpt-5.5 | `--thinking high` | Top-tier/default: complex coding, architecture, multi-file work, deep debugging, multi-phase self-orchestration |
-| `mid` | openai/gpt-5.4 | `--thinking medium` | Medium edits, wiring, config, tests, structured review/escalation |
+| `lead` | openai/gpt-5.6-sol | `--thinking xhigh` | **Explicit-only** escalation for exceptionally hard tasks, architecture/strategy with unusually high uncertainty, or when other agents are stuck |
+| `mid` | openai/gpt-5.6-sol | `--thinking xhigh` | **Default** GPT lane for review, synthesis, and judgment-heavy work |
 | `grunt-eng` | opencode-go/deepseek-v4-flash | `--thinking low` | Bounded coding/engineering slices; keep tight and verify aggressively |
 | `grunt` | opencode-go/deepseek-v4-flash | `--thinking low` | Non-code grunt work: file ops, docs, formatting, large-context mechanical tasks (sessionKey `agent:grunt:main`) |
 | `email-parser` | google/gemini-2.5-flash | — | Email parsing only (live state verified 2026-05-21) |

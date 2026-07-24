@@ -2,7 +2,7 @@
 type: system-workflow
 title: Tier Routing
 slug: tier-routing
-last_synced: 2026-04-21
+last_synced: 2026-07-24
 maintainer: cc-oc-orchestrator
 derived_from:
   - /root/CLAUDE.md
@@ -20,24 +20,25 @@ Use this page when deciding which OC tier should own a task. It turns the agent 
 - Route to **grunt** (`opencode-go/deepseek-v4-flash`, low) for non-code, mechanical, or large-context document work.
 - Route to **grunt-eng** (`opencode-go/deepseek-v4-flash`, low) for tightly bounded code/config/parser work that stays at grunt complexity.
 - Route to **re-review** (`opencode-go/glm-5.2`, low) for first-pass QA over grunt/grunt-eng output.
-- Route to **mid** (`openai/gpt-5.4`, medium) for medium edits, wiring, config, and structured review when GLM review is insufficient or risk is elevated.
-- Route to **lead** (`openai/gpt-5.5`, high/default) for architecture, deep debugging, major synthesis, complex multi-file work, or explicit end-to-end OpenClaw self-orchestration.
-- `main` and `sonnet-review` are no longer active OpenClaw lanes; target `lead` for top-tier/default OpenClaw work.
+- Route to **mid** (`openai/gpt-5.6-sol`, xhigh) for default GPT escalation, judgment-heavy review, structured review when GLM review is insufficient or risk is elevated. This is the primary GPT lane.
+- Route to **lead** (`openai/gpt-5.6-sol`, xhigh) **only** for exceptionally hard tasks, architecture/strategy with unusually high uncertainty, or when grunt/re-review/mid are stuck. This is an explicit-only escalation lane — not for routine or scheduled work.
+- `main` and `sonnet-review` are no longer active OpenClaw lanes. `mid` is now the default OpenClaw agent.
 
 ## Quick Heuristics
 
 - If the task is mostly copying, formatting, mirroring, or bulk file transforms, use Grunt.
 - If the task is bounded implementation, use Grunt-Eng but keep the prompt tight and verify aggressively because it shares DSv4 Flash with Grunt.
-- If the task requires judgment but not major architecture, use Mid.
-- If the task changes the shape of the system or resolves ambiguity across many files, use Lead.
+- If the task requires judgment or structured review, use Mid — this is the default GPT escalation tier.
+- If the task is exceptionally hard, involves architecture/strategy with unusually high uncertainty, or other agents are stuck, use Lead (explicit-only).
+- **No automatic or routine scheduled work should target Lead.**
 
 ## Worked Examples
 
 - Mirror a directory of skill docs into `vault/system/`: **grunt**.
 - Review a smoke-test ingest against a spec: **re-review**, then **mid** if risk warrants it.
-- Rewrite a topic thesis across multiple pages: **lead**.
+- Rewrite a topic thesis across multiple pages: **lead** (exceptional — only when mid would struggle).
 - Append a simple log close-out entry: **grunt**.
-- Build a cross-spec decision summary with grouped outcomes: **lead**.
+- Build a cross-spec decision summary with grouped outcomes: **mid** (default GPT tier) or **lead** if the synthesis is exceptionally complex.
 
 ## Dispatch Pattern
 

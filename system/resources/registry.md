@@ -2,7 +2,7 @@
 type: system-resource
 title: Resource Registry
 slug: registry
-last_synced: 2026-06-10
+last_synced: 2026-07-24
 maintainer: cc-oc-orchestrator
 tags: [ops, resources, registry, shared-brain]
 ---
@@ -78,7 +78,7 @@ native pointer.
 | `gmail-orders-list.sh` | `/root/scripts/` | read-only inbox order-candidate lister (spec 61) |
 | `filter-parser-excluded.js` | `/root/scripts/` | DRY recall filter that applies the parser's exported exclusion checks before audit miss classification (spec 102) |
 | `verify-done-files.sh` | `/root/scripts/` | verify a `.done` marker's FILES_CHANGED vs git/fs ground truth (spec 59) |
-| n8n parser daily audit | OC cron `n8n-parser-daily-audit` (id `b769b0b5…`) | `lead`, 09:20 PT / 16:20 UTC daily; active, not self-expired; runbook uses `--exclude-parser-rejects`; runbook `system/runbooks/n8n-parser-daily-audit.md`; log `system/logs/n8n-parser-daily-check.md` |
+| n8n parser daily audit | OC cron `n8n-parser-daily-audit` (id `b769b0b5…`) | `mid`, 09:20 PT / 16:20 UTC daily, thinking `xhigh` (Spec 190); active; runbook uses `--exclude-parser-rejects`; runbook `system/runbooks/n8n-parser-daily-audit.md`; log `system/logs/n8n-parser-daily-check.md` |
 | second parser audit | systemd `parser-cc-review.timer` | unattended CC review at 09:35 PT; script `/root/scripts/parser-cc-review.sh`; isolated config/log dir `/opt/cc-parser-review` |
 
 ## Private — listed for completeness, not shared

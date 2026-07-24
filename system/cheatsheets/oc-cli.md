@@ -3,7 +3,7 @@ type: system-cheatsheet
 title: OpenClaw CLI Cheatsheet
 slug: oc-cli
 source_path: /root/.claude/projects/-root/memory/reference_oc_cli_cheatsheet.md
-last_synced: 2026-05-21
+last_synced: 2026-07-24
 maintainer: cc-oc-orchestrator
 tags: [ops, cheatsheet, cli]
 ---
@@ -65,8 +65,8 @@ openclaw agent --agent <id> --local --message "prompt" --json
 ```
 
 ### Available agents
-- `lead` — openai/gpt-5.5 (`--thinking high`; default/top OpenClaw reasoning lane; `main` has been merged into this lane)
-- `mid` — openai/gpt-5.4 (`--thinking medium`; medium review/escalation lane)
+- `mid` — openai/gpt-5.6-sol (`--thinking xhigh`; **default** GPT escalation and judgment-heavy review lane; `isDefault=true`)
+- `lead` — openai/gpt-5.6-sol (`--thinking xhigh`; **explicit-only** escalation lane for exceptionally hard tasks; `isDefault=false`)
 - `grunt-eng` — opencode-go/deepseek-v4-flash (`--thinking low`; bounded code/config/parser work and low-risk implementation slices)
 - `grunt` — opencode-go/deepseek-v4-flash (`--thinking low`; basic execution: non-code grunt work, log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
 - `re-review` — opencode-go/glm-5.2 (`--thinking low`; first-pass QA over all grunt/grunt-eng output)
@@ -74,11 +74,11 @@ openclaw agent --agent <id> --local --message "prompt" --json
 
 ### Current review chain
 ```bash
-openclaw agent --agent re-review --local --thinking low --message "..." --json   # GLM 5.2 first-pass review
-openclaw agent --agent mid --local --thinking medium --message "..." --json      # GPT-5.4 medium review/escalation
-openclaw agent --agent lead --local --thinking high --message "..." --json       # GPT-5.5 high-stakes escalation/default
+openclaw agent --agent re-review --local --thinking low --message "..." --json     # GLM 5.2 first-pass review
+openclaw agent --agent mid --local --thinking xhigh --message "..." --json         # GPT-5.6-sol default reviewe escalation
+openclaw agent --agent lead --local --thinking xhigh --message "..." --json        # GPT-5.6-sol explicit-only exceptional escalation
 ```
-`sonnet-review` and `pa` are no longer configured. Hermes/Janus remains the final checkpoint after OC review; Mnemosyne PA lives separately in Hermes profile `papipa`.
+`mid` (isDefault=true) is the default GPT lane; `lead` (isDefault=false) is explicit-only. `main`, `sonnet-review`, and the old OpenClaw `pa` lane are no longer configured. Hermes/Janus remains the final checkpoint after OC review; Mnemosyne/Nemo (Hermes profile `papipa`) lives separately and remains active.
 
 ### NEVER use `openclaw agent --deliver` for simple message relay. Use `message send`.
 

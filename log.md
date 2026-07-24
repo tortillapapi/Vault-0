@@ -1193,6 +1193,18 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Known: 2 Evolving Skies ETB variants + Paradox Rift ETB have unknown costs; 54 items remain in other_inventory for review.
 - Session handoff written to /root/context/hermes-session-handoff-2026-07-23-session2.md.
 
+## [2026-07-24T02:46:00Z] ops | [hermes] Spec 190 — OpenClaw GPT-5.6 xhigh routing
+- OpenClaw `mid` and `lead`: both migrated to `openai/gpt-5.6-sol` with `thinkingDefault: xhigh`.
+- `mid` is now the default GPT escalation lane (`isDefault=true`) for judgment-heavy review and normal GPT work.
+- `lead` is explicit-only (`isDefault=false`): for exceptionally hard tasks, architecture/strategy with unusually high uncertainty, or when other agents are stuck.
+- `parser-daily-audit` cron (`b769b0b5`) remains on agent `mid`; `thinking` overridden to `xhigh`.
+- Business-only auth order preserved: only `openai:themetalman13@gmail.com` effective for both GPT lanes.
+- Non-target agents (grunt, grunt-eng, re-review, email-parser) unchanged.
+- Nemo/Mnemosyne (Hermes profile `papipa`) preserved and active; all Hermes files untouched.
+- Reviews: `190-openclaw-gpt56-xhigh-routing-re-review.md` (APPROVE).
+- Docs: routing, agent-table, cheatsheets, registry, operating-rules, review-template updated.
+- Closeout: `/root/tasks/190-openclaw-gpt56-xhigh-routing.closeout-complete`.
+
 ## [2026-07-23T22:23:00Z] ops | [hermes] Spec 189 — VPS OpenAI agents unified on Business workspace
 - Hermes/default preserved on `themetalman13@gmail.com` ChatGPT Business workspace (plan `team`, account `8c334dd3-05ab-4d1d-b862-6a7743b46bcd`).
 - OpenClaw `lead`/`mid` migrated from legacy Plus to Business-only; per-agent auth order restricted to `openai:themetalman13@gmail.com`; legacy Plus profiles archived/unreachable.
