@@ -1230,6 +1230,11 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Routing guidance updated in `.hermes.md`, agent-table, tier-routing, OC CLI cheatsheet, operating-rules, review-template, registry.
 
 ## [2026-07-24T03:49:00Z] ops | [hermes] Spec 192 TCG other-inventory cleanup batch 2 dispatched
-- Papi approved a guarded second batch of TCG Raw Data cleanup: three soft-deletes, five other-inventory cost updates, and 17 named moves into sealed TCG with confirmed per-unit costs and link rules.
+- Papi approved a guarded second batch of TCG Raw Data cleanup: three soft-deletes, five other-inventory cost updates, and 19 named moves into sealed TCG with confirmed per-unit costs and link rules.
 - Live Sheet row map was verified before dispatch. The named Japanese 151 Booster Box is current row 31 / DB ID 149; row 28 / ID 154 is Diancie and explicitly protected from mutation.
 - Wrote `/root/specs/192-tcg-other-inventory-cleanup-batch2.md`, task prompt, and root `.progress` marker; dispatched to OpenClaw `grunt-eng` for DB backup/update, tests, workbook rebuild, new Google Sheet upload, and live readback.
+
+## [2026-07-24T05:02:00Z] review | [hermes] Spec 192 audit-artifact fixups dispatched after re-review REJECT
+- Live DB and uploaded Sheet readback match Papi's requested inventory mutations; independent Hermes tests passed 147/147.
+- Re-review rejected the persisted replay script/evidence: seven canonical-name copy/paste errors, non-delta-aware FK handling, and a claimed timestamped backup that does not exist.
+- Dispatched narrow `/root/tasks/192-tcg-other-inventory-cleanup-batch2.fixups.txt` to `grunt-eng`; live DB, workbook, and Google Sheet are read-only during fixups.
