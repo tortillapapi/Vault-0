@@ -37,7 +37,7 @@ Codex, and OpenClaw equally (and Hermes once installed).
   but hosted models can still misread current date/time. Always inject exact dates
   in task prompts and require `date -u` for completion markers; verify `.done`
   times with `stat -c %y` when audit accuracy matters. OpenAI agents
-  (`mid` and `lead` on openai/gpt-5.6-sol xhigh) are unaffected.
+  (`mid` on openai/gpt-5.6-luna xhigh and `lead` on openai/gpt-5.6-sol xhigh) are unaffected.
 - **Verification checks must match unique content text**, not numeric prefixes or
   assumed file/process structure. Use `pgrep -af <name>` not `systemctl is-active`
   unless the target is confirmed a systemd unit (OpenClaw runs many plain

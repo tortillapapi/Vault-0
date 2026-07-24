@@ -452,7 +452,7 @@ ask. If pressed for ideas, candidate upgrades worth considering later:
 
 ---
 name: Agent dispatch rules for tiered OC system
-description: Which OC agent to use for which task complexity — mid (openai/gpt-5.6-sol xhigh, default GPT escalation/review), lead (openai/gpt-5.6-sol xhigh, explicit-only exceptionally hard/stuck escalation), grunt-eng/grunt (DSv4 Flash), re-review (GLM 5.2). Always check before delegating.
+description: Which OC agent to use for which task complexity — mid (openai/gpt-5.6-luna xhigh, default GPT escalation/review), lead (openai/gpt-5.6-sol xhigh, explicit-only exceptionally hard/stuck escalation), grunt-eng/grunt (DSv4 Flash medium), re-review (GLM 5.2 medium). Always check before delegating.
 type: reference
 originSessionId: a238ce87-1da8-45a0-bbab-7159be6a51a6
 ---
@@ -461,11 +461,11 @@ originSessionId: a238ce87-1da8-45a0-bbab-7159be6a51a6
 | Agent ID | Model | Thinking | Use For |
 |----------|-------|----------|---------|
 | `lead` | openai/gpt-5.6-sol | `--thinking xhigh` | **Explicit-only** escalation for exceptionally hard tasks, architecture/strategy with unusually high uncertainty, or when other agents are stuck |
-| `mid` | openai/gpt-5.6-sol | `--thinking xhigh` | **Default** GPT lane for review, synthesis, and judgment-heavy work |
-| `grunt-eng` | opencode-go/deepseek-v4-flash | `--thinking low` | Bounded coding/engineering slices; keep tight and verify aggressively |
-| `grunt` | opencode-go/deepseek-v4-flash | `--thinking low` | Non-code grunt work: file ops, docs, formatting, large-context mechanical tasks (sessionKey `agent:grunt:main`) |
+| `mid` | openai/gpt-5.6-luna | `--thinking xhigh` | **Default** GPT lane for review, synthesis, and judgment-heavy work |
+| `grunt-eng` | opencode-go/deepseek-v4-flash | `--thinking medium` | Bounded coding/engineering slices; keep tight and verify aggressively |
+| `grunt` | opencode-go/deepseek-v4-flash | `--thinking medium` | Non-code grunt work: file ops, docs, formatting, large-context mechanical tasks (sessionKey `agent:grunt:main`) |
 | `email-parser` | google/gemini-2.5-flash | — | Email parsing only (live state verified 2026-05-21) |
-| `re-review` | opencode-go/glm-5.2 | `--thinking low` | First-pass QA over grunt/grunt-eng output |
+| `re-review` | opencode-go/glm-5.2 | `--thinking medium` | First-pass QA over grunt/grunt-eng output |
 
 ## Grunt tier split
 - **`grunt-eng`** (DSv4 Flash): bounded grunt task that involves writing or editing code
@@ -477,7 +477,7 @@ openclaw agent --agent <id> --local --thinking <level> --message "prompt" --json
 ```
 
 ## Key constraints
-- lead + mid use separate OpenAI Plus accounts (no rate contention)
+- lead + mid use the same approved OpenAI Business workspace; their routing roles differ, but their quota pool is shared
 - grunt on OpenCode Go (independent of OpenAI limits)
 - Always pass `--json` to capture response
 - For message relay to user: use `openclaw message send`, never `agent --deliver`
@@ -543,10 +543,10 @@ openclaw agent --agent <id> --local --message "prompt" --json
 
 ### Available agents
 - `lead` — openai/gpt-5.6-sol (`--thinking xhigh`; explicit-only escalation for exceptionally hard architecture/strategy or when other agents are stuck)
-- `mid` — openai/gpt-5.6-sol (`--thinking xhigh`; default GPT lane for review, synthesis, and judgment-heavy work)
-- `grunt-eng` — opencode-go/deepseek-v4-flash (`--thinking low`; bounded code/config/parser work)
-- `grunt` — opencode-go/deepseek-v4-flash (`--thinking low`; non-code grunt: log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
-- `re-review` — opencode-go/glm-5.2 (`--thinking low`; first-pass QA over grunt/grunt-eng output)
+- `mid` — openai/gpt-5.6-luna (`--thinking xhigh`; default GPT lane for review, synthesis, and judgment-heavy work)
+- `grunt-eng` — opencode-go/deepseek-v4-flash (`--thinking medium`; bounded code/config/parser work)
+- `grunt` — opencode-go/deepseek-v4-flash (`--thinking medium`; non-code grunt: log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
+- `re-review` — opencode-go/glm-5.2 (`--thinking medium`; first-pass QA over grunt/grunt-eng output)
 - `email-parser` — google/gemini-2.5-flash (email parsing only)
 
 ### NEVER use `openclaw agent --deliver` for simple message relay. Use `message send`.
