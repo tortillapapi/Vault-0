@@ -354,3 +354,9 @@
 - Recall: 2 order emails | 0 matched | MISSES: Entertainment Earth order-last4 unavailable 2026-07-24
 - Precision: 0 recent rows | 0 confirmed | FALSE POSITIVES: none
 - Verdict: ANOMALIES
+
+## 2026-07-26
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 1 order email | 1 matched | MISSES: none
+- Precision: 1 recent rows | 1 confirmed | FALSE POSITIVES: none
+- Verdict: OK
