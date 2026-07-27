@@ -1244,3 +1244,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Final active TCG inventory: 32 other_inventory / 91 units / $1,221.00; 38 raw_single / 94 / $3,055.82; 58 sealed_tcg / 120 / $11,690.52; total 305 units / $15,967.34 cost basis.
 - Independent verification: 147/147 tests, quick_check ok, zero new FK violations, verify-only DB hash/mtime unchanged, live Sheet readback correct.
 - Re-review accepted the repaired audit script and docs. Open link decisions: White Future PKC has no exact TCGPlayer page; Sword & Shield ETB needs Zacian vs Zamazenta confirmation. Three pre-existing price-history FK orphans remain separate debt.
+
+## [2026-07-27T23:30:48Z] ops | [hermes] Rotated OpenClaw grunt session stores
+- Papi requested rotation of the grunt agents. Safety checks passed: 0 running OC tasks and no fresh `/root/tasks/*.progress` markers; stale completed Spec 193 progress marker was cleared.
+- Forced guarded rotation targeted only `grunt` and `grunt-eng`; archives created at `sessions/archive/auto-20260727T233048Z` for each lane.
+- Post-check: both lanes have `session_count=0`, `sessions.json={}`, usage caches reset, 42 bytes active store each, and `would_rotate=false`.
