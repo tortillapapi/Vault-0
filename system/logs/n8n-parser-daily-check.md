@@ -360,3 +360,9 @@
 - Recall: 1 order email | 1 matched | MISSES: none
 - Precision: 1 recent rows | 1 confirmed | FALSE POSITIVES: none
 - Verdict: OK
+
+## 2026-07-27
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 3 order emails | 3 matched | MISSES: none
+- Precision: 2 recent rows | 2 confirmed | FALSE POSITIVES: none
+- Verdict: OK
