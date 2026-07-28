@@ -53,10 +53,13 @@ orchestrator `agent.reasoning_effort` = **medium**.
 
 ### 3. Loop sentinel (alert-only, never kills)
 - Script: `/root/scripts/hermes-loop-sentinel.sh` · units: `hermes-loop-sentinel.{service,timer}` (every 10 min).
-- Detection: (a) productive-churn — **≥20 tool calls in 10 min with 0 user messages**; (b) per-session thresholds — **25+ API calls**, **1M+ cached input tokens**, **100K+ tool-output chars**, or **$50+ estimated cost**. 30-min per-alert-key cooldown.
+- Detection: (a) productive-churn — **≥20 tool calls in 10 min with 0 user messages**; (b) per-session thresholds — **25+ API calls**, **1M+ cached input tokens**, **100K+ tool-output chars**, or **50+ Sol-equivalent credits**. 30-min per-alert-key cooldown.
+- Sol-equivalent formula: `sol = (input_tokens*125 + cache_read_tokens*12.5 + output_tokens*750) / 1e6` per announced Sol Business rates.
+- output_tokens includes reasoning_tokens (verified at conversation_loop.py:2816); not added separately to avoid double-count.
+- All sessions-table metrics are available: `api_call_count`, `input_tokens`, `output_tokens`, `cache_read_tokens`, `cache_write_tokens`, `reasoning_tokens`, `tool_call_count`, `estimated_cost_usd`. Tool-output chars derived from `messages.content`.
+- Unavailable (server-side only): rate-limit remaining/reset time.
 - Delivery via `hermes send` (Hermes-native, no-LLM path). Never kills.
-- Metrics unavailable (not fabricated): per-session output_tokens, reasoning_tokens, rate-limit remaining (server-side only in v0.19.0).
-- Testability: `HERMES_SENTINEL_DRY_RUN=1` skips send; env vars override all thresholds.
+- Testability: `HERMES_SENTINEL_DRY_RUN=1` skips send; `--status` for JSON; `--check` for dry-run; env vars override all thresholds.
 
 ## Responding to a sentinel alert
 1. Confirm what it's doing: check the live session cadence and spawned processes
