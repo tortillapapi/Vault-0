@@ -26,13 +26,15 @@ Changes to `/root/.hermes/config.yaml`, verified with `hermes config check`:
 
 | Key | Old | New | Why |
 |---|---|---|---|
-| `compression.threshold` | (default) | **0.20** | Trigger compression earlier |
-| `compression.protect_last_n` | (default) | **6** | Protect fewer messages from compression |
-| `compression.target_ratio` | (default) | **0.10** | Compress more aggressively |
-| `tool_output.max_bytes` | (default) | **8,000** | Tighter terminal output cap |
-| `tool_output.max_lines` | (default) | **250** | Tighter file pagination cap |
-| `tool_output.max_line_length` | (default) | **600** | Tighter per-line cap |
-| `agent.max_turns` | 60 (post-incident) | **40** | Structural cap — forces checkpoint earlier |
+| Key | Old | New | Why |
+|---|---|---|---|
+| `compression.threshold` | 0.30 | **0.20** | Trigger compression earlier |
+| `compression.protect_last_n` | 10 | **6** | Protect fewer messages from compression |
+| `compression.target_ratio` | 0.15 | **0.10** | Compress more aggressively |
+| `tool_output.max_bytes` | 16,000 | **8,000** | Tighter terminal output cap |
+| `tool_output.max_lines` | 500 | **250** | Tighter file pagination cap |
+| `tool_output.max_line_length` | 1,200 | **600** | Tighter per-line cap |
+| `agent.max_turns` | 60 | **40** | Structural cap — forces checkpoint earlier |
 
 **Preserved (unchanged from Janus incident fix):**
 - `tool_loop_guardrails.hard_stop_enabled: true` — halt failure-loops
@@ -59,7 +61,7 @@ Changes to `/root/.hermes/config.yaml`, verified with `hermes config check`:
 **Path:** `/root/scripts/hermes-session-resume.py`
 
 - Deterministic, LLM-free
-- Modes: `--mode=json` (~6.7 KB), `--mode=markdown` (~1.5 KB), `--status` (one-liner)
+- Modes: `--mode=json` (default, ~6.7 KB), `--mode=markdown` (~1.5 KB), `--mode=status` (one-liner)
 - Returns: active specs, pending tasks, blockers (+24h flag), fresh `.progress` anti-collision markers, last 20 vault log entries, suggested next action, Hermes state
 - Called automatically at session start per `.hermes.md` Session Resume Protocol
 
@@ -145,7 +147,7 @@ No hierarchy changes were made. No model/thinking-level reassignments.
 
 Even if Hermes becomes primary, OpenClaw retains unique value:
 
-1. **Parser daily audit cron** — The `parser-daily-audit` cron (OC `main`/`grunt-eng` lane, 09:20 PT) is a self-contained audit. It would need to be ported to a Hermes script or cron equivalent.
+1. **Parser daily audit cron** — The `parser-daily-audit` cron (OC `mid` lane, `20 9 * * *` America/Los_Angeles) is a self-contained audit. It would need to be ported to a Hermes script or cron equivalent.
 2. **Current per-lane model routing** — OpenClaw handles dynamic model routing across lanes (`mid`→luna, `lead`→sol, `grunt`→flash, etc.). Hermes would need equivalent worker profiles/lanes.
 3. **Separate failure domain** — If Hermes is down or mid-upgrade, OpenClaw can still execute bounded tasks. This operational independence is valuable.
 
@@ -157,7 +159,7 @@ Any future migration of OpenClaw responsibilities to Hermes must account for:
 
 1. **`delegate_task` model is globally configured** — Hermes' direct `delegate_task` tool uses a single configured model; there is no per-call model override equivalent to OpenClaw's per-lane routing.
 2. **In-flight child execution is not restart-durable** — If Hermes restarts while a child task is running, the child state is lost. OpenClaw task markers are filesystem-persistent and survive restarts.
-3. **Profiles, Kanban, and cron solve persistent lanes** — Hermes profiles/cron can model per-role runners (equivalent to OpenClaw lanes), but no equivalent exists today.
+3. **Profiles, Kanban, and cron solve persistent lanes** — Hermes profiles, Kanban, and cron can reproduce persistent/specialized lanes (equivalent to OpenClaw lanes), but that architecture has not yet been designed/configured for this VPS.
 4. **`hermes claw migrate --dry-run --yes` — limited scope** — The built-in migration command would only import memory/user/daily-memory from OpenClaw's workspace. It skips:
    - Agent hierarchy and model assignments
    - Cron jobs and systemd timers
