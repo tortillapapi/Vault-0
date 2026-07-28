@@ -1257,3 +1257,11 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Structural caps in `/root/.hermes/config.yaml`: `tool_loop_guardrails.hard_stop_enabled=true`; `agent.max_turns 90→60`; `kanban.dispatch_stale_timeout_seconds 14400→3600`. Backup `config.yaml.bak-loopguard-*`.
 - New alert-only guardrail: `hermes-loop-sentinel.timer` (10 min) → Telegram when a session shows ≥20 tool calls/10 min with 0 user msgs; never kills. Script `/root/scripts/hermes-loop-sentinel.sh`; runbook `system/runbooks/hermes-loop-guardrails.md`.
 - Cleanup: specs 192 & 193 markers finalized (orphan review/polish tasks closed CANCELLED); both `status: complete`. Post-fix Janus behavior verified good on live tasks by owner.
+
+## [2026-07-28T04:10:00Z] docs | [hermes] Spec 196 documentation closeout — token-efficiency hardening
+- Created canonical decision/runbook: `system/runbooks/hermes-token-efficiency-and-openclaw-transition.md` — covers audit baseline (79 calls, 388K fresh, 26K output, 11.6M cached, ~214 Sol credits), root cause, config changes (compression 0.20/0.10/protect 6, tool_output 8000/250/600, max_turns 40), operational policy, resume collector, sentinel paths/formulas/thresholds, tool-output-cap finding (no bypass), verified unchanged OC roster, Hermes-primary recommendation (no change made), remaining OC responsibilities, migration caveats, and staged future plan.
+- Created new-session handoff: `/root/context/hermes-token-optimization-handoff-2026-07-28.md` — completed work, verified state, unresolved decisions, suggested first action.
+- Added cross-links from `hermes-loop-guardrails.md` to the new canonical document.
+- Written done marker: `/root/tasks/196-hermes-token-efficiency-documentation.done` (this entry).
+- Commit: see vault git log for hash.
+- Tier: documentation only; no runtime config, hierarchy, service, or cron state changed.

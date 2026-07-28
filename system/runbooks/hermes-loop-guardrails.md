@@ -73,3 +73,8 @@ orchestrator `agent.reasoning_effort` = **medium**.
 - Sentinel threshold: `TOOL_THRESHOLD` in the script (currently 20). Lower = more sensitive.
 - If legit long work trips it, it only *alerts* — raise the threshold rather than disabling.
 - Deliberately **no auto-kill backstop** yet (owner deferred picking thresholds).
+
+## Cross-References
+- Token-efficiency hardening and transition planning: [`hermes-token-efficiency-and-openclaw-transition.md`](./hermes-token-efficiency-and-openclaw-transition.md) — canonical decision document covering audit baseline, config changes, operational policy, Hermes-primary migration caveats, and proposed staged future plan.
+- Spec 196: `/root/specs/196-hermes-token-efficiency-hardening.md`
+- Tool-output cap investigation: `/root/reviews/196-tool-output-cap-investigation.md`
