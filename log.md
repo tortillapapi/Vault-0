@@ -1249,3 +1249,11 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Papi requested rotation of the grunt agents. Safety checks passed: 0 running OC tasks and no fresh `/root/tasks/*.progress` markers; stale completed Spec 193 progress marker was cleared.
 - Forced guarded rotation targeted only `grunt` and `grunt-eng`; archives created at `sessions/archive/auto-20260727T233048Z` for each lane.
 - Post-check: both lanes have `session_count=0`, `sessions.json={}`, usage caches reset, 42 bytes active store each, and `would_rotate=false`.
+
+## [2026-07-28T01:54:27Z] ops | [metis] Janus over-engineering / token-burn incident — guardrails + review-chain fix
+- Diagnosed OpenAI token burn after ChatGPT Plus→Business migration. Root cause was a doctrine regression, not billing: Business unlocked gpt-5.6 `sol`/`luna`, auto-raise flipped Hermes default `gpt-5.5`→`gpt-5.6-sol`, and the review chain was rewritten from `re-review → mid` into a 4-stage escalation ending in a mandatory "Hermes final checkpoint" — so Janus wrapped one-line edits in full spec+review pipelines.
+- Immediate bleed: one un-cleared ~10h Telegram session re-sent ~100K ctx/call (21.2M cache-read tokens / 205 calls). Archived via `hermes sessions archive`; routing already on a fresh session.
+- Fix (durable, both copies): reverted review-chain doctrine to **risk-proportional** in `/root/.hermes.md` AND `system/configs/openclaw-agents.md` (this repo) — routine edits = apply/verify/done, no mandatory Hermes self-checkpoint. `lead` thinking xhigh→high; `mid` stays luna xhigh.
+- Structural caps in `/root/.hermes/config.yaml`: `tool_loop_guardrails.hard_stop_enabled=true`; `agent.max_turns 90→60`; `kanban.dispatch_stale_timeout_seconds 14400→3600`. Backup `config.yaml.bak-loopguard-*`.
+- New alert-only guardrail: `hermes-loop-sentinel.timer` (10 min) → Telegram when a session shows ≥20 tool calls/10 min with 0 user msgs; never kills. Script `/root/scripts/hermes-loop-sentinel.sh`; runbook `system/runbooks/hermes-loop-guardrails.md`.
+- Cleanup: specs 192 & 193 markers finalized (orphan review/polish tasks closed CANCELLED); both `status: complete`. Post-fix Janus behavior verified good on live tasks by owner.
