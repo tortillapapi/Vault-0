@@ -1324,3 +1324,15 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - DST-safe: 17:00 UTC check skips during PST (before production); 18:00 catches it; idempotency dedup prevents double enqueue.
 - Manual trigger verified: succeeded, empty stdout, no duplicate card (existing S1 artifact detected), no side effects on Kanban (9 cards), hermesparser (stopped, no cron), or OpenClaw parser cron (enabled, mid, 20 9 * * *, ok).
 - OpenClaw remains sole production writer and notifier. Hermes shadow never writes canonical log, sends alerts, or mutates production state. Phase 3 cutover unauthorized.
+
+## [2026-07-29T23:54:00Z] ops | [hermes] Spec 200.3b shadow gate paused, fixed, resumed
+- Independent code review identified four defects in parser-shadow-gate.py before first scheduled fire:
+  (1) parser account shape used flat keys instead of nested ``accounts`` dict;
+  (2) OpenClaw cron state read top-level fields instead of nested ``state`` object;
+  (3) worker task lacked independent gate revalidation at worker start;
+  (4) progress marker used ``created`` state before card creation.
+- All four fixed: parser checks ``data["accounts"][name]``; cron reads ``state.consecutiveErrors/status/lastRunAtMs`` with safe fallbacks; worker task includes full STEP 1 revalidation with abort-on-failure; progress starts ``pending``, atomically updated to ``created`` after card creation.
+- Top-level exception boundary added; safe error evidence (category+exit-code only, no raw CLI output).
+- Self-tests expanded from 36 to 57 (nested parser accounts, cron state fixtures, safe detail, epoch conversion). All pass.
+- Cron 3d36a18c58eb resumed, schedule ``0 17,18 * * *``, no-agent, local delivery. Manual trigger verified: succeeded, empty output, no duplicate card/file.
+- OpenClaw remains sole writer/notifier; Phase 3 cutover unauthorized.
