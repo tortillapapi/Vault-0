@@ -1271,3 +1271,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Created child Spec 198 plus task/progress markers: `/root/specs/198-spec197-phase0-read-only-preflight.md` and `/root/tasks/198-spec197-phase0-read-only-preflight.txt`.
 - Original OpenClaw `mid` transport timed out after 600 seconds with no canonical output. Papi explicitly authorized a fresh bounded fallback.
 - Fallback dispatched to OpenClaw `grunt-eng` under tracked process `proc_d4a35ef018b7` / PID `1959605`. Production parser cron, Hermes profiles, Kanban, credentials, routing, services, and crons remain unchanged.
+
+## [2026-07-29T20:40:10Z] review | [hermes] Spec 198 Phase 0 preflight accepted
+- Rejected the initial worker report for a false Hermes `opencode-go` credential claim, secret-fragment exposure, unsupported `gpt-5.4-mini` recommendation, and OpenClaw/Hermes evidence conflation.
+- Bounded fixup corrected the auth inventory and secret hygiene. Hermes sessions independently verified `deepseek-v4-flash` via `opencode-go` and `gpt-5.6-luna` via `openai-codex` on the current default profile.
+- Accepted `/root/reviews/198-spec197-phase0-read-only-preflight.md` with verdict `READY_FOR_GATE_1`; dedicated-profile credentials and Kanban routing remain intentionally untested until Gate 1.
+- Verified no runtime changes: existing Hermes profiles/crons unchanged, Kanban empty, and OpenClaw `parser-daily-audit` still enabled on `mid` at 09:20 America/Los_Angeles.
