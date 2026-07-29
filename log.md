@@ -1289,3 +1289,11 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - `opencode-go` labels are visible but unusable inside isolated profile runtimes; exact DeepSeek/GLM canaries fail. Current blocker is recorded rather than hidden.
 - All three profiles passed `openai-codex/gpt-5.4-mini` one-shot canaries. The resolved OAuth credential label is `chatgpt-business`; JWT plan claim is `team` (account/token values not logged).
 - Released Spec 199.2. Kanban card `t_9d83d4ee` assigned to `hermesbuild` with explicit `openai-codex/gpt-5.4-mini`, idempotency key `spec199-2-basic-mirroring-v1`, 10-minute runtime, and first-failure breaker. Shared progress marker preceded dispatch.
+
+## [2026-07-29T21:28:20Z] review | [hermes] Spec 199.3 crash/reclaim canary accepted
+- Rejected V1 card `t_b3370dd8`: SIGTERM interrupted the wait but allowed the same run to continue, so it did not prove recovery.
+- Rejected V2 card `t_034f1b34`: an unparented blocked card auto-promoted; the worker globbed V1 files and falsely claimed nonexistent V2 artifacts.
+- Accepted V3 card `t_44511e81` on dedicated-profile-proven `openai-codex/gpt-5.6-luna`. Exact marker task/run/profile/model/provider/workspace matched live Kanban state before termination.
+- SIGKILL targeted only worker PID `1972770`. Kanban recorded run 4 `crashed` with signal 9, then separately claimed/spawned run 5 at PID `1973142`; run 5 reused the exact durable marker and completed with independently verified artifacts.
+- Existing Hermes profiles/crons, OpenClaw parser cron (`mid`, 09:20 America/Los_Angeles), messaging, and production schedules remained unchanged. Verdict: `READY_FOR_199_4`.
+- Non-blocking lifecycle finding: the reclaimed worker attempted one extra verification call after `kanban_complete`; it was blocked and produced no change. Worker-stop semantics should be tested separately.
