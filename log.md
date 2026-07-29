@@ -1277,3 +1277,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Bounded fixup corrected the auth inventory and secret hygiene. Hermes sessions independently verified `deepseek-v4-flash` via `opencode-go` and `gpt-5.6-luna` via `openai-codex` on the current default profile.
 - Accepted `/root/reviews/198-spec197-phase0-read-only-preflight.md` with verdict `READY_FOR_GATE_1`; dedicated-profile credentials and Kanban routing remain intentionally untested until Gate 1.
 - Verified no runtime changes: existing Hermes profiles/crons unchanged, Kanban empty, and OpenClaw `parser-daily-audit` still enabled on `mid` at 09:20 America/Los_Angeles.
+
+## [2026-07-29T20:59:56Z] ops | [hermes] Spec 199 Gate 1 worker canaries authorized
+- Papi authorized dedicated Hermes worker lanes and non-production Kanban canaries only; existing profiles, OpenClaw, parser cron, bot bindings, and production schedules remain protected.
+- Created umbrella Spec 199 and prerequisite Spec 199.1. Hermes profile CLI requires lowercase alphanumeric names, so design labels map to `hermesbuild`, `hermesreview`, and `hermesparser`.
+- Dispatched blank-profile creation/readiness to OpenClaw `grunt-eng` as tracked process `proc_605a02ab1adc` / PID `1965817`.
+- Profiles must be blank and unbound: no clone flags, copied identity/state/credentials, gateways, cron, aliases, Telegram tokens, or production routing. Kanban dispatch remains dependency-gated on 199.1 acceptance.
