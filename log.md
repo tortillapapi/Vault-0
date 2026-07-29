@@ -1265,3 +1265,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Written done marker: `/root/tasks/196-hermes-token-efficiency-documentation.done` (this entry).
 - Commit: see vault git log for hash.
 - Tier: documentation only; no runtime config, hierarchy, service, or cron state changed.
+
+## [2026-07-29T20:30:32Z] ops | [hermes] Spec 197 Gate 0 preflight dispatched
+- Papi accepted the Hermes-primary hybrid design and authorized Gate 0 read-only preflight only; no runtime changes.
+- Created child Spec 198 plus task/progress markers: `/root/specs/198-spec197-phase0-read-only-preflight.md` and `/root/tasks/198-spec197-phase0-read-only-preflight.txt`.
+- Original OpenClaw `mid` transport timed out after 600 seconds with no canonical output. Papi explicitly authorized a fresh bounded fallback.
+- Fallback dispatched to OpenClaw `grunt-eng` under tracked process `proc_d4a35ef018b7` / PID `1959605`. Production parser cron, Hermes profiles, Kanban, credentials, routing, services, and crons remain unchanged.
