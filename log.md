@@ -1283,3 +1283,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Created umbrella Spec 199 and prerequisite Spec 199.1. Hermes profile CLI requires lowercase alphanumeric names, so design labels map to `hermesbuild`, `hermesreview`, and `hermesparser`.
 - Dispatched blank-profile creation/readiness to OpenClaw `grunt-eng` as tracked process `proc_605a02ab1adc` / PID `1965817`.
 - Profiles must be blank and unbound: no clone flags, copied identity/state/credentials, gateways, cron, aliases, Telegram tokens, or production routing. Kanban dispatch remains dependency-gated on 199.1 acceptance.
+
+## [2026-07-29T21:07:09Z] review | [hermes] Spec 199.1 accepted; first Kanban canary dispatched
+- Accepted isolated profiles `hermesbuild`, `hermesreview`, and `hermesparser`: stopped gateways, empty cron, no Telegram/aliases, and no model default.
+- `opencode-go` labels are visible but unusable inside isolated profile runtimes; exact DeepSeek/GLM canaries fail. Current blocker is recorded rather than hidden.
+- All three profiles passed `openai-codex/gpt-5.4-mini` one-shot canaries. The resolved OAuth credential label is `chatgpt-business`; JWT plan claim is `team` (account/token values not logged).
+- Released Spec 199.2. Kanban card `t_9d83d4ee` assigned to `hermesbuild` with explicit `openai-codex/gpt-5.4-mini`, idempotency key `spec199-2-basic-mirroring-v1`, 10-minute runtime, and first-failure breaker. Shared progress marker preceded dispatch.
