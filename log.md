@@ -1304,3 +1304,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Known deviations preserved: isolated profiles cannot use opencode-go; worker openai-codex provider infrastructure persisted without model default.
 - Hermes/default retains three active cron jobs (Mnemosyne Daily Command Stack, OpenClaw Grunt Session Watchdog, Mnemosyne Due Reminder Dispatcher). Worker profiles have no scheduled jobs. OpenClaw parser cron remains enabled on mid at 09:20 America/Los_Angeles with zero consecutive errors.
 - Phase 2 is NOT authorized. Spec 197 remains active awaiting Papi's separate Gate 2 decision.
+
+## [2026-07-29T23:14:35Z] ops | [hermes] Spec 200 Gate 2 parser shadow preflight activated
+- Papi authorized Hermes parser-audit shadow mode with OpenClaw remaining sole live writer and notifier; Hermes shadow output must not commit the canonical log or send alerts.
+- 200.1 S0 preflight completed: frozen production baseline (OC mid, 20 9 * * * America/Los_Angeles, 16:20 UTC/09:20 PT, 18.5 min buffer past parser completion at 16:01 UTC), runbook drift documented (stale header says OC lead 16:30 UTC vs live mid 09:20 PT).
+- Recommended S1 execution: bounded manual Kanban canary (no cron, no gateway) dispatched from default profile to hermesparser with openai-codex/gpt-5.6-sol override, per-task no-alert/no-write guards, and production-completion gate.
+- hermesparser profile confirmed: gateway stopped, no cron, no model default, provider openai-codex persisted. opencode-go and google/gemini unavailable — S1 uses proven openai-codex path.
+- Verdict: READY_FOR_200_2. No runtime, profile, credential, scheduler, Kanban, or production changes made.
