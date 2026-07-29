@@ -1297,3 +1297,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - SIGKILL targeted only worker PID `1972770`. Kanban recorded run 4 `crashed` with signal 9, then separately claimed/spawned run 5 at PID `1973142`; run 5 reused the exact durable marker and completed with independently verified artifacts.
 - Existing Hermes profiles/crons, OpenClaw parser cron (`mid`, 09:20 America/Los_Angeles), messaging, and production schedules remained unchanged. Verdict: `READY_FOR_199_4`.
 - Non-blocking lifecycle finding: the reclaimed worker attempted one extra verification call after `kanban_complete`; it was blocked and produced no change. Worker-stop semantics should be tested separately.
+
+## [2026-07-29T22:46:30Z] review | [hermes] Spec 199 Phase 1 closed — ready for Gate 2 decision
+- Non-production Kanban canaries and independent review passed: 199.1 (isolated profiles), 199.2 (basic dispatch + shared markers, card t_9d83d4ee), 199.3 (crash/reclaim/retry, card t_44511e81), 199.4 (duplicate-side-effect protection, card t_dfb42231), and 199.5 independent review (cards t_df6fed75/REJECT → t_8e6d8113/fix → t_aae4778e/fix2).
+- Final verdict: ACCEPT_READY_FOR_GATE_2_DECISION.
+- Known deviations preserved: isolated profiles cannot use opencode-go; worker openai-codex provider infrastructure persisted without model default.
+- Hermes/default retains three active cron jobs (Mnemosyne Daily Command Stack, OpenClaw Grunt Session Watchdog, Mnemosyne Due Reminder Dispatcher). Worker profiles have no scheduled jobs. OpenClaw parser cron remains enabled on mid at 09:20 America/Los_Angeles with zero consecutive errors.
+- Phase 2 is NOT authorized. Spec 197 remains active awaiting Papi's separate Gate 2 decision.
