@@ -1317,3 +1317,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Compared three S2 dispatch mechanisms: (A) default-profile agent cron, (B) default-profile no-agent script cron → Kanban enqueue, (C) start hermesparser gateway + profile-local cron.
 - Selected Mechanism B — least privilege, most token efficient (zero model calls for dispatch, 1 call per shadow).
 - 200.3b implementation can create the gate script and cron job. OpenClaw remains sole live writer/notifier. No schedule or runtime was changed.
+
+## [2026-07-29T23:46:00Z] ops | [hermes] Spec 200.3b S2 shadow enqueue gate activated
+- Gate script: /root/.hermes/scripts/parser-shadow-gate.py (Python, 3 modes: production/dry-run/self-test). All 36 self-tests pass; dry-run returns safe JSON with no writes.
+- Cron job: `Hermes Parser Shadow Enqueue` (3d36a18c58eb), default profile, schedule `0 17,18 * * *`, no-agent, local delivery.
+- DST-safe: 17:00 UTC check skips during PST (before production); 18:00 catches it; idempotency dedup prevents double enqueue.
+- Manual trigger verified: succeeded, empty stdout, no duplicate card (existing S1 artifact detected), no side effects on Kanban (9 cards), hermesparser (stopped, no cron), or OpenClaw parser cron (enabled, mid, 20 9 * * *, ok).
+- OpenClaw remains sole production writer and notifier. Hermes shadow never writes canonical log, sends alerts, or mutates production state. Phase 3 cutover unauthorized.
