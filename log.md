@@ -1311,3 +1311,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Recommended S1 execution: bounded manual Kanban canary (no cron, no gateway) dispatched from default profile to hermesparser with openai-codex/gpt-5.6-sol override, per-task no-alert/no-write guards, and production-completion gate.
 - hermesparser profile confirmed: gateway stopped, no cron, no model default, provider openai-codex persisted. opencode-go and google/gemini unavailable — S1 uses proven openai-codex path.
 - Verdict: READY_FOR_200_2. No runtime, profile, credential, scheduler, Kanban, or production changes made.
+
+## [2026-07-29T23:38:26Z] docs | [hermes] Corrected parser runbook header; S2 dispatch design ready
+- Corrected stale runbook header from OC `lead`/16:30 UTC to live truth: OC `mid`, cron `20 9 * * *`, `America/Los_Angeles`, daily 09:20 PT (16:20 UTC PDT / 17:20 UTC PST). Execution rules unchanged.
+- Compared three S2 dispatch mechanisms: (A) default-profile agent cron, (B) default-profile no-agent script cron → Kanban enqueue, (C) start hermesparser gateway + profile-local cron.
+- Selected Mechanism B — least privilege, most token efficient (zero model calls for dispatch, 1 call per shadow).
+- 200.3b implementation can create the gate script and cron job. OpenClaw remains sole live writer/notifier. No schedule or runtime was changed.

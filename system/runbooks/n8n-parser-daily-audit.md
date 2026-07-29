@@ -1,6 +1,6 @@
 # Runbook: n8n Order-Parser Daily Accuracy Audit
 
-**Run by:** OC `lead` agent via cron `parser-daily-audit`, daily 16:30 UTC.
+**Run by:** OC `mid` agent via cron `parser-daily-audit`, cron expression `20 9 * * *`, timezone `America/Los_Angeles`, daily 09:20 PT (16:20 UTC during PDT / 17:20 UTC during PST).
 **Self-contained** — the agent has no memory between runs; everything needed is here.
 **Active window:** ongoing watchdog — runs until the parser is verified stable, then retire manually (no auto-expiry).
 
