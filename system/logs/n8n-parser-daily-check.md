@@ -372,3 +372,9 @@
 - Recall: 1 order email | 1 matched | MISSES: none
 - Precision: 2 recent rows | 2 confirmed | FALSE POSITIVES: none
 - Verdict: OK
+
+## 2026-07-29
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 0 order emails | 0 matched | MISSES: none
+- Precision: 2 recent rows | 0 confirmed | FALSE POSITIVES: Alibaba …0582 + 2026-07-28; Chewy.com …4544 + 2026-07-29
+- Verdict: ANOMALIES
