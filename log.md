@@ -1348,3 +1348,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Replaced `/root/tasks/201_2f2-spec197-hermes-primary-gate-correction-round2.progress` with `STATUS: CANCELLED` / `SUPERSEDED_BY: 202-simple-hermes-parser-audit-production`.
 - Hermes is now the sole production audit writer and notifier.
 - Outputs: `/root/reviews/202-simple-hermes-parser-audit-production.md`, `/root/tasks/202-simple-hermes-parser-audit-production.done`.
+
+## [2026-07-30T06:12:54Z] ops | [hermes] Spec 205 prep-center inventory cost reconciliation dispatched
+- Created `/root/specs/205-prep-center-inventory-cost-linkage.md` and bounded Phase 1 task `/root/tasks/205_1-prep-cost-reconciliation.txt`.
+- Confirmed the old ~$739K `price_semantics` bug and later multi-run valuation issue are already fixed; this work does not reopen either.
+- Live read-only baseline: latest run 7; 15 zero-cost prep-center pipeline rows remain across `at_prep`, `inbound_prep`, and `prep_to_fba`; live DB fingerprint unchanged.
+- Dispatched one Hermes-native read-only reconciliation worker (`deleg_3d220520`); writes/apply work remains separately gated.
