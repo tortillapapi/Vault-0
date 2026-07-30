@@ -1361,3 +1361,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Safe proposed mapping: prep row 4 → purchase line 2 at $67.50/unit; applying only this would reduce zero-cost prep rows from 15 to 14.
 - Independent fingerprint verification matched exactly; SQLite `quick_check=ok`, latest run 7, no live mutation.
 - Spec moved to `awaiting_user_decision`; Phase 2 remains blocked on Papi approval/source allocations.
+
+## [2026-07-30T07:00:49Z] ops | [hermes] Spec 205 Phase 2 approved and dispatched
+- Papi approved applying the single proven mapping only: prep source row 4 at $67.50/unit.
+- Durable path selected: exact prep-center Sheet cost cell → fresh snapshot/import → new pipeline run → workbook rebuild; no one-off DB-only override.
+- Phase 2 requires restricted Sheet/SQLite backups, exact before/after readback, 15→14 zero-cost prep rows, tests/integrity, and non-overwriting workbook publication only after reconciliation.
+- Dispatched Hermes-native executor `deleg_60f05291`; ambiguous and unmatched rows remain untouched.
