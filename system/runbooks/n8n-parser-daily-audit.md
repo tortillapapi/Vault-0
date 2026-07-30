@@ -1,6 +1,6 @@
 # Runbook: n8n Order-Parser Daily Accuracy Audit
 
-**Run by:** OC `mid` agent via cron `parser-daily-audit`, cron expression `20 9 * * *`, timezone `America/Los_Angeles`, daily 09:20 PT (16:20 UTC during PDT / 17:20 UTC during PST).
+**Run by:** Hermes (`hermesparser` profile) via systemd timer `hermes-parser-audit.timer`, schedule `09:20 America/Los_Angeles`, daily.
 **Self-contained** — the agent has no memory between runs; everything needed is here.
 **Active window:** ongoing watchdog — runs until the parser is verified stable, then retire manually (no auto-expiry).
 
@@ -90,7 +90,7 @@ customer data.
 ## 5. Alert on ANY anomaly (Telegram)
 If any workflow `error`, OR any MISS, OR any FALSE POSITIVE:
 ```
-openclaw message send --channel telegram --target 1207164084 -m "n8n parser audit <date> — ANOMALY: <one-line summary>. See system/logs/n8n-parser-daily-check.md"
+hermes send --to telegram:1207164084 -m "n8n parser audit <date> — ANOMALY: <one-line summary>. See system/logs/n8n-parser-daily-check.md"
 ```
 If everything is clean, do NOT send a message (log only).
 

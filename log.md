@@ -1336,3 +1336,15 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Self-tests expanded from 36 to 57 (nested parser accounts, cron state fixtures, safe detail, epoch conversion). All pass.
 - Cron 3d36a18c58eb resumed, schedule ``0 17,18 * * *``, no-agent, local delivery. Manual trigger verified: succeeded, empty output, no duplicate card/file.
 - OpenClaw remains sole writer/notifier; Phase 3 cutover unauthorized.
+
+## [2026-07-30T04:03:22Z] ops | [hermes] Spec 202 — Gate 3 cutover: Hermes becomes sole production audit writer/notifier
+- Implemented Spec 202: simplest complete solution — no Kanban, authority manifests, Python gate frameworks, or extra review layers.
+- Created `/root/tasks/hermes-parser-audit-production-prompt.txt` (self-contained direct Hermes worker prompt with OC-job guard, header collision guard, dual-check append, and vault discipline).
+- Created `/root/scripts/hermes-parser-audit-runner.sh` (flock-guarded Bash runner with no-op on existing header, OC-job-disabled guard, 25-min Hermes timeout, Hermes-only alerting).
+- Created `hermes-parser-audit.service` (Type=oneshot, TimeoutStartSec=30min) and `hermes-parser-audit.timer` (OnCalendar=09:20 America/Los_Angeles, Persistent=true).
+- Updated runbook owner/schedule to Hermes `hermesparser` via systemd timer; replaced OC alert command with `hermes send --to telegram:1207164084`.
+- **Cutover executed**: disabled OC `parser-daily-audit` (`b769b0b5`, `enabled=false`, job preserved), paused Hermes shadow cron (`3d36a18c58eb` → `[paused]`), enabled `hermes-parser-audit.timer` (active, next 09:20 PT = 16:20 UTC).
+- No-op verified: manual service start exited cleanly with existing header (2026-07-29, count=1), no Hermes agent invoked, canonical log hash/size unchanged.
+- Replaced `/root/tasks/201_2f2-spec197-hermes-primary-gate-correction-round2.progress` with `STATUS: CANCELLED` / `SUPERSEDED_BY: 202-simple-hermes-parser-audit-production`.
+- Hermes is now the sole production audit writer and notifier.
+- Outputs: `/root/reviews/202-simple-hermes-parser-audit-production.md`, `/root/tasks/202-simple-hermes-parser-audit-production.done`.
