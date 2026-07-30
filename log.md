@@ -1367,3 +1367,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Durable path selected: exact prep-center Sheet cost cell → fresh snapshot/import → new pipeline run → workbook rebuild; no one-off DB-only override.
 - Phase 2 requires restricted Sheet/SQLite backups, exact before/after readback, 15→14 zero-cost prep rows, tests/integrity, and non-overwriting workbook publication only after reconciliation.
 - Dispatched Hermes-native executor `deleg_60f05291`; ambiguous and unmatched rows remain untouched.
+
+## [2026-07-30T07:05:07Z] review | [hermes] Spec 205 approved mapping applied; workbook publication guarded
+- Independently verified live Sheet row/order/product/quantity and numeric cost `$67.50`; exactly the approved prep source row 4 changed.
+- Live DB run 8 has row4 at 20 × $67.50 = $1,350.00; zero-cost prep rows 15→14; historical runs 4–7 preserved; `quick_check=ok`; 148 tests passed.
+- Restricted Sheet/SQLite backups exist at mode 0600 under `/root/backups/inventory-cost-linkage/205/`.
+- Current run 8 total is `$59,343.75`, including unrelated non-prep drift of +$7,521.04; workbook build/upload correctly stopped rather than silently publishing it.
+- Spec status is `applied_awaiting_reconciliation`; workbook publication awaits a bounded drift audit/acceptance.
