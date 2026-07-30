@@ -1374,3 +1374,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Restricted Sheet/SQLite backups exist at mode 0600 under `/root/backups/inventory-cost-linkage/205/`.
 - Current run 8 total is `$59,343.75`, including unrelated non-prep drift of +$7,521.04; workbook build/upload correctly stopped rather than silently publishing it.
 - Spec status is `applied_awaiting_reconciliation`; workbook publication awaits a bounded drift audit/acceptance.
+
+## [2026-07-30T07:07:43Z] ops | [hermes] Spec 205 Phase 3 drift audit and conditional publication dispatched
+- Papi approved auditing the run 7→8 inventory drift and publishing only if valid.
+- Task requires exact source-level reconciliation, duplicate/synthetic/price-semantics checks, and validation against accepted Specs 192/193/195.
+- Pipeline run 8 is frozen as the audit target; no pipeline rebuild or source mutation is allowed.
+- Hermes-native executor `deleg_a6cfb801` may create one new non-overwriting Google workbook only after a VALID verdict and local/live readback reconciliation.
