@@ -78,7 +78,7 @@ openclaw agent --agent re-review --local --thinking medium --message "..." --jso
 openclaw agent --agent mid --local --thinking xhigh --message "..." --json         # GPT-5.6-luna default review escalation
 openclaw agent --agent lead --local --thinking xhigh --message "..." --json        # GPT-5.6-sol explicit-only exceptional escalation
 ```
-`mid` (isDefault=true) is the default GPT lane; `lead` (isDefault=false) is explicit-only. `main`, `sonnet-review`, and the old OpenClaw `pa` lane are no longer configured. Hermes/Janus remains the final checkpoint after OC review; Mnemosyne/Nemo (Hermes profile `papipa`) lives separately and remains active.
+`mid` (isDefault=true) is the default GPT lane; `lead` (isDefault=false) is explicit-only. `main`, `sonnet-review`, and the old OpenClaw `pa` lane are no longer configured. Hermes/Janus independently verifies only mission-critical, high-blast-radius, or user-facing-critical delegated work; routine work ends after the executor's direct verification. Mnemosyne/Nemo (Hermes profile `papipa`) lives separately and remains active.
 
 ### NEVER use `openclaw agent --deliver` for simple message relay. Use `message send`.
 

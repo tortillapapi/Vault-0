@@ -9,6 +9,13 @@ derived_from:
 tags: [ops, workflow, orchestration]
 ---
 
+## Scope
+
+This is a **CC-specific legacy workflow** derived from `/root/CLAUDE.md`. It is not a
+shared default and does not apply to Hermes. Hermes follows `/root/.hermes.md`, where
+Routine Fast Lane work is handled directly and specs/tasks are reserved for qualifying
+complex work.
+
 ## Purpose
 
 Use this page when you need the distilled statement of CC's job. It captures the orchestrator posture, the default workflow, and the non-negotiable rules that keep implementation delegated to OpenClaw.
