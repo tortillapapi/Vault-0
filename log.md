@@ -1354,3 +1354,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Confirmed the old ~$739K `price_semantics` bug and later multi-run valuation issue are already fixed; this work does not reopen either.
 - Live read-only baseline: latest run 7; 15 zero-cost prep-center pipeline rows remain across `at_prep`, `inbound_prep`, and `prep_to_fba`; live DB fingerprint unchanged.
 - Dispatched one Hermes-native read-only reconciliation worker (`deleg_3d220520`); writes/apply work remains separately gated.
+
+## [2026-07-30T06:16:30Z] review | [hermes] Spec 205 Phase 1 accepted — awaiting cost-allocation decisions
+- Verified `/root/reviews/205_1-prep-cost-reconciliation.md` and completion marker against the live read-only DB.
+- Classification: 2 exact rows already costed, 1 new high-confidence mapping, 11 ambiguous rows, 3 unmatched rows.
+- Safe proposed mapping: prep row 4 → purchase line 2 at $67.50/unit; applying only this would reduce zero-cost prep rows from 15 to 14.
+- Independent fingerprint verification matched exactly; SQLite `quick_check=ok`, latest run 7, no live mutation.
+- Spec moved to `awaiting_user_decision`; Phase 2 remains blocked on Papi approval/source allocations.
