@@ -95,7 +95,25 @@ Codex, and OpenClaw equally (and Hermes once installed).
   OC lead's context % before a heavy/multi-phase dispatch, and recommend `/clear`
   (not `/compact`) after a multi-phase spec completes — disk state is canonical.
 
+- **Never restart `metis-gateway` as the last unreported step of a turn.** That
+  service is the parent of every Telegram-side Metis session; `systemctl restart
+  metis-gateway.service` from inside one kills the session mid-turn (exit 144) and
+  the user just sees silent ghosting. Order of operations: (1) send the completion
+  message first via `openclaw message send --channel telegram --target 1207164084`,
+  noting the session is about to end; (2) then detach the restart with
+  `systemd-run --on-active=5 --unit=metis-gw-restart systemctl restart
+  metis-gateway.service`, or simply accept the session death since step 1 already
+  reported out. Same hazard for any `systemctl restart/stop` of a unit in the
+  session's own cgroup ancestry. (2026-07-30: the Claude 5-series model upgrade
+  landed correctly but went unreported for a day for exactly this reason.)
+
 ## Project guardrails
+- **Fable 5 is API-billed — never invoke or probe it.** `/model fable`
+  (`claude-fable-5`) is wired into `gateway.py` presets but is NOT covered by the
+  user's Anthropic subscription; it bills per token and would require the $100
+  tier, which the user explicitly declined (2026-07-30). Do not select it, do not
+  "test access", do not pitch the upgrade unsolicited. Subscription-covered tiers:
+  Opus 5 (default), Sonnet 5, Haiku 4.5.
 - **Never suggest reviving the Inventory Tracker / Inventory Dashboard.** User
   retired it permanently (2026-04-27); treat as if it never existed. The Orders
   Dashboard (spec 42) is the reference implementation for any future dashboard.
