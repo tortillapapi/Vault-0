@@ -3,7 +3,7 @@ type: system-project
 title: Parked Backlog
 slug: parked-backlog
 created: 2026-06-16
-last_updated: 2026-07-05
+last_updated: 2026-07-31
 status: parked
 priority: review-weekly
 tags: [project, backlog, parking-lot, agents]
@@ -51,6 +51,20 @@ visible without becoming full specs. Activation still requires an explicit
 
 - Killed by Papi (Fable sprint, spec 167 decision A). Do not propose revival.
   Context: COGS coverage verified 100% (spec 163), weakening the original money case.
+
+### Google Drive Organization — ✅ CLOSED 2026-07-31, DO NOT RE-PITCH
+
+- **Status:** DONE. Spec 156 (org) and 157 (templates) both `status: complete`. The 16
+  root files excluded from the Phase 1 safe batch were cleaned up by Papi by hand and
+  verified against live Drive on 2026-07-31 (root = 10 folders + 3 unrelated new files).
+- **There is no "Phase 2."** A stale *Recommendation* section at the bottom of
+  `/root/reviews/156-google-drive-workspace-organization-execution-report.md` listed 3
+  open questions about those 16 files; it was written 2026-06-30, was never updated when
+  Papi handled them, and caused a later session to re-pitch finished work as backlog.
+  That section is now marked RESOLVED with a closeout table.
+- **Only genuinely untouched:** `Docs/` (175 unexamined children) and `Saved from Chrome/`,
+  both deliberately out of scope in Phase 1. Treat as a *new* discovery effort, not a
+  last-mile finish. Do not start unless Papi asks for it by name.
 
 ### Mission Control Backlog
 
