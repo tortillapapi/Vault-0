@@ -384,3 +384,9 @@
 - Recall: 0 order emails | 0 matched | MISSES: none
 - Precision: 1 recent rows | 0 confirmed | FALSE POSITIVES: Chewy.com + order …4544 + 2026-07-25
 - Verdict: ANOMALIES
+
+## 2026-07-31
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 1 order email | 0 matched | MISSES: TCL Chinese Theatres …WTXDJ7S + 2026-07-30
+- Precision: 2 recent rows | 0 confirmed | FALSE POSITIVES: Alibaba …0582 + 2026-06-15; The United States Mint …3691 + 2026-02-26
+- Verdict: ANOMALIES
