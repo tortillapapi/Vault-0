@@ -105,3 +105,10 @@ If a collision is discovered after work begins, stop new dispatches, append a `.
 ## When To Use Which Orchestrator
 
 Use whichever orchestrator has enough remaining quota and the right modality for the job. Codex is generally strong for code-heavy execution and mechanical engineering; CC is generally strong for workflow design, spec authorship, and skill-rich orchestration. These are preferences, not hard rules: owner frontmatter and explicit user instructions take priority.
+
+## Workspace hygiene
+
+- Task artifacts for terminal specs (frontmatter status exactly `complete`, `completed`, `superseded`, or `cancelled_by_user`) are archived under `/root/tasks/archive/<spec-range>/` (e.g. `spec122-211/`).
+- `.progress` markers are moved to `/root/tasks/archive/hygiene-<UTC>-<description>/` at spec closeout — but only after verifying the matching `.done` exists or the spec status is terminal.
+- Specs (`/root/specs/*.md`) and reviews (`/root/reviews/*`) are the audit trail and are never archived.
+- Move, never delete: everything stays under `/root/tasks/archive/`. Active work (specs 213+) is not archived.
