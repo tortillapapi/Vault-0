@@ -1,6 +1,6 @@
 ---
 type: core-index
-last_updated: 2026-05-26
+last_updated: 2026-08-01
 ---
 
 # Core Index — Always-Load Pages
@@ -31,9 +31,10 @@ last_updated: 2026-05-26
 - Ops helper scripts: /root/scripts/ (sheets-read.sh, gmail-orders-list.sh, verify-done-files.sh)
 - Archived inventory-tracker: /root/archive/inventory-tracker-old-2026-04/
 
-## OC Agent Roster
-- main / lead — openai-codex/gpt-5.4 (complex tasks, default)
-- mid — openai-codex/gpt-5.3-codex (review, verification)
-- grunt-eng — opencode-go/glm-5.1 (engineering)
-- grunt — opencode-go/kimi-k2.5 (doc/log edits)
-- email-parser — google/gemini-2.5-flash (out of rotation since pipeline archive)
+## OC Agent Roster (live routing, 2026-08-01)
+- mid — openai/gpt-5.6-luna (default GPT escalation/review, xhigh)
+- lead — openai/gpt-5.6-sol (explicit-only exceptional escalation, xhigh)
+- grunt-eng — opencode-go/deepseek-v4-flash (bounded engineering, medium)
+- grunt — opencode-go/deepseek-v4-flash (mechanical/docs, medium)
+- re-review — opencode-go/glm-5.2 (first-pass QA, medium)
+- email-parser — google/gemini-2.5-flash (email parsing only)

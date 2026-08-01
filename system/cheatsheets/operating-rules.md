@@ -2,7 +2,7 @@
 type: system-cheatsheet
 title: Operating Rules (standing feedback)
 slug: operating-rules
-last_synced: 2026-07-24
+last_synced: 2026-08-01
 maintainer: cc-oc-orchestrator
 source: CC auto-memory (feedback entries)
 tags: [ops, rules, feedback, shared-brain]
@@ -38,6 +38,13 @@ Codex, and OpenClaw equally (and Hermes once installed).
   in task prompts and require `date -u` for completion markers; verify `.done`
   times with `stat -c %y` when audit accuracy matters. OpenAI agents
   (`mid` on openai/gpt-5.6-luna xhigh and `lead` on openai/gpt-5.6-sol xhigh) are unaffected.
+- **DeepSeek V4 Flash residency gate:** OpenCode Go serves the current
+  `deepseek-v4-flash` route from China-hosted infrastructure and requires the
+  workspace's China-hosted-model opt-in. Papi explicitly enabled it on
+  2026-08-01 for the Milo and `grunt`/`grunt-eng` lanes. Treat this as an
+  explicit data-residency decision; do not enable it for another workspace or
+  profile without user consent. Always run explicit and saved-default probes
+  after changing the route.
 - **Verification checks must match unique content text**, not numeric prefixes or
   assumed file/process structure. Use `pgrep -af <name>` not `systemctl is-active`
   unless the target is confirmed a systemd unit (OpenClaw runs many plain
