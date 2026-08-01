@@ -67,9 +67,29 @@ For each account (`account_a`, `account_b`):
    last-4, else retailer + date). Anything with an order email but **no sheet row = a MISS.**
 
 ## 3. Precision — is everything in the sheet actually an order?
-1. From the sheet read, take rows whose `Last Updated` is within ~24h.
-2. Confirm each traces to a real order email from step 2's list. A row that maps
-   to a newsletter / shipping-only noise / has a junk order number = a **FALSE POSITIVE.**
+The sheet has two different date columns:
+
+| Column | Meaning |
+|---|---|
+| `Date of Email` | when the order email arrived |
+| `Last Updated` | when the parser last **touched** the row |
+
+`Last Updated` refreshes on any status change (→ Shipped, → Delivered), when a
+tracking number lands, and on the nightly Master rebuild (clear + rewrite). It is
+NOT a signal of when the row's order email arrived, so precision candidates are
+selected by `Date of Email` — the same lookback window step 2 uses (currently
+`newer_than:1d`). `Date of Email` is column F, already inside the `A:I` sheet read;
+`Last Updated` is column J, outside it.
+
+1. From the sheet read, take rows whose `Date of Email` falls inside the same
+   lookback window step 2 uses. Those rows are confirmable, because the originating
+   email is in hand.
+2. Confirm each in-window row traces to a real order email from step 2's list. A row
+   that maps to a newsletter / shipping-only noise / has a junk order number = a
+   **FALSE POSITIVE.**
+3. A row whose `Date of Email` predates the lookback window is **NOT EVALUABLE** —
+   count it and report it separately. It is never a false positive and never counts
+   against precision. Not-evaluable rows alone → `Verdict: OK`.
 
 ## 4. Write the log (PII-redacted — this file is pushed to GitHub)
 Append to `/root/obsidian-vault/system/logs/n8n-parser-daily-check.md`
@@ -80,15 +100,18 @@ entries; prior agents have split older entries by trying to place dates in order
 ## <YYYY-MM-DD>
 - Workflows: account_a=<status> | account_b=<status> | master=<status>
 - Recall: <N> order emails | <M> matched | MISSES: <list or "none">
-- Precision: <R> recent rows | <C> confirmed | FALSE POSITIVES: <list or "none">
+- Precision: <R> in-window rows | <C> confirmed | <N> not evaluable (email outside window) | FALSE POSITIVES: <list or "none">
 - Verdict: OK | ANOMALIES
 ```
+**Verdict rule:** `ANOMALIES` only when there is a real workflow error, a real recall
+MISS, or a real in-window FALSE POSITIVE. Not-evaluable rows alone → `Verdict: OK`.
 **Redact all PII**: order/tracking numbers → last-4 only (e.g. `…4471`); identify
 misses/false-positives by retailer + order-last4 + date, never full numbers or
 customer data.
 
 ## 5. Alert on ANY anomaly (Telegram)
-If any workflow `error`, OR any MISS, OR any FALSE POSITIVE:
+If any workflow `error`, OR any MISS, OR any in-window FALSE POSITIVE (not-evaluable
+rows alone do NOT alert):
 ```
 hermes send --to telegram:1207164084 -m "n8n parser audit <date> — ANOMALY: <one-line summary>. See system/logs/n8n-parser-daily-check.md"
 ```
