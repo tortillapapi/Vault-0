@@ -390,3 +390,9 @@
 - Recall: 1 order email | 0 matched | MISSES: TCL Chinese Theatres …WTXDJ7S + 2026-07-30
 - Precision: 2 recent rows | 0 confirmed | FALSE POSITIVES: Alibaba …0582 + 2026-06-15; The United States Mint …3691 + 2026-02-26
 - Verdict: ANOMALIES
+
+## 2026-08-01
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 1 order email | 0 matched | MISSES: Regal …6GLR 2026-08-01
+- Precision: 1 recent row | 0 confirmed | FALSE POSITIVES: The United States Mint …3691 2026-07-31
+- Verdict: ANOMALIES
