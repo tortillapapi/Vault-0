@@ -3,6 +3,13 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-08-01T09:33:55Z] ops | [hermes] Spec 205 follow-up complete; Spec 125 handoff prepared
+- Completed the approved Spec 205 follow-up: verified Master Purchase Log cells `H15:H17` as `$60/$65/$35`, applied only prep-center rows 14–16, and preserved the remaining 11 unresolved rows for future evidence review.
+- Built pipeline run 12 with controlled order-305 lot split/dedup: the 140-unit / `$7,700` aggregate is replaced by the three verified allocations plus the 20-unit / `$1,300` residual; run-11 history is retained and run-12 total cost remains `$68,629.97`.
+- Verified SQLite integrity, zero stable-key duplicates, source-cell readback, importer/pipeline tests (`34 passed`), workbook tests (`18 passed`), and workbook PII scan. Local workbook: `/root/command-center/reports/inventory-cost-gap-205-run12-20260801T090755Z/command-center-v1-20260801T090805Z.xlsx`; SHA-256 `4f0aafca021469b344e9f8b44cc2fcfaa1dcb43225f447b45861f9a5ee4f7c0d`.
+- Added the reusable Sheet-to-DB guardrail skill at `/root/.hermes/skills/productivity/financial-sheet-safe-apply/SKILL.md` and documented the full follow-up at `/root/reviews/205_4-controlled-lot-split-run12.md`.
+- Created next-session handoff `/root/context/hermes-handoff-spec125-20260801.md`. Papi explicitly reassigned Spec 125 to Hermes; its existing `.done` marker is historical, so the next session must audit/reconcile the seven repos before any rerun. Spec 125 scope excludes `/root/finance-data`, `/root/obsidian-vault`, remotes, and pushes.
+
 ## [2026-07-23T01:10:00Z] ops | [hermes] Spec 185 accepted — Unified Inventory Pipeline
 - Built a 10-stage inventory pipeline tracking every item from purchase through prep center, house, FBA, and sold.
 - **Pipeline**: 313 rows across 6 active stages; $49,916 floating in non-sold inventory.
