@@ -2,7 +2,7 @@
 type: system-resource
 title: Resource Registry
 slug: registry
-last_synced: 2026-07-24
+last_synced: 2026-08-01
 maintainer: cc-oc-orchestrator
 tags: [ops, resources, registry, shared-brain]
 ---
@@ -79,8 +79,11 @@ native pointer.
 | `gmail-orders-list.sh` | `/root/scripts/` | read-only inbox order-candidate lister (spec 61) |
 | `filter-parser-excluded.js` | `/root/scripts/` | DRY recall filter that applies the parser's exported exclusion checks before audit miss classification (spec 102) |
 | `verify-done-files.sh` | `/root/scripts/` | verify a `.done` marker's FILES_CHANGED vs git/fs ground truth (spec 59) |
-| n8n parser daily audit | OC cron `n8n-parser-daily-audit` (id `b769b0b5…`) | `mid` (openai/gpt-5.6-luna), 09:20 PT / 16:20 UTC daily, thinking `xhigh` (Spec 191); active; runbook uses `--exclude-parser-rejects`; runbook `system/runbooks/n8n-parser-daily-audit.md`; log `system/logs/n8n-parser-daily-check.md` |
-| second parser audit | systemd `parser-cc-review.timer` | unattended CC review at 09:35 PT; script `/root/scripts/parser-cc-review.sh`; isolated config/log dir `/opt/cc-parser-review` |
+| n8n parser daily audit | OC cron `parser-daily-audit` (id `b769b0b5-225b-4bbf-9ccf-4a3472578e1d`; formerly `n8n-parser-daily-audit`) | **RETIRED/DISABLED** (`enabled: false`) as of 2026-07-30 — kept for reference only; superseded by `hermes-parser-audit.timer` (Spec 202). Was: `mid` (openai/gpt-5.6-luna), 09:20 PT / 16:20 UTC daily, thinking `xhigh` (Spec 191); runbook uses `--exclude-parser-rejects`; runbook `system/runbooks/n8n-parser-daily-audit.md`; log `system/logs/n8n-parser-daily-check.md` |
+| second parser audit | systemd `parser-cc-review.timer` + `parser-codex-review.timer` | **MASKED** as of 2026-08-01 (Spec 214) — replaced by `parser-healthcheck.timer`; both reversible via `systemctl unmask`. Formerly: unattended CC review at 09:35 PT (script `/root/scripts/parser-cc-review.sh`, isolated config/log dir `/opt/cc-parser-review`) |
+| parser healthcheck | systemd `parser-healthcheck.timer` | deterministic, no LLM on happy path (Spec 214); 09:35 PT / 16:35 UTC daily; script `/root/scripts/parser-healthcheck.sh`; **enabled** |
+| profit freshness check | systemd `profit-freshness-check.timer` | read-only Profit Engine staleness alarm (Spec 215); daily; alerts >72h stale; script `/root/scripts/profit-freshness-check.sh`; **enabled** |
+| profit refresh | systemd `profit-refresh.timer` | Profit Engine marketplace data refresh (Spec 215); daily; script `/root/sales-data/scripts/scheduled_refresh.py --apply`; **installed but deliberately DISABLED** pending Papi's approval |
 
 ## Private — listed for completeness, not shared
 - CC behavior-only memory (how CC should act): stays in CC auto-memory.
