@@ -3,7 +3,7 @@ type: system-project
 title: Parked Backlog
 slug: parked-backlog
 created: 2026-06-16
-last_updated: 2026-07-31
+last_updated: 2026-08-01
 status: parked
 priority: review-weekly
 tags: [project, backlog, parking-lot, agents]
