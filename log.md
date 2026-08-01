@@ -1387,3 +1387,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Independently verified XLSX SHA-256 `0282e2ec1a3c6677fd23a3141633533ac193cbf3ac468a4646356e0ad6d3aa6c`, 12 tabs, and Inventory Pipeline total `$59,343.75`.
 - Published new converted Google Sheet `1bKRV4ddzITUzV1vdf0X1sZfi1DXuOeDHgcwwfN9_A2g` in `[03] Business`; live readback matched inventory, prep, and TCG totals.
 - Spec 205 closed. Remaining future gap: 14 uncosted prep rows (11 ambiguous, 3 unmatched).
+
+## [2026-08-01T06:57:25Z] docs | [hermes] Parked Janus Personal Telegram Workspace
+- Added `system/projects/janus-personal-telegram-workspace.md` to document the future personal-assistant Telegram workspace.
+- Linked it from `system/projects/index.md` and `system/projects/parked-backlog.md`.
+- Preserved the activation guardrails: no config edits before a new chat ID, Papipa remains stopped/disabled, and no credentials or private state move to desktop devices.

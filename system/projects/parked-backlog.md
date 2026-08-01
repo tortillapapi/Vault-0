@@ -76,6 +76,20 @@ visible without becoming full specs. Activation still requires an explicit
   richer full-text search.
 - **Why it matters:** makes the agent fleet easier to steer and audit.
 
+### Janus Personal Telegram Workspace
+
+- **Status:** PARKED — documented 2026-08-01; do not activate yet.
+- **Source:** `system/projects/janus-personal-telegram-workspace.md` and
+  `/root/context/hermes-handoff-telegram-gateway-macbook-2026-08-01.md`.
+- **Goal:** create a private `Janus Personal` Telegram group using the existing
+  default gateway, keeping personal-assistant context separate from the build DM
+  without another always-on gateway.
+- **Needed next:** Papi creates the group, adds `@RareForce_Janus_Bot`, and sends a
+  test message; then Janus identifies the chat ID, adds scoped authorization/prompt
+  configuration, and verifies both chats.
+- **Guardrail:** no Telegram config edits before the chat ID is known; Papipa remains
+  stopped/disabled and its profile/job remain preserved.
+
 ## Not parked: active or decision-bound work
 
 These are not "someday" ideas; they need a decision or focused project continuation.
