@@ -70,6 +70,7 @@ native pointer.
 | Hermes / Janus gateway | Hermes default profile under `/root/.hermes/` | Peer orchestrator, systemd-supervised; shared project state remains in `/root/specs`, `/root/tasks`, and `/root/reviews` |
 | Milo fitness bot | `/root/.hermes/profiles/milo/`; `hermes-gateway-milo.service` | Workout + nutrition Telegram profile; deterministic kernels and Google Sheets backend — see `system/configs/milo-fitness` |
 | Mnemosyne PA bot | `/root/.hermes/profiles/papipa/`; `hermes-gateway-papipa.service` | Personal-assistant profile and deterministic capture/reminder layer — see `system/configs/mnemosyne-pa` |
+| Inventory Command Center | `/root/command-center/` (bridge.db at `db/bridge.db`, 0600, root-only); local git `master` + private remote `git@github.com:tortillapapi/command-center.git` (Spec 217; push pending repo creation) | Inventory + reconciliation layer over `bridge.db`; consumes read-only snapshots from `sales.db`/`finance.db` via `extract_snapshots.py`. Code-only mirror; `db/` and `reports/` excluded by .gitignore — DB never leaves the VPS. See `system/projects/inventory-command-center` |
 
 ## Ops helper scripts & scheduled jobs (VPS, not in vault)
 | Resource | Location / handle | Purpose |

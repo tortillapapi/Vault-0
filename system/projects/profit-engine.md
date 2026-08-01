@@ -123,6 +123,18 @@ before refreshed numbers, T3 match proposals review.
 Trail: specs/182*.md, tasks/182*, reviews/182_*.re-review.md,
 tasks/182-profit-engine-business-command-center.progress.
 
+## Successor work — Inventory Command Center (Specs 184–212)
+
+The Spec 182 command center's inventory side grew into its own evergreen
+system. See [[inventory-command-center]] for the full inventory pipeline
+(Spec 185), TCG inventory + market-value layer (Spec 184), prep-center cost
+linkage (Spec 205), and purchase-log hygiene (Specs 209/210). The two systems
+remain coupled: `bridge.db` consumes read-only snapshots of `sales.db` and
+`finance.db` via `extract_snapshots.py` — this page's headline numbers and
+COGS coverage remain canonical for P&L; the Command Center does not replace
+them. This pointer does not alter any accepted Profit Engine history or
+headline numbers above.
+
 ## Data quality caveats to carry forward
 
 - Ads are excluded / treated as `$0` by Papi's direction.
