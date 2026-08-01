@@ -1438,3 +1438,12 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - `kpi_rollup.js` precision regex now tolerates BOTH `recent rows` (60+ historical entries) and `in-window rows` (new), parses the optional NE count, excludes NE from the precision denominator; verified end-to-end against a synthetic new-format entry (62nd day parsed: 3 in-window/3 confirmed/2 NE). `papi-daily-brief.py` precision regex made format-agnostic too.
 - Removed duplicate `## 2026-07-25` block from `system/logs/n8n-parser-daily-check.md` (kept the later, cleaner entry; kpi_rollup duplicate warning for that date now gone — 61 distinct days still parse).
 - Back-test (9 ANOMALIES days): verdicts flip to OK on 07-12, 07-21, 07-29, 07-30, 06-20 (all FPs were out-of-window rows, no misses/errors); 07-31 stays ANOMALIES only because of a real recall MISS (TCL …WTXDJ7S) with FPs cleared to none; 07-16/07-17/07-14 correctly stay ANOMALIES on real in-window FPs (Pinehurst payment/check …2438, Staples survey, Amazon …0265). No parser or sheet files touched.
+
+## [2026-08-01T21:43:03Z] ops | [cc] Session handoff — VPS efficiency sprint closeout
+- Wrote `/root/context/cc-handoff-vps-efficiency-sprint-2026-08-01.md` covering specs 213-223,
+  the three orchestrator mistakes worth not repeating, and the five open items.
+- All work is committed and pushed; `partb-sizing-oneshot.timer` (2026-08-02 17:00 UTC) carries
+  the next step and survives session end.
+- Key insight recorded for future sessions: the parser was never the problem — the audit selected
+  precision candidates by `Last Updated` instead of `Date of Email`, so slow-fulfilling BUSINESS
+  suppliers were structurally guaranteed to be branded false positives (68% of FPs over 21 days).
