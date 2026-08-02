@@ -390,3 +390,9 @@
 - Recall: 1 order email | 0 matched | MISSES: Regal …6GLR 2026-08-01
 - Precision: 1 recent row | 0 confirmed | FALSE POSITIVES: The United States Mint …3691 2026-07-31
 - Verdict: ANOMALIES
+
+## 2026-08-02
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 0 order emails | 0 matched | MISSES: none
+- Precision: 0 in-window rows | 0 confirmed | 93 not evaluable (email outside window) | FALSE POSITIVES: none
+- Verdict: OK
