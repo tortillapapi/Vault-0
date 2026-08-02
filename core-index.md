@@ -23,7 +23,10 @@ last_updated: 2026-08-01
 - [[system/decisions/2026-04-inventory-pipeline-ops]] — historical context
 
 ## Key Paths
-- Vault: /root/obsidian-vault/
+- Vault (VPS clone): /root/obsidian-vault/
+- Vault (MacBook clone): ~/Documents/Obsidian/Vault-0/ — same GitHub remote, synced only
+  through `git@github.com:tortillapapi/Vault-0.git`; the two clones never talk directly.
+  Mac-session notes: ~/Documents/Obsidian/CLAUDE.md
 - CC orchestrator file: /root/CLAUDE.md
 - Codex orchestrator file: /root/AGENTS.md
 - Peer protocol: /root/obsidian-vault/system/workflows/peer-orchestrator-protocol.md
