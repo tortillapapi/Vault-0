@@ -76,9 +76,10 @@ project started with Spec 182 (2026-07-14) and extended through Specs 184–212.
 mirrored to a private GitHub remote. The data stays root-only on the VPS.
 
 Outstanding operational caveats (see "Operational caveats" below):
-TCG price refresh is currently broken (Spec 216 owns the repair), and the
-Profit Engine's `sales.db` source snapshot is stale since 2026-07-08 (Spec 215
-owns its scheduled refresh).
+TCG price refresh still cannot price most sealed inventory (Spec 216 closed its
+code scope; the pricing defect is unresolved — see caveats). The Profit Engine's
+`sales.db` snapshot is **no longer stale**: Spec 215's refresh was approved and
+enabled 2026-08-03 and all four scopes are current.
 
 ## Table inventory (read from the live DB, 2026-08-01)
 
@@ -204,14 +205,22 @@ no Spec 212 on disk;** the highest extant inventory-related spec is 211
 
 ## Operational caveats
 
-- **TCG price refresh is BROKEN.** `scripts/tcg/refresh_prices.py` is not
-  producing trustworthy prices right now; Spec 216 owns the repair. Do not
-  quote TCG market values or "TCG Position" workbook cards as authoritative
-  until 216 lands. Cost basis remains valid.
-- **`sales.db` snapshot is STALE since 2026-07-08.** The Profit Engine source
-  snapshot has not been refreshed since 2026-07-08; Spec 215 owns its scheduled
-  refresh. The Command Center's `src_orders`, `src_order_items`,
-  `src_marketplace_fin_events` reflect that cutoff. Re-extract after 215.
+- **TCG price refresh prices only a minority of inventory.** Spec 216 closed its
+  actual scope (loud failure + exit-code contract) and Spec 219's pacing guard
+  ended the vendor abuse blocks — but pricing itself is still not repaired.
+  Measured 2026-08-03: **42 of 59 active sealed items have never been priced**,
+  and the same 17 succeed every run. Two causes, both in `refresh_prices.py`:
+  22 sealed items carry no `tcgplayer_product_id` at all, and the sealed lookup
+  queries `/sealed-products?search=<name>&limit=5` then filters by ID — so an
+  item whose name does not surface in the vendor's top-5 fails even when its ID
+  is known. Do not quote TCG market values or "TCG Position" workbook cards as
+  authoritative. Cost basis remains valid.
+- **`sales.db` refresh is LIVE as of 2026-08-03.** Spec 215's `profit-refresh.timer`
+  was approved by Papi and enabled (daily); a supervised `--apply` run brought
+  orders/finances/ebay_orders/ebay_finances all current. `profit-freshness-check.timer`
+  continues to alarm independently above 72h. The Command Center's `src_orders`,
+  `src_order_items`, `src_marketplace_fin_events` still reflect the old 2026-07-08
+  cutoff until re-extracted — **re-extract to pick up the new data.**
 - **Latest-run view only for valuation.** `inventory_pipeline` preserves full
   history across runs (3,042 rows now); use the latest-run
   (`v_inventory_pipeline_summary`) view for any current valuation — raw row

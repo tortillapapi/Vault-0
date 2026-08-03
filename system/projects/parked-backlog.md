@@ -31,14 +31,20 @@ visible without becoming full specs. Activation still requires an explicit
 
 ### Bookmark Hell Pipeline
 
-- **Status:** NEXT-UP — Papi confirmed 2026-07-05 (Fable sprint, spec 167) as the next
-  activation once sprint wrap-up tasks land. No build starts until then.
+- **Status:** NEXT-UP, still not started. The 2026-07-05 gate ("once sprint wrap-up
+  tasks land") was satisfied 2026-08-01, so this is now activatable on request.
 - **Source:** `system/projects/bookmark-hell-pipeline.md`
 - **Goal:** turn X/TikTok/YouTube/article bookmarks and shared links into categorized,
   searchable, resurfaced knowledge with summaries and next actions.
-- **Needed next:** create an owner spec for MVP v1, choose storage
-  (SQLite/Sheet plus Obsidian), define Telegram capture syntax, then build
-  URL-in -> structured record + summary -> confirmation.
+- **SCOPE STEER — Papi, 2026-08-03: no mass import.** Do not design this around
+  bulk-ingesting an entire bookmark export. Several TikTok bookmark folders are
+  irrelevant to this project, and a mass import would drag them in. Papi wants to
+  send links from *specific chosen folders*, deliberately — a more manual,
+  curated feed. Design the MVP for selective per-folder or per-link submission,
+  not a one-shot backfill.
+- **Needed next:** create an owner spec for MVP v1 built on the curated-submission
+  model above, choose storage (SQLite/Sheet plus Obsidian), define Telegram capture
+  syntax, then build URL-in -> structured record + summary -> confirmation.
 - **Why it matters:** Papi saves useful ideas, but they currently disappear.
 
 ### VPS Watchdog Alerts — ✅ SHIPPED 2026-07-02

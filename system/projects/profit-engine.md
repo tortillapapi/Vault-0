@@ -218,7 +218,7 @@ The first guarded Amazon SP-API finance refresh is accepted. Next useful upgrade
 
 1. Add/import richer purchase-lot quantities so FIFO coverage grows beyond the initial 4 lots / 8 units.
 2. Add optional dual-path COGS comparison (`observation` vs `FIFO`) before switching FIFO to primary report COGS.
-3. Build a recurring refresh workflow with cooldown-aware SP-API scheduling, automatic backups, aggregate-only logs, and report delta summaries.
+3. ~~Build a recurring refresh workflow with cooldown-aware SP-API scheduling, automatic backups, aggregate-only logs, and report delta summaries.~~ — **DONE.** Spec 215 built it; Papi approved and it was enabled 2026-08-03. `profit-refresh.timer` runs daily (`scheduled_refresh.py --apply`, pre-write SQLite backup, cursor-honouring, aggregate-only). `profit-freshness-check.timer` alarms independently above 72h.
 4. Improve reconciliation against Sellerboard/BoxEm exports before dashboard work.
 
 ### Later upgrades
@@ -228,7 +228,7 @@ The first guarded Amazon SP-API finance refresh is accepted. Next useful upgrade
 - Tax-aware reporting if/when Papi asks; currently excluded.
 - Better reconciliation against Sellerboard/BoxEm exports.
 - Dashboard only after spreadsheet workflow proves what views actually matter.
-- Recurring refresh automation with safe backups and aggregate-only output.
+- ~~Recurring refresh automation with safe backups and aggregate-only output.~~ — shipped 2026-08-03 (Spec 215).
 
 ## Operating rules for future sessions
 
