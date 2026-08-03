@@ -70,6 +70,28 @@ project started with Spec 182 (2026-07-14) and extended through Specs 184–212.
 - Secondary inputs: Google Sheets master purchase log and TCG inventory sheets
   (read-only mirror via import scripts).
 
+### Google Sheets: which way the arrows point (verified 2026-08-03)
+
+This has caused repeated confusion — the sheet whose name matches the project is
+**not** connected to it.
+
+**INPUTS — bridge.db reads these. Do not delete.**
+
+| Sheet | ID | Role |
+|---|---|---|
+| `Pokémon TCG Collection V4` | `1HnLfX3X…metD4` | Source of truth; the **only** write-allowlisted sheet (`rules/tcg_sheet_allowlist.json`) |
+| `Inventory List - April 2026` | `1-Kh4oix…L7g0A` | Second import source |
+| `Pokemon TCG Collection V4 — backup 20260719` | `1Nm18NZ0…mejBII` | Named in the allowlist notes as the **test-write target**; deleting it breaks the documented safe-test path |
+
+**OUTPUTS — disposable.** Every spreadsheet titled
+`Command Center - Inventory Pipeline - …` is a Drive upload of the 12-tab
+workbook that `scripts/build_workbook.py` generates *from* bridge.db. Nothing
+reads them back; a 2026-08-03 grep of every ID across code, scripts, systemd and
+the vault found **zero** code references. They regenerate on demand, so old ones
+are safe to delete. Papi cleared the superseded 2026-07-23 lineage and the
+duplicate 2026-07-19 backups on 2026-08-03, keeping only
+`Command Center - Inventory Pipeline - Spec 205 - 2026-07-30`.
+
 ## Status
 
 **Evergreen / actively iterating.** The codebase is now committed and code-only
@@ -223,20 +245,31 @@ no Spec 212 on disk;** the highest extant inventory-related spec is 211
      above the $735.03 box). Now tries `?tcgPlayerId=` first, falling back to
      name search.
 
-  Also: the script now reads the vendor's `x-ratelimit-*` headers instead of
-  guessing. Real free-plan ceiling is **100/day and 60/minute** (was assuming
-  90/day with no minute awareness) — that gap is what drove the 429 storms
-  behind vendor blocks #1–#3. A clean quota stop with prices recorded is no
-  longer scored as a failed run.
+  3. *The quota model was wrong* (found later the same day, commit `1732445`).
+     The PPT window is a **rolling 24h/100, not a calendar-day reset** — a 01:35
+     run found the window already spent, which a midnight reset cannot explain,
+     and `x-ratelimit-daily-reset` advertises a midnight that never refills the
+     counter. Under a rolling window the timer's `RandomizedDelaySec=300` was
+     actively harmful: runs jittered around 10:30, so 08-02 fired at 10:35 and
+     08-03 at **10:33** — two minutes *before* the previous run aged out, so it
+     inherited all 75 requests of the prior day's spend and 429'd on its first
+     item. Now: `MAX_REQUESTS` 80, a pre-flight probe sizes each run to the
+     vendor's reported remaining minus a 10-request reserve, a spent window
+     records `status='skipped'` and exits 0 instead of paging the watchdog, and
+     the timer is a deterministic `11:00:00 UTC` with no jitter.
+     Real free-plan ceiling: **100 per rolling 24h, 60 per minute.**
 
-  **Still to verify:** the fix landed after the 2026-08-03 daily quota was
-  already spent, so only a 12-request capped run was possible. First full
-  validation is the 10:33 UTC timer run. Until that run is checked, do not quote
-  TCG market values or "TCG Position" workbook cards as authoritative. Cost
-  basis remains valid.
-- **22 sealed items have no `tcgplayer_product_id` at all** (mostly Chinese-language
-  products). These are unreachable by either lookup path and need manual pricing
-  or ID backfill — unaffected by the 2026-08-03 fix.
+  **STILL NOT VALIDATED.** Every 2026-08-03 run priced 0 items — the quota was
+  exhausted before the ordering and by-ID fixes could ever exercise. The first
+  honest test is the **2026-08-04 11:00 UTC** run. Until someone checks that
+  run, do not quote TCG market values or "TCG Position" workbook cards as
+  authoritative. Cost basis remains valid.
+- **24 active items have no `tcgplayer_product_id`** (22 sealed + 2 singles), and
+  they do not share one problem — see [[parked-backlog]] for the breakdown. Only
+  ~13 are mainstream English Pokémon products that PPT can actually resolve. ~9
+  are Chinese-language (TCGplayer does not carry Chinese sealed) and 1 is a One
+  Piece card (PPT is Pokémon-only). Those 10 need a different price source, not
+  an ID backfill. None of the 24 has a `tcgplayer_url` to parse an ID from.
 - **`sales.db` refresh is LIVE as of 2026-08-03.** Spec 215's `profit-refresh.timer`
   was approved by Papi and enabled (daily); a supervised `--apply` run brought
   orders/finances/ebay_orders/ebay_finances all current. `profit-freshness-check.timer`

@@ -1447,3 +1447,122 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Key insight recorded for future sessions: the parser was never the problem — the audit selected
   precision candidates by `Last Updated` instead of `Date of Email`, so slow-fulfilling BUSINESS
   suppliers were structurally guaranteed to be branded false positives (68% of FPs over 21 days).
+
+## [2026-08-03T00:15:00Z] ops | [cc] Spec 215 gate satisfied — Profit Engine scheduled refresh ENABLED
+- Papi approved enabling. Ran the spec-mandated order: clean dry-run, then one supervised
+  `--apply` (auto-backup `db/backups/sales-pre-refresh-20260803T000856Z.db`), then enable.
+- Per-scope deltas: `orders` +94 rows (21 updated), `finances` +2310, `ebay_finances` +3,
+  `ebay_orders` 0 added / 1 updated. No throttling, 0 retries, exit 0.
+- All four `sync_state` scopes now current — the 25-day gap (`sales.db` stale since 2026-07-08)
+  is closed. `profit-refresh.timer` enabled, daily 00:00 UTC, `watchdog-alert@profit-refresh`
+  already wired. `profit-freshness-check.timer` continues to alarm independently above 72h.
+- **Open follow-up:** the Command Center's `src_orders`, `src_order_items`,
+  `src_marketplace_fin_events` are still snapshots of the old 2026-07-08 cutoff. They need a
+  re-extract to pick up the new data. Not done in this session.
+
+## [2026-08-03T00:16:00Z] docs | [cc] Spec status drift corrected (215-223) — eight specs marked complete
+- Eight specs carried `status: pending` in frontmatter while holding verified `.done` markers in
+  `/root/tasks/`: 215, 216, 217, 218, 220, 221, 222, 223. This is the same failure mode recorded
+  in `parked-backlog.md` for the Google Drive re-pitch — stale status text in the queue an agent
+  reads first.
+- Checked every `.done` rather than bulk-editing, and two did not match their markers:
+  - **217 said PARTIAL**, blocked on "GitHub private repo not yet created by Papi". Verified
+    independently: remote exists, `git ls-remote` HEAD == local HEAD, 0 unpushed. Finished after
+    the marker was written. Genuinely complete.
+  - **216 said COMPLETE** but only for code scope. Marking it complete unqualified would have told
+    the next session TCG pricing was fixed. Added a `closeout:` frontmatter field saying it is not.
+- Backup before edits: `/root/backups/specs-status-pass-20260803T001506Z.tar.gz` (specs are not
+  git-versioned).
+
+## [2026-08-03T01:40:00Z] ops | [cc] TCG price refresh root-caused — a starvation loop, not a vendor block
+- The 2026-08-01 diagnosis (vendor abuse block) was a **symptom**. The real defect: the item
+  `ORDER BY` ranked on `COALESCE(MAX(ph.market_price), 0)`, which is 0 for an item with no price
+  row. Never-priced items therefore always sorted *below* every already-priced >= $100 item and
+  the request budget was spent before reaching them — every run, forever. **An item needed a price
+  to earn priority and could not get a price without priority.**
+- Proven against the live DB: positions 1-19 were all already-priced items; never-priced started at
+  position 20. Lost Origin Booster Box is worth $735 and had never priced, because the sort treated
+  it as a $0 item. This is why 42 of 59 active sealed items had never priced and why six
+  consecutive runs produced byte-identical 17/62/25 totals.
+- **Second defect:** `ppt_fetch_sealed` only ever name-searched. Japanese sets and
+  "Surprise Box"/"Pouch Box" SKUs return zero hits for their exact catalogue name but resolve fine
+  by ID. Name search also mis-ranks — searching "Lost Origin Booster Box" returns the $4,600.62
+  **Case** above the $735.03 box. Now tries `?tcgPlayerId=` first with name-search fallback;
+  401/403/429 propagate so the circuit breaker still fires.
+- Commit `5dfb524` in `github.com/tortillapapi/command-center`. 4 new tests; the ordering test was
+  verified to FAIL against the pre-fix `ORDER BY` before being accepted. 164 passed.
+
+## [2026-08-03T19:35:00Z] ops | [cc] TCG quota model corrected — rolling 24h window, not a daily reset
+- The 2026-08-03 runs still priced 0 despite the above fixes. Cause: the PPT quota is a **ROLLING
+  24h/100 window**, not a calendar-day reset. Evidence: a 01:35 run found the window already spent,
+  which a midnight reset cannot explain, and `x-ratelimit-daily-reset` advertises a midnight that
+  never actually refills the counter.
+- Under a rolling window the timer's `RandomizedDelaySec=300` was actively harmful: runs jittered
+  around 10:30, so 2026-08-02 fired at 10:35 and 2026-08-03 at **10:33** — two minutes BEFORE the
+  previous run aged out. The new run inherited all 75 requests of the previous day's spend and
+  429'd on its very first item.
+- Fixes (commit `1732445`): `MAX_REQUESTS` 95 -> 80; pre-flight quota probe sizes each run to what
+  the vendor reports remaining minus a 10-request reserve, and skips cleanly with `status='skipped'`
+  and exit 0 when nothing is left (no more paging the watchdog for an external limit); timer moved
+  to a deterministic `11:00:00 UTC` with `RandomizedDelaySec=0`. Timer backup:
+  `/etc/systemd/system/tcg-price-refresh.timer.bak-20260803T193117Z`.
+- The 19:31 run (accidentally triggered by `Persistent=true` on daemon-reload) served as live
+  verification: read 0 remaining, recorded `status='skipped'`, exit 0, no watchdog page.
+- **The ordering and by-ID fixes have still never had a clean run.** First honest validation is the
+  2026-08-04 11:00 UTC timer run. Until it is checked, TCG market values and "TCG Position"
+  workbook cards are NOT authoritative.
+
+## [2026-08-03T20:35:00Z] docs | [cc] ID backfill scope corrected; bridge.db <-> Sheets linkage documented
+- Backfill of the "22 items with no `tcgplayer_product_id`" is really **24** (22 sealed + 2 singles),
+  and they do not share one problem:
+  - **~13 mainstream English Pokémon items** (Astral Radiance / Brilliant Stars / Hidden Fates /
+    Paldea Evolved / Paradox Rift / Journey Together / Phantasmal Flames / Ascended Heroes /
+    Mega Evolution Lucario / Sword & Shield ETBs, 151 Booster Bundle, 151 Poster Collection,
+    Evolving Skies ETB). Standard TCGplayer catalogue entries — this is the real backfill.
+  - **~9 Chinese-language products** (151C Gather boxes, Chinese Gem Pack, Journey Path, White
+    Future PKC). TCGplayer does not carry Chinese-language sealed; PPT can never price these.
+    No amount of ID backfill helps.
+  - **1 One Piece card** (Watermelon Luffy x Eiichiro Oda Signature). PPT is a *Pokémon* price
+    tracker — wrong vendor entirely.
+- No free ID source: 0 of the 24 have a `tcgplayer_url` to parse an ID out of. PriceCharting exists
+  only as a display URL in the workbook, not as a price source, and just 5 of 128 active items have
+  a PC URL.
+- **Sheet linkage clarified** (recurring source of confusion): bridge.db's *inputs* are
+  `Pokémon TCG Collection V4` (`1HnLfX3X…metD4`, the only write-allowlisted sheet) and
+  `Inventory List - April 2026` (`1-Kh4oix…L7g0A`). The "Command Center - Inventory Pipeline"
+  spreadsheets are **outputs** — Drive uploads of the workbook `build_workbook.py` generates *from*
+  bridge.db. Zero of them are referenced by any code; they are reproducible snapshots.
+- Papi deleted the superseded exports and duplicate 2026-07-19 backups. Retained:
+  the two live inputs, `Pokemon TCG Collection V4 — backup 20260719` (`1Nm18NZ0…mejBII`, named in
+  `rules/tcg_sheet_allowlist.json` as the test-write target), and the newest export
+  `Command Center - Inventory Pipeline - Spec 205 - 2026-07-30`.
+
+## [2026-08-03T20:40:00Z] ops | [cc] MacBook session — vault path corrections and a live Tailscale fault
+- Corrected `~/Documents/Obsidian/CLAUDE.md`: it was authored by a VPS session and pointed the Mac
+  clone at a non-existent `~/papi/obsidian-vault/`. Real path is `~/Documents/Obsidian/Vault-0/`.
+  Fixed the title, all `obsidian-vault/...` doc pointers, standing rule 1, and the verify block.
+- `core-index.md` "Key Paths" listed only the VPS clone; added the MacBook clone and the note that
+  GitHub is the only sync path between them.
+- Replaced the GitHub stub `README.md` with a routing map (core-index vs index was not
+  distinguishable from the root file list). Kept to pure routing — no status, dates, or roster — so
+  it has nothing to drift on.
+- **Open issue: `ssh vps` is broken over Tailscale.** `tailscale ping` succeeds (75ms, direct) but
+  TCP over the tunnel times out and ICMP is 100% loss. The VPS itself is healthy (load 0.09, 5.5G
+  available, up 14 days). Worked around all session via the public path
+  `root@187.124.88.165` (= `srv1535917.hstgr.cloud`, already in `known_hosts`). **tailscaled on the
+  VPS needs a look.**
+
+## [2026-08-03T23:20:00Z] docs | [cc] Session handoff — MacBook session closeout
+- Wrote `/root/context/cc-handoff-macbook-session-2026-08-03.md` covering Spec 215 activation,
+  the two TCG commits (`5dfb524` starvation + by-ID lookup, `1732445` rolling-quota model), the
+  215-223 status drift correction, the vault path fixes, and the settled Sheets linkage.
+- **Three things flagged for the next session up front:** `ssh vps` is broken over Tailscale (use
+  `root@187.124.88.165`); the TCG fixes have never had a clean run (first real test 2026-08-04
+  11:00 UTC); and the Command Center `src_*` tables still hold the 2026-07-08 cutoff even though
+  `sales.db` is now current.
+- Open queue recorded in priority order: verify the 08-04 TCG run → re-extract `src_*` →
+  TCG product-ID backfill (scoped, not started) → fix tailscaled → Bookmark Hell Pipeline.
+- Key insight for future sessions: the 2026-08-01 "vendor abuse block" diagnosis was a symptom.
+  The refresh had two independent defects underneath it, and a third (the quota window model) only
+  surfaced after the first two were fixed. Byte-identical daily totals across six runs were the
+  tell — that is deterministic starvation, never rate-limiting.

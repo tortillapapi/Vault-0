@@ -96,6 +96,34 @@ visible without becoming full specs. Activation still requires an explicit
 - **Guardrail:** no Telegram config edits before the chat ID is known; Papipa remains
   stopped/disabled and its profile/job remain preserved.
 
+### TCG product-ID backfill — scoped 2026-08-03, not started
+
+- **Status:** NEXT-UP for the Command Center. Papi asked for this immediately after
+  the 2026-08-03 price-refresh fixes; blocked that night only because the PPT quota
+  was exhausted. Nothing has been built.
+- **Source:** [[inventory-command-center]]; commits `5dfb524` / `1732445`.
+- **The scope is not what the headline number suggests.** 24 active items carry no
+  `tcgplayer_product_id` (22 sealed + 2 singles), and they split three ways:
+  - **~13 mainstream English Pokémon items** — Astral Radiance / Brilliant Stars /
+    Hidden Fates / Paldea Evolved / Paradox Rift / Journey Together / Phantasmal
+    Flames / Ascended Heroes / Mega Evolution (Lucario) / Sword & Shield ETBs,
+    151 Booster Bundle, 151 Poster Collection, Evolving Skies ETB. Standard
+    TCGplayer catalogue entries. **This is the only real backfill.**
+  - **~9 Chinese-language products** — 151C Gather boxes, Chinese Gem Pack, Journey
+    Path, White Future (PKC). TCGplayer does not carry Chinese-language sealed, so
+    PPT can never price these no matter what ID is attached.
+  - **1 One Piece card** — Watermelon Luffy x Eiichiro Oda Signature. PPT is a
+    *Pokémon* price tracker; wrong vendor entirely.
+- **No shortcut exists:** 0 of the 24 have a `tcgplayer_url` to parse an ID out of,
+  and PriceCharting is only a display URL in the workbook (not a price source) on
+  5 of 128 active items.
+- **Needed next:** a dry-run-first resolver over the ~13 English items reusing
+  `scripts/tcg/resolve_names.py`, run inside the rolling quota. Then mark the
+  Chinese + One Piece items explicitly manual-priced so they stop consuming quota
+  and stop reading as failures.
+- **Decision still open:** whether the ~10 non-TCGplayer items justify standing up a
+  PriceCharting price integration. That is its own project, not a backfill step.
+
 ## Not parked: active or decision-bound work
 
 These are not "someday" ideas; they need a decision or focused project continuation.
