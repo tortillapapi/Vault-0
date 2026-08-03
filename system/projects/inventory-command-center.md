@@ -205,16 +205,38 @@ no Spec 212 on disk;** the highest extant inventory-related spec is 211
 
 ## Operational caveats
 
-- **TCG price refresh prices only a minority of inventory.** Spec 216 closed its
-  actual scope (loud failure + exit-code contract) and Spec 219's pacing guard
-  ended the vendor abuse blocks — but pricing itself is still not repaired.
-  Measured 2026-08-03: **42 of 59 active sealed items have never been priced**,
-  and the same 17 succeed every run. Two causes, both in `refresh_prices.py`:
-  22 sealed items carry no `tcgplayer_product_id` at all, and the sealed lookup
-  queries `/sealed-products?search=<name>&limit=5` then filters by ID — so an
-  item whose name does not surface in the vendor's top-5 fails even when its ID
-  is known. Do not quote TCG market values or "TCG Position" workbook cards as
-  authoritative. Cost basis remains valid.
+- **TCG price refresh — root-caused and fixed 2026-08-03 (commit `5dfb524`);
+  awaiting first full live run.** Two defects, both now repaired in
+  `scripts/tcg/refresh_prices.py`:
+  1. *Budget starvation.* The item `ORDER BY` ranked on
+     `COALESCE(MAX(ph.market_price), 0)`, which is 0 for an item with no price
+     row — so never-priced items always sorted below every already-priced
+     ≥ $100 item and the request budget was spent before reaching them, every
+     run. An item needed a price to earn priority and could not get one without
+     it. This is why 42 of 59 active sealed items had never priced and why six
+     consecutive runs produced byte-identical 17/62/25 totals. Never-priced
+     items now sort first.
+  2. *Sealed lookup could not reach half the catalogue.* It only name-searched.
+     Japanese sets and "Surprise Box"/"Pouch Box" SKUs return zero hits for
+     their exact catalogue name but resolve fine by ID; name search also
+     mis-ranks (searching "Lost Origin Booster Box" returns the $4,600.62 Case
+     above the $735.03 box). Now tries `?tcgPlayerId=` first, falling back to
+     name search.
+
+  Also: the script now reads the vendor's `x-ratelimit-*` headers instead of
+  guessing. Real free-plan ceiling is **100/day and 60/minute** (was assuming
+  90/day with no minute awareness) — that gap is what drove the 429 storms
+  behind vendor blocks #1–#3. A clean quota stop with prices recorded is no
+  longer scored as a failed run.
+
+  **Still to verify:** the fix landed after the 2026-08-03 daily quota was
+  already spent, so only a 12-request capped run was possible. First full
+  validation is the 10:33 UTC timer run. Until that run is checked, do not quote
+  TCG market values or "TCG Position" workbook cards as authoritative. Cost
+  basis remains valid.
+- **22 sealed items have no `tcgplayer_product_id` at all** (mostly Chinese-language
+  products). These are unreachable by either lookup path and need manual pricing
+  or ID backfill — unaffected by the 2026-08-03 fix.
 - **`sales.db` refresh is LIVE as of 2026-08-03.** Spec 215's `profit-refresh.timer`
   was approved by Papi and enabled (daily); a supervised `--apply` run brought
   orders/finances/ebay_orders/ebay_finances all current. `profit-freshness-check.timer`
