@@ -98,8 +98,19 @@ it the schedule inverts to 23:00–14:30 PT.
 
 | Secret | Path | Needed for |
 |---|---|---|
-| Notion integration token | `/root/secrets/notion/token` (mode 0600) | everything |
-| Google token with `tasks` scope | `/root/secrets/gmail-oauth/gmail-token.json` | `--gtasks` only |
+| Notion connection token | `/root/secrets/notion/token` (mode 0600) | everything |
+| Google OAuth (order-parser store) | `/root/secrets/order-parser/credentials.json` | `--gtasks` only |
+
+The Google side needs **no setup** — the live order-parser credential
+`191ZRFwvzMdQy4ep` already carries `https://www.googleapis.com/auth/tasks`
+alongside gmail/drive/sheets/calendar/documents. `gtasks.py` picks the first
+credential in that store with the tasks scope and a refresh token, refreshes the
+access token **in memory**, and never writes back — n8n owns that file.
+
+> **Do not use `/root/secrets/gmail-oauth/`.** It was copied from the
+> decommissioned inventory-tracker on 2026-04-27, its token expired that same
+> day, and its OAuth client has since been deleted from Google Cloud —
+> authorizing it returns `401 deleted_client`. Nothing live references it.
 
 The Notion token is an **internal connection** token (Notion renamed
 "integrations" to "connections"; `notion.so/my-integrations` now redirects to a
@@ -124,6 +135,12 @@ used by a timer — hence the separate token.
 If only one side's hash moved, that side wins. If both moved, the most recently
 edited side wins and **the loser's title is appended to `Description`** rather
 than discarded.
+
+**Completed history is not imported.** As of 2026-08-04 the `@default` list held
+208 tasks — 6 open, 202 completed — and a second "Work Tasks" list that is 100%
+completed. Creating Notion rows for all of them would bury the live board, so a
+Google task that is already completed and has no Notion row is skipped. Tasks
+Notion *does* track still sync their completion state both ways.
 
 ## Failure modes to watch
 
