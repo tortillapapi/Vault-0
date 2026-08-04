@@ -24,7 +24,13 @@
       "Bash(PYTHONPATH=/root/scripts timeout 60 python3 -c ' *)",
       "Bash(rm -f notion_sync/reconsent_google.py)",
       "Bash(rm -rf notion_sync/__pycache__)",
-      "Bash(python3 -m compileall -q notion_sync)"
+      "Bash(python3 -m compileall -q notion_sync)",
+      "Bash(systemctl is-enabled *)",
+      "Bash(systemctl list-timers *)",
+      "Bash(systemctl show *)",
+      "Bash(PYTHONPATH=/root/scripts timeout 300 python3 -m notion_sync.sync --check)",
+      "Bash(PYTHONPATH=/root/scripts timeout 300 python3 -c ' *)",
+      "Bash(PYTHONPATH=/root/scripts python3 -c ' *)"
     ]
   }
 }

@@ -1,5 +1,5 @@
 ---
-type: system-project
+type: inbox
 title: Inbox
 slug: inbox
 ---
