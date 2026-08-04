@@ -101,9 +101,22 @@ it the schedule inverts to 23:00–14:30 PT.
 | Notion integration token | `/root/secrets/notion/token` (mode 0600) | everything |
 | Google token with `tasks` scope | `/root/secrets/gmail-oauth/gmail-token.json` | `--gtasks` only |
 
-The Notion token must be an **internal integration** (notion.so/my-integrations)
-with the Master Page shared to it. The MCP connector used interactively by
-Claude Code is session-bound and cannot be used by a timer.
+The Notion token is an **internal connection** token (Notion renamed
+"integrations" to "connections"; `notion.so/my-integrations` now redirects to a
+Connections settings page):
+
+1. <https://app.notion.com/developers/connections> → sidebar **Build** →
+   **Internal connections** → **Create a new connection**
+2. **Configuration** tab → copy the **Installation access token** (`ntn_…`)
+3. **Content access** tab → **Edit access** → add the Master Page — or in Notion,
+   page `•••` → **Connections** → **+ Add connection**
+
+Step 3 is not optional: a new connection has **no page access by default** and
+every API request fails until it is granted. Access cascades to child pages, so
+granting the Master Page covers the whole tree.
+
+The MCP connector Claude Code uses interactively is session-bound and cannot be
+used by a timer — hence the separate token.
 
 ## Conflict rule (Google Tasks)
 

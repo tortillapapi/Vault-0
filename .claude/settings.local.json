@@ -2,7 +2,15 @@
   "permissions": {
     "allow": [
       "Read(//root/**)",
-      "Read(//root/specs/**)"
+      "Read(//root/specs/**)",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 -m compileall -q notion_sync/reconsent_google.py)",
+      "Bash(mkdir -p /root/secrets/notion)",
+      "Bash(chmod 700 /root/secrets/notion)",
+      "WebSearch",
+      "Bash(python3 -m compileall -q notion_sync/client.py)",
+      "Bash(PYTHONPATH=/root/scripts python3 -m notion_sync.sync --check)",
+      "Bash(git pull *)"
     ]
   }
 }
