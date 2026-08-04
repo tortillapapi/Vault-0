@@ -7,6 +7,7 @@ last_updated: 2026-08-01
 status: parked
 priority: later
 owner: hermes
+next_action: ""
 tags: [project, hermes, telegram, janus, personal-assistant, gateway]
 ---
 

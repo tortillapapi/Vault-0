@@ -1,3 +1,16 @@
+---
+type: system-project
+title: Bookmark Hell Pipeline
+slug: bookmark-hell-pipeline
+status: active
+priority: medium
+owner: hermes
+last_updated: 2026-08-01
+repo_path: /root/bookmark-pipeline
+next_action: "Decide the first storage substrate (SQLite + Obsidian exports vs Google Sheet + Obsidian exports) — everything downstream is blocked on it"
+tags: [project, bookmarks, telegram, ingestion, knowledge]
+---
+
 # Bookmark Hell Pipeline
 
 Status: **ACTIVATED 2026-07-09 — MVP v1 spec ready** (`/root/specs/171-bookmark-hell-pipeline-mvp1.md`); ingestion+extraction core built & piloted 2026-06-23

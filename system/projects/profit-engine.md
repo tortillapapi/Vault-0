@@ -7,6 +7,8 @@ last_updated: 2026-07-14
 status: evergreen-active
 priority: high
 owner: hermes
+repo_path: /root/sales-data
+next_action: "Import richer purchase-lot quantities so FIFO coverage grows past the initial 4 lots / 8 units"
 tags: [project, finance, reseller, profit-engine, amazon, ebay, evergreen]
 ---
 

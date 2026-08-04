@@ -7,6 +7,8 @@ last_updated: 2026-08-01
 status: evergreen-active
 priority: high
 owner: hermes
+repo_path: /root/command-center
+next_action: "Run the first full live TCG price refresh and confirm the 42 never-priced sealed items get values (fix landed 2026-08-03, commit 5dfb524)"
 tags: [project, inventory, reseller, command-center, tcg, prep-center, amazon, evergreen]
 ---
 

@@ -2,8 +2,10 @@
 type: system-project
 title: n8n Order Parser
 slug: n8n-order-parser
+status: active
 last_synced: 2026-06-04
 maintainer: cc-oc-orchestrator
+next_action: ""
 tags: [project, order-parser, gmail, sheets, systemd]
 ---
 

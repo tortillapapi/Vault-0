@@ -17,6 +17,7 @@ last_updated: 2026-08-01
 - n8n Order Parser — daily Gmail order parsing; now at `https://n8n.rareforceone.cloud` (Caddy proxy). Recovered 2026-05-26 from ~11-day OAuth outage (consent screen now Published). Parser runtime is `order-parser.timer` (systemd, 09:00 PT / 16:00 UTC); the n8n workflows are retired-but-retained (see [[wiki/topics/n8n-order-parser]]). Daily accuracy audit is `hermes-parser-audit.timer` at 09:20 PT / 16:20 UTC, ongoing (no end date) → log `system/logs/n8n-parser-daily-check.md`. Deterministic health check `parser-healthcheck.timer` at 09:35 PT / 16:35 UTC (no LLM — Spec 214)
 - Orders Dashboard — DECOMMISSIONED 2026-06-24 per Spec 151; runtime stopped/disabled/masked, legacy sheet trashed. See [[wiki/topics/orders-dashboard]]
 - cleanup-inventory-tracker.timer — scheduled 2026-05-27, archives the decommissioned inventory-tracker workspace permanently
+- notion-sync.timer — VPS→Notion state push + Notion→vault inbox capture, every 30 min 06:00–21:30 PT. **Installed but NOT enabled** pending the Notion integration token at `/root/secrets/notion/token`. See [[system/workflows/notion-sync-protocol]]
 
 ## Historical (kept for reference, not active)
 - [[wiki/topics/inventory-tracker-pipeline]] — ARCHIVED 2026-04-27 (pipeline shut down per spec 36, code archived per spec 37)
@@ -32,6 +33,8 @@ last_updated: 2026-08-01
 - Peer protocol: /root/obsidian-vault/system/workflows/peer-orchestrator-protocol.md
 - Specs/tasks/reviews: /root/specs/, /root/tasks/, /root/reviews/ (shared)
 - Ops helper scripts: /root/scripts/ (sheets-read.sh, gmail-orders-list.sh, verify-done-files.sh)
+- Notion sync package: /root/scripts/notion_sync/ (`PYTHONPATH=/root/scripts python3 -m notion_sync.sync --check`)
+- Notion workspace: "Manuel Ramirez's Space" — Master Page `4442508b-7644-83e2-8510-01a99cf57b9a`; START SCREEN, VPS Command Center, Vault Library, Database Hub
 - Archived inventory-tracker: /root/archive/inventory-tracker-old-2026-04/
 
 ## OC Agent Roster (live routing, 2026-08-01)

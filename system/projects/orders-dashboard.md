@@ -2,8 +2,10 @@
 type: system-project
 title: Orders Dashboard
 slug: orders-dashboard
+status: decommissioned
 last_synced: 2026-06-24
 maintainer: cc-oc-orchestrator
+next_action: ""
 tags: [project, dashboard, flask, decommissioned]
 ---
 

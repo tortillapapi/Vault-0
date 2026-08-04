@@ -2,6 +2,10 @@
 
 Live project state so any agent can pick up the work.
 
+> Each project doc carries `next_action:` in frontmatter. It drives the `▶ CONTINUE`
+> block on the Notion START SCREEN — keep it current or that block goes stale.
+> See [[../workflows/notion-sync-protocol]].
+
 - [[n8n-order-parser]] — Gmail→Sheets order automation (n8n/Docker); accounts, gotchas, open items.
 - [[parked-backlog]] — canonical parking lot for deferred ideas and "what can be worked on next" prompts.
 - [[bookmark-hell-pipeline]] — parked MVP plan for turning X/TikTok/bookmarked links into actionable categorized knowledge, hybrid storage, and weekly resurfacing.

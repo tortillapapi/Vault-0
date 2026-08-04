@@ -6,6 +6,8 @@ created: 2026-06-02
 last_updated: 2026-07-14
 status: mvp
 priority: core
+repo_path: /root/mission-control
+next_action: ""
 tags: [project, dashboard, monitoring, agents, ops]
 domain_tags: [infrastructure, monitoring]
 specs: [85, 86, 87, 88, 105, 106, 107, 108, 109, 110, 183]
