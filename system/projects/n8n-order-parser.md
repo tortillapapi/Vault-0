@@ -3,7 +3,7 @@ type: system-project
 title: n8n Order Parser
 slug: n8n-order-parser
 status: active
-last_synced: 2026-06-04
+last_synced: 2026-08-05
 maintainer: cc-oc-orchestrator
 next_action: ""
 tags: [project, order-parser, gmail, sheets, systemd]
@@ -32,8 +32,35 @@ The old n8n workflows are intentionally deactivated, not deleted:
 - `EAKfdR3Csk0zdT6H` — Order Parser — themetalman13 (account_b = themetalman13@gmail.com, the eBay inbox / Inbox B)
 - `XY3vs7olrtnnlBDv` — Order Parser — Master Merge
 
+All three have **zero executions, ever** — confirming the parser never ran through n8n
+after the spec-76/77 migration.
+
 Inactive n8n parser workflows are expected. Monitoring should use
 `/root/scripts/parser-run-status.sh`, not n8n execution history, as the run-status signal.
+
+## n8n Stack Stopped (2026-08-05)
+
+The entire n8n stack is **stopped, not deleted**. Nothing on this VPS depends on it.
+
+- Stopped with `cd /root/n8n && docker compose down` (**no `-v`** — volumes intact).
+- Volumes preserved: `n8n_n8n_data` (7.5 MB), `n8n_postgres_data` (72.6 MB).
+- All 4 workflows and 6 stored credentials (Gmail ×2, Sheets ×2, Drive, Header Auth)
+  survive in `n8n_postgres_data`.
+- Reclaimed ~256 MB RSS. This was **not** done for memory pressure — the VPS sits at
+  ~28% real utilization; the Hostinger panel's high number counts page cache.
+  It was done because the Google Tasks sync was firing hourly and failing 100%.
+
+**Restore:** `cd /root/n8n && docker compose up -d` — comes back with all workflows
+and credentials. Requires `/root/n8n/.env` (holds `N8N_ENCRYPTION_KEY`; without it the
+stored credentials cannot be decrypted — do not lose or rotate that file).
+
+**Do not restore casually.** The Google Tasks sync's OAuth client is deleted from
+Google Cloud, so it will resume failing hourly the moment n8n comes up. Deactivate or
+delete workflow `8f438348-...` before or immediately after any restore.
+
+Verified safe to stop: `hermes-parser-audit.timer`, `parser-cc-review.timer`, and
+`parser-codex-review.timer` all read `order-parser.service` via systemd/journal and
+never touch n8n or port `5678`, despite the legacy "n8n" in their names.
 
 ## Gotchas
 - The parser must run from the host path unless `ORDER_PARSER_BASE_DIR` is explicitly set.

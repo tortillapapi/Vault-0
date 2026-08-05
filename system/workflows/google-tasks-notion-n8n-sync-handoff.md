@@ -3,7 +3,7 @@ type: system-workflow
 title: Google Tasks Notion n8n Sync Handoff
 slug: google-tasks-notion-n8n-sync-handoff
 created: 2026-04-27
-last_updated: 2026-04-27
+last_updated: 2026-08-05
 maintainer: codex
 derived_from:
   - /root/n8n/local-files/google-tasks-notion-sync/README.md
@@ -18,14 +18,20 @@ access_count: 1
 
 # Google Tasks Notion n8n Sync Handoff
 
-> [!warning] SUPERSEDED 2026-08-05 — this workflow is a zombie
-> `Google Tasks <-> Notion Tasks Hourly Sync` is still flagged `active` in n8n but
-> **every execution has failed since ~April** with
-> `POST https://oauth2.googleapis.com/token failed 400` — its OAuth client was
-> deleted from Google Cloud. 337 executions, 100% error.
-> Replaced by `notion-sync.timer --gtasks` (see [[notion-sync-protocol]]).
-> Recommend deactivating it; instructions in
-> `/root/context/cc-handoff-notion-para-rebuild-2026-08-05.md`.
+> [!done] RETIRED 2026-08-05 — n8n stack stopped, zombie killed
+> `Google Tasks <-> Notion Tasks Hourly Sync` failed **338 consecutive executions**
+> with `POST https://oauth2.googleapis.com/token failed 400` — its OAuth client was
+> deleted from Google Cloud. Replaced by `notion-sync.timer --gtasks`
+> (see [[notion-sync-protocol]]).
+>
+> The whole n8n stack was stopped on 2026-08-05 via `docker compose down` (volumes
+> preserved). See [[n8n-order-parser]] for the stop/restore procedure.
+>
+> **Zombie note worth remembering:** the workflow row read `active = f` in Postgres,
+> yet the scheduler still fired it hourly on the hour — it survived a container
+> restart at 05:39 and fired again at 06:00. A `false` `active` flag in
+> `workflow_entity` is **not** proof a trigger is stopped. Verify against
+> `execution_entity`, not the flag.
 
 ## Purpose
 
@@ -33,14 +39,16 @@ This page hands off the live two-way sync between Google Tasks and the Notion `T
 
 ## Current State
 
-- Status: **FAILING** — flagged active in n8n, but 100% of executions error on OAuth token refresh (verified 2026-08-05).
+- Status: **STOPPED 2026-08-05** — n8n stack down; the hourly trigger no longer fires.
+  Last execution `2026-08-05 06:00:39+00` (error, as were all 338).
 - n8n workflow: `Google Tasks <-> Notion Tasks Hourly Sync`.
 - n8n workflow ID: `8f438348-4668-44e1-8c59-5e8bf0d4101f`.
-- Schedule: hourly.
-- n8n version at setup: `2.17.7`.
-- Docker image: `docker.n8n.io/n8nio/n8n:latest`.
-- n8n is bound to `127.0.0.1:5678`.
-- Health check: `curl -i http://127.0.0.1:5678/healthz`.
+- Schedule: was hourly; no longer scheduled.
+- n8n version at setup: `2.17.7` (image pinned via `${N8N_IMAGE}` in compose).
+- n8n was bound to `127.0.0.1:5678`. Health check `curl -i http://127.0.0.1:5678/healthz`
+  will now fail — that is expected, not an incident.
+- Workflow definition preserved in the `n8n_postgres_data` volume **and** as JSON at
+  `/root/n8n/local-files/google-tasks-notion-sync/workflow-google-tasks-notion-hourly.json`.
 
 ## Live Files
 
