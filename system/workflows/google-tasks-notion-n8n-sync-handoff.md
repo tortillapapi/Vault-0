@@ -18,13 +18,22 @@ access_count: 1
 
 # Google Tasks Notion n8n Sync Handoff
 
+> [!warning] SUPERSEDED 2026-08-05 — this workflow is a zombie
+> `Google Tasks <-> Notion Tasks Hourly Sync` is still flagged `active` in n8n but
+> **every execution has failed since ~April** with
+> `POST https://oauth2.googleapis.com/token failed 400` — its OAuth client was
+> deleted from Google Cloud. 337 executions, 100% error.
+> Replaced by `notion-sync.timer --gtasks` (see [[notion-sync-protocol]]).
+> Recommend deactivating it; instructions in
+> `/root/context/cc-handoff-notion-para-rebuild-2026-08-05.md`.
+
 ## Purpose
 
 This page hands off the live two-way sync between Google Tasks and the Notion `Task Database`. The sync replaces the earlier Make.com automation and runs on the same VPS as OpenClaw and n8n.
 
 ## Current State
 
-- Status: live and active in n8n.
+- Status: **FAILING** — flagged active in n8n, but 100% of executions error on OAuth token refresh (verified 2026-08-05).
 - n8n workflow: `Google Tasks <-> Notion Tasks Hourly Sync`.
 - n8n workflow ID: `8f438348-4668-44e1-8c59-5e8bf0d4101f`.
 - Schedule: hourly.
