@@ -3,7 +3,7 @@ type: system-project
 title: Parked Backlog
 slug: parked-backlog
 created: 2026-06-16
-last_updated: 2026-08-01
+last_updated: 2026-08-05
 status: parked
 priority: review-weekly
 next_action: ""
@@ -124,6 +124,35 @@ visible without becoming full specs. Activation still requires an explicit
   and stop reading as failures.
 - **Decision still open:** whether the ~10 non-TCGplayer items justify standing up a
   PriceCharting price integration. That is its own project, not a backfill step.
+
+## Archived Notion projects — recall only, NOT agent work
+
+Triaged out of the Notion Projects DB on 2026-08-05. All were dormant since April
+and were generating false "active project" signal on the START SCREEN. Every page
+body is preserved in Notion under `Status = Archived` — nothing was deleted.
+
+> **Agents: do not propose, scope, or build any of these.** They are personal and
+> offline-business ideas, recorded here so they are findable, not so they can be
+> activated. Only Papi reactivates them, by name.
+
+| Idea | Category | Why archived |
+|---|---|---|
+| Electrical/Low Voltage/IT Company | Service Business | WIP since Feb, end date 2026-02-28 passed, no movement |
+| Remote Cleaning Business | Service Business | Never started; Drive folder retained |
+| Party Rental Business | Service Business | Never started; Drive folder retained |
+| AI Botting Guide & Assistant (NotebookLM) | Automation | WIP in name only — no code, specs, or vault doc anywhere |
+| Work Projects/Ideas | Operations | A catch-all bucket, not a project; capture now goes to the Notion Inbox |
+| OpenClaw Inventory & Order Management System | E-Commerce/FBA | Stale April duplicate of the live [[inventory-command-center]] |
+| Notion + G Suite Productivity Suite | Productivity | Completed 2026-02-09; superseded by the PARA + sync rebuild |
+
+**Kept active:** *Pokémon Market Sentiment Scraper* — the only one with a plausible
+line into live work (could feed the TCG market-value layer, spec 184). Still has no
+code or spec; it is an idea holding a Project slot deliberately.
+
+**Moved, not archived:** *Oatz* and *Croissant Pop-Up* became **Resources** under a
+new **Ventures w/ Kane** Area in Notion. Both carry real concept docs. The rule
+encoded there: an idea is a Resource until it earns a deadline, then it graduates
+to a Project.
 
 ## Not parked: active or decision-bound work
 
