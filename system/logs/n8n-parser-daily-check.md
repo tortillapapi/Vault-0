@@ -405,6 +405,7 @@
 
 ## 2026-08-04
 - Workflows: account_a=success | account_b=success | master=success
-- Recall: 2 order emails | 0 matched | MISSES: Scheels …9159 2026-08-03; Scheels …1592 2026-08-03
+- Recall: 0 order emails | 0 matched | MISSES: none
 - Precision: 0 in-window rows | 0 confirmed | 93 not evaluable (email outside window) | FALSE POSITIVES: none
-- Verdict: ANOMALIES
+- Verdict: OK
+- Clarification: The two Scheels packing-slip emails were Papi-generated ungating documents, not purchases; the prior anomaly classification was corrected.
