@@ -35,7 +35,9 @@
       "Bash(PYTHONPATH=/root/scripts timeout 120 python3 -c ' *)",
       "Bash(PYTHONPATH=/root/scripts timeout 400 python3 -m notion_sync.sync --push-only)",
       "Bash(PYTHONPATH=/root/scripts timeout 200 python3 -c ' *)",
-      "Bash(systemctl cat *)"
+      "Bash(systemctl cat *)",
+      "Bash(PYTHONPATH=/root/scripts timeout 300 python3 -m notion_sync.sync --gtasks --dry-run --push-only)",
+      "Bash(PYTHONPATH=/root/scripts timeout 300 python3 -m notion_sync.sync --gtasks --dry-run --pull-only)"
     ]
   }
 }

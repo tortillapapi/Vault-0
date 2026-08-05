@@ -136,6 +136,18 @@ If only one side's hash moved, that side wins. If both moved, the most recently
 edited side wins and **the loser's title is appended to `Description`** rather
 than discarded.
 
+**`Last Sync Hash` has two formats.** The 2026-04 sync stored a full JSON
+snapshot — `{"title":..,"notes":..,"due":..,"status":..}` — not a digest.
+Comparing that as an opaque string matches nothing, which would have reported
+all 25 legacy rows as conflicts and written junk into `Description`.
+`_baseline()` converts the legacy snapshot to the equivalent digest; the next
+write replaces it with the current 32-char format.
+
+**Both sides changing is not automatically a conflict.** If they changed to the
+*same* value (you ticked the task off in both apps), that is convergence — the
+hash is recorded and nothing is written. A conflict is only declared when the
+resulting states actually differ.
+
 **Completed history is not imported.** As of 2026-08-04 the `@default` list held
 208 tasks — 6 open, 202 completed — and a second "Work Tasks" list that is 100%
 completed. Creating Notion rows for all of them would bury the live board, so a
