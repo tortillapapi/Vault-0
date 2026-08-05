@@ -1566,3 +1566,10 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
   The refresh had two independent defects underneath it, and a third (the quota window model) only
   surfaced after the first two were fixed. Byte-identical daily totals across six runs were the
   tell — that is deterministic starvation, never rate-limiting.
+
+## [2026-08-05T07:11:24Z] ops | [hermes] Session closeout — stale markers reconciled and parser audit corrected
+- Reconciled the remaining historical task prompts: Spec 171 Phase 1/2 review residue was administratively closed with caveats, and the reusable parser production prompt was retired from the one-shot queue without deleting its `.txt` source.
+- Verified `/root/bookmark-pipeline` remains clean with the full suite green: `19 passed in 0.55s`.
+- Reconciled Spec 217 against the live CC repository: local and remote `master` are synchronized, repository access succeeds, and database/report tracking boundaries are clean; historical partial/blocker evidence remains archived under `/root/tasks/archive/spec217-reconciliation-20260805T062317Z/`.
+- Corrected the 2026-08-04 parser audit after Papi clarified that the Scheels packing slips were self-generated Amazon ungating documents, not purchases. The canonical entry now reports `Recall: 0 order emails`, no misses, and `Verdict: OK`; no parser code, Gmail, Sheets, credentials, or production data were changed.
+- Prepared `/root/reviews/hermes-session-closeout-20260805.md` and `/root/context/hermes-session-closeout-2026-08-05.md`. No next project was started; the fresh session should wait for Papi's next bounded objective.
