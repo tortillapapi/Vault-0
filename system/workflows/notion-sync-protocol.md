@@ -142,6 +142,25 @@ completed. Creating Notion rows for all of them would bury the live board, so a
 Google task that is already completed and has no Notion row is skipped. Tasks
 Notion *does* track still sync their completion state both ways.
 
+## Two traps already hit (don't re-learn these)
+
+**Notion date properties store no seconds.** Send `04:39:37` and Notion stores
+`04:39:00`; the next comparison sees a difference and PATCHes — forever. All
+timestamps are therefore truncated to minute precision on the way out *and*
+normalized to minutes on comparison. Symptom if this regresses: every timer row
+reports `updated` on back-to-back runs.
+
+**A failed collector must never rewrite state.** `openclaw agents list` can
+block 20s+ while OpenClaw is being updated, exceeding mission-control's 8s
+`COMMAND_TIMEOUT`; the collector then returns an *empty* roster. Treating that
+as "the agents are gone" would mark every agent Inactive over a transient blip.
+`collect.systems()` returns `(rows, idle_prefixes)` and only namespaces whose
+collector actually succeeded get reconciled — a failed one leaves its rows
+alone and prints a note.
+
+The same principle applies to any collector added later: **absence of data is
+not evidence of absence.**
+
 ## Failure modes to watch
 
 - **`Last Activity` older than 24h on an active project** → the sync is broken
