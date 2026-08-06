@@ -1609,3 +1609,41 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
   points at Gate 0) and indexed it in `system/projects/index.md`. No code was written
   or changed in this pass — audit and documentation only.
 - Tier: cc (audit + documentation), hermes (Phase 1 implementation, prior session)
+
+## [2026-08-06T01:28:17Z] build | [cc] Notion Quick-Capture Router — Phase 2 built, gated on live Gate 0
+- Finished everything the prior audit found missing, except the one piece the
+  approved plan explicitly gates on human verification. New:
+  `notion_sync/llm.py` (opencode-go HTTP client, retry/backoff, fence-tolerant
+  JSON extraction), `notion_sync/router.py`'s active path (`classify()`,
+  `_apply_metadata()`, `propose()`, `expire()`, `run()`), `triage.find_by_token()`
+  (needed because a Telegram callback only carries the token, not the page id —
+  a gap the Phase 1 core hadn't covered), `/root/scripts/notion-triage-apply.py`
+  (deterministic apply step + a small free-text grammar for the "Other" escape
+  hatch), `config.py` LLM/Telegram constants, press-handling instructions in
+  `/root/.openclaw/workspace/AGENTS.md` (dated `.bak` first), and
+  `notion-router.service` (installed, `systemd-analyze verify` clean, live-ran
+  once under its real hardened sandbox with 0 pending rows — exercised every
+  permission path at zero LLM/Telegram risk). Fixed the stale `--buttons` flag
+  in `system/cheatsheets/oc-cli.md`. Added 38 new unit tests (18 → 56 total,
+  all passing).
+- **Corrected a plan claim empirically instead of trusting it**: the plan said
+  `ProtectHome=read-only` would block `/root/.openclaw` even with it in
+  `ReadWritePaths`, and recommended omitting `ProtectHome`. Tested live with
+  `systemd-run` before writing the real unit — the claim was wrong;
+  `ReadWritePaths` does override it. `notion-router.service` uses the same
+  (more restrictive, already-proven) sandbox pattern as `notion-sync.service`.
+- **Gate 0 status**: 0a (does the presentation JSON survive normalization into
+  real `callback_data`) confirmed by reading installed OpenClaw source directly
+  — `--dry-run --json` turned out not to print normalized presentation content
+  at all, another corrected plan assumption. 0b (does a live button tap reach
+  agent `mid`) is unresolved: a real test message was sent to the Alfred
+  Telegram chat at 01:05Z (messageId 939) and is still awaiting a tap as of
+  this entry.
+- **Deliberately not installed**: the `notion-sync.service` drop-in
+  (`Wants=`/`After=notion-router.service`) that would put the router on the
+  live 30-minute schedule. It's staged at
+  `/root/scripts/systemd-staged/notion-sync-20-router.conf`, ready to copy in
+  once Gate 0b confirms. Installing it first would mean the first real
+  promotion proposal goes out with an unproven return path.
+- Full current-state writeup: `system/projects/notion-quick-capture-router.md`.
+- Tier: cc (full Phase 2 implementation + live sandbox verification + tests)
