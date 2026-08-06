@@ -34,9 +34,20 @@ openclaw message send --channel telegram --target 1207164084 -m "caption" --medi
 ```
 
 ### Send with inline buttons
+`--buttons` does not exist in the installed build (`2026.7.1-2`). Use `--presentation`
+with a JSON `{title?, tone?, blocks: [...]}` shape — a malformed shape silently sends
+with no buttons, no error. A `buttons` block's entries must set `value` only, never
+`action` — `action:{type:"callback"}` is silently dropped unless a plugin claims it;
+only the deprecated top-level `value` reaches the agent as a synthetic inbound message.
+`value` is capped at 64 bytes (over-limit buttons are silently removed) and must not
+start with `/` (that routes into the command parser instead).
 ```bash
-openclaw message send --channel telegram --target 1207164084 -m "text" --buttons '[[{"text":"Yes","callback_data":"yes"},{"text":"No","callback_data":"no"}]]'
+openclaw message send --channel telegram --target 1207164084 \
+  -m "text" \
+  --presentation '{"blocks":[{"type":"buttons","buttons":[{"label":"Yes","value":"yes"},{"label":"No","value":"no"}]}]}'
 ```
+A button press does not return to the sending process — it arrives at the default
+agent as a normal inbound Telegram message with `callback_data: <value>`.
 
 ### Edit a sent message
 ```bash
