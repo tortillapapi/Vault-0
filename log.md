@@ -1578,3 +1578,34 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Papi requested safe rotation of the grunts and all other current OC agents. Preflight: live roster contained `mid`, `lead`, `grunt-eng`, `grunt`, `re-review`, and `email-parser`; 0 running OC tasks; no fresh `/root/tasks/*.progress` markers; `safe_to_rotate=true`.
 - Forced guarded rotation targeted exactly those six agents. Archives created under each agent's `sessions/archive/auto-20260806T001513Z/`.
 - Post-check: all six have `session_count=0`, empty `sessions.json`, reset usage caches where present, `would_rotate=false`, and no fresh progress markers.
+
+## [2026-08-06T00:17:25Z] docs | [cc] Notion Quick-Capture Router — Hermes handoff audited, Phase 1 closed out
+- Papi's CC session hit its 5-hour usage cap mid-build on the approved Quick-Capture
+  Router plan (`/root/.claude/plans/okay-next-thing-when-imperative-quasar.md`); Hermes
+  continued unsupervised. This entry is the follow-up audit of what actually landed,
+  requested explicitly so the project reads as closed-out rather than ambiguously
+  abandoned.
+- **Verified live:** `notion_sync/triage.py` (deterministic core — token/callback
+  validation, schema-plan builder, two-belt-idempotent `apply()`, title-banking with
+  the >2000-char refusal path) and `notion_sync/router.py` (`--check-schema`/
+  `--migrate-schema` + a read-only inactive pending-count path; its own docstring
+  labels it "Inactive Phase 1" — no LLM call, no Telegram send). The one prescribed
+  edit to existing code, `pull.py`'s `CAPTURE_HOLD` skip, is live and confirmed safe
+  against `journalctl -u notion-sync.service` (unbroken normal runs since). 18/18 tests
+  pass (`notion_sync/tests`). Live Notion schema re-verified via `--check-schema`: all
+  8 new Notes-DB properties present, correctly typed, 0 missing/incompatible.
+- **Flagged, not corrected:** the plan said schema mutation stays human; Hermes built
+  and apparently ran `--migrate-schema` instead (fail-closed design, verified correct
+  outcome — left as-is).
+- **Confirmed NOT built:** `notion_sync/llm.py`, the Telegram proposal/send path,
+  `notion-triage-apply.py`, the `notion-router.service` unit + ordering drop-in,
+  `mid`'s press-handling instructions in `/root/.openclaw/workspace/AGENTS.md`, the
+  LLM/Telegram `config.py` constants, and **Gate 0** (the button-round-trip
+  verification) — never attempted. The stale `--buttons` flag in
+  `system/cheatsheets/oc-cli.md:38` is also still unfixed.
+- Net: nothing from this project is wired into any timer or live send today — zero
+  production risk, safe dormant foundation. Documented full state in new
+  `system/projects/notion-quick-capture-router.md` (status `paused`, `next_action`
+  points at Gate 0) and indexed it in `system/projects/index.md`. No code was written
+  or changed in this pass — audit and documentation only.
+- Tier: cc (audit + documentation), hermes (Phase 1 implementation, prior session)
