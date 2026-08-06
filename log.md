@@ -1573,3 +1573,8 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Reconciled Spec 217 against the live CC repository: local and remote `master` are synchronized, repository access succeeds, and database/report tracking boundaries are clean; historical partial/blocker evidence remains archived under `/root/tasks/archive/spec217-reconciliation-20260805T062317Z/`.
 - Corrected the 2026-08-04 parser audit after Papi clarified that the Scheels packing slips were self-generated Amazon ungating documents, not purchases. The canonical entry now reports `Recall: 0 order emails`, no misses, and `Verdict: OK`; no parser code, Gmail, Sheets, credentials, or production data were changed.
 - Prepared `/root/reviews/hermes-session-closeout-20260805.md` and `/root/context/hermes-session-closeout-2026-08-05.md`. No next project was started; the fresh session should wait for Papi's next bounded objective.
+
+## [2026-08-06T00:15:13Z] ops | [hermes] Rotated full OpenClaw roster on explicit request
+- Papi requested safe rotation of the grunts and all other current OC agents. Preflight: live roster contained `mid`, `lead`, `grunt-eng`, `grunt`, `re-review`, and `email-parser`; 0 running OC tasks; no fresh `/root/tasks/*.progress` markers; `safe_to_rotate=true`.
+- Forced guarded rotation targeted exactly those six agents. Archives created under each agent's `sessions/archive/auto-20260806T001513Z/`.
+- Post-check: all six have `session_count=0`, empty `sessions.json`, reset usage caches where present, `would_rotate=false`, and no fresh progress markers.
