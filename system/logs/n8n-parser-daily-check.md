@@ -420,3 +420,9 @@
 - Recall: 0 order emails | 0 matched | MISSES: none
 - Precision: 1 in-window rows | 0 confirmed | 93 not evaluable (email outside window) | FALSE POSITIVES: Alma order-last4 unavailable 2026-08-06
 - Verdict: ANOMALIES
+
+## 2026-08-07
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 1 order email | 0 matched | MISSES: YouTube order-last4 unavailable 2026-08-06
+- Precision: 1 in-window rows | 0 confirmed | 93 not evaluable (email outside window) | FALSE POSITIVES: Alma order-last4 unavailable 2026-08-06
+- Verdict: ANOMALIES
