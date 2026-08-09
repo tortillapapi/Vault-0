@@ -3,7 +3,7 @@ type: system-project
 title: Notion Quick-Capture Router
 slug: notion-quick-capture-router
 status: paused
-last_synced: 2026-08-06
+last_synced: 2026-08-09
 maintainer: cc-oc-orchestrator
 next_action: "Waiting on a live Telegram button tap to confirm Gate 0 (round-trip to agent mid), then install the notion-sync.service drop-in to go live"
 tags: [project, notion, notion-sync, automation, telegram]
@@ -98,6 +98,13 @@ instead of the plan's untested one.
   mean the first real promotion proposal goes out with an unproven return path.
 - Live end-to-end promotion test (Gates 1–8 in the plan) — not run against a real
   captured note yet, since there's nothing in the Notes DB to triage right now.
+
+**Re-checked 2026-08-09, nothing has changed:** no tap or reply ever landed on
+messageId 939 (`journalctl --user -u openclaw-gateway.service` shows only the
+outbound send, no inbound callback), the drop-in was never installed, the router
+unit is still `disabled`/`inactive`, the Notes DB is still at 0 pending, and all
+56 tests still pass. This is a genuinely idle, safe state — nothing decayed,
+nothing needs redoing, it is simply still waiting on a tap.
 
 ## Resuming this project
 1. Tap any button on the pending Telegram test message in the Alfred chat (or

@@ -1647,3 +1647,18 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
   promotion proposal goes out with an unproven return path.
 - Full current-state writeup: `system/projects/notion-quick-capture-router.md`.
 - Tier: cc (full Phase 2 implementation + live sandbox verification + tests)
+
+## [2026-08-09T01:49:04Z] ops | [cc] Session closeout — Notion Quick-Capture Router re-verified idle, nothing else open
+- Re-checked the router before closing out this session: no button tap ever
+  landed on the pending Gate 0 test message (messageId 939, sent 2026-08-06),
+  the `notion-sync.service` drop-in is still not installed, `notion-router.service`
+  is still `disabled`/`inactive`, the Notes DB is still at 0 pending, and all 56
+  tests still pass. Nothing decayed while idle — the project remains exactly
+  where the 2026-08-06 entry left it, genuinely paused rather than stalled.
+- Vault git status was clean at session start (only unrelated daily
+  `hermes-parser-audit` commits landed in between); task list was already
+  empty. No code changes this entry — verification and doc timestamps only.
+- Next session picks up at: tap the Telegram test message (or reply `triage
+  deadbeef 0`) to confirm Gate 0b, then install the staged drop-in. See
+  `system/projects/notion-quick-capture-router.md` for the exact commands.
+- Tier: cc (verification + closeout only)
