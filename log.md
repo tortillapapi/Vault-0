@@ -1662,3 +1662,12 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
   deadbeef 0`) to confirm Gate 0b, then install the staged drop-in. See
   `system/projects/notion-quick-capture-router.md` for the exact commands.
 - Tier: cc (verification + closeout only)
+
+## [2026-08-09T02:56:01Z] ops | [hermes] Notion Quick-Capture Router production activation and session closeout
+- Phase 2 production scheduling is active: `/etc/systemd/system/notion-sync.service.d/20-router.conf` exactly matches the staged drop-in and orders `notion-router.service` before the existing capture lane with `Wants=` plus `After=`.
+- Verified acceptance: Notes schema `preserved=20 missing=0 incompatible=0`; router tests `56 passed`; pre/post activation router dry-run and live oneshot canary both found `0 pending`; `notion-sync.timer` remains enabled/active; OpenClaw gateway remains active.
+- No live LLM classification, Notion mutation, or Telegram proposal occurred during activation because the pending set was empty. Future promotions remain approval-gated with 24-hour token expiry and idempotency protections.
+- Durable evidence: `/root/reviews/225-phase2-notion-router-production-activation.md`; completion marker `/root/tasks/225-phase2-notion-router-production-activation.done`; project page updated at `system/projects/notion-quick-capture-router.md`.
+- The delegated `mid` worker stalled after applying the change; Hermes independently verified the live state and archived the self-created collision artifacts under `/root/tasks/archive/hygiene-20260809T024500Z-phase2-self-collision/`.
+- Next session: monitor the first real proposal; do not reinstall or rerun Phase 2. Handoff: `/root/context/notion-router-production-handoff-20260809.md`.
+- Tier: hermes (production activation verification + closeout)
