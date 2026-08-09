@@ -93,7 +93,7 @@ instead of the plan's untested one.
   `/root/scripts/systemd-staged/notion-sync-20-router.conf`.
 - Activation evidence is recorded in
   `/root/reviews/225-phase2-notion-router-production-activation.md`; the task is
-  closed by `/root/tasks/225-phase2-notion-router-production-activation.done`.
+  closed by `/root/tasks/archive/spec225-notion-router-phase2/225-phase2-notion-router-production-activation.done`.
 - The live Notes schema is complete, all 56 tests pass, the timer is enabled and
   active, and the post-activation router canary found 0 pending rows. Therefore
   no live LLM classification, Notion mutation, or Telegram proposal has occurred
