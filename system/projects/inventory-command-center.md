@@ -3,12 +3,12 @@ type: system-project
 title: Inventory Command Center
 slug: inventory-command-center
 created: 2026-08-01
-last_updated: 2026-08-01
+last_updated: 2026-08-09
 status: evergreen-active
 priority: high
 owner: hermes
 repo_path: /root/command-center
-next_action: "Run the first full live TCG price refresh and confirm the 42 never-priced sealed items get values (fix landed 2026-08-03, commit 5dfb524)"
+next_action: "Let the fixed refresh (commit aad5ab2, 2026-08-09) run unattended through a few more 11:00 UTC cycles to confirm no regression, then backfill tcgplayer_product_id for the 24 ID-less active items (see parked-backlog)"
 tags: [project, inventory, reseller, command-center, tcg, prep-center, amazon, evergreen]
 ---
 
@@ -261,11 +261,17 @@ no Spec 212 on disk;** the highest extant inventory-related spec is 211
      the timer is a deterministic `11:00:00 UTC` with no jitter.
      Real free-plan ceiling: **100 per rolling 24h, 60 per minute.**
 
-  **STILL NOT VALIDATED.** Every 2026-08-03 run priced 0 items — the quota was
-  exhausted before the ordering and by-ID fixes could ever exercise. The first
-  honest test is the **2026-08-04 11:00 UTC** run. Until someone checks that
-  run, do not quote TCG market values or "TCG Position" workbook cards as
-  authoritative. Cost basis remains valid.
+  **Validated 2026-08-09.** Runs from 2026-08-05 through 2026-08-08 all still
+  failed — a fourth defect: `/sealed-products?tcgPlayerId=X` bills by its
+  `limit` param, not by rows matched, so a zero-match by-ID lookup cost 50
+  credits (confirmed live via the vendor's own 429 breakdown). The
+  highest-priority never-priced item hit this every run and torched the
+  daily/minute quota one item in, tipping every run into a RATE-LIMIT ABORT.
+  Fixed by capping the by-ID lookup at `limit=1` and stopping the run's budget
+  tracker from silently dropping that call's spent credits on a miss (commit
+  `aad5ab2`). A manual live run afterward priced 11 items cleanly. TCG market
+  values and "TCG Position" workbook cards can be trusted again going forward.
+  Cost basis remained valid throughout.
 - **24 active items have no `tcgplayer_product_id`** (22 sealed + 2 singles), and
   they do not share one problem — see [[parked-backlog]] for the breakdown. Only
   ~13 are mainstream English Pokémon products that PPT can actually resolve. ~9
