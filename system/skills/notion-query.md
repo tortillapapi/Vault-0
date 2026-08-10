@@ -15,6 +15,12 @@ Query planner for answering questions from Notion content. Use this skill when t
 
 # Notion Query
 
+> **Tier routing is not defined here.** Route by tier *name* only; the roster, models,
+> thinking levels, and escalation policy are canonical in
+> `system/configs/openclaw-agents.md` (live truth: `openclaw agents list --json`).
+> `lead` is explicit-only — never a routine or scheduled destination.
+
+
 ## Role
 You are the query planner for Notion content. When the user asks a
 substantive question that needs information from their Notion

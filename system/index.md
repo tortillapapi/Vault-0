@@ -17,14 +17,17 @@ Catalog of internal ops knowledge mirrored and synthesized under `system/`.
 - [[skills/notion-query|notion-query]] — answer questions that require Notion content.
 - [[skills/index|skills index]] — all mirrored skill docs in one list.
 
+> Skill mirrors are documentation only. The live sets are `/root/.claude/skills/*.md` (CC)
+> and `/root/.codex/skills/*/SKILL.md` (symlinks into CC's files). Verify on disk before
+> trusting this list — see [[configs/openclaw-agents]] for routing, never a skill page.
+
 ## Workflows
 
-- [[workflows/orchestrator-role|orchestrator-role]] — distilled statement of CC's job and rules.
-- [[workflows/tier-routing|tier-routing]] — which tier to use, and when.
+- [[workflows/peer-orchestrator-protocol|peer-orchestrator-protocol]] — the shared contract between all peer orchestrators (canonical).
 - [[workflows/wiki-operations|wiki-operations]] — ingest, query, and lint loop overview.
-- [[workflows/session-resume-protocol|session-resume-protocol]] — exact resume protocol with wiki add-ons.
-- [[workflows/lessons-learned|lessons-learned]] — mirrored operating lessons from real runs.
-- [[workflows/google-tasks-notion-n8n-sync-handoff|google-tasks-notion-n8n-sync-handoff]] — live handoff for the hourly Google Tasks and Notion Task Database sync in n8n.
+- [[workflows/session-resume-protocol|session-resume-protocol]] — per-harness resume behavior; the collector pattern.
+- [[workflows/lessons-learned|lessons-learned]] — canonical operating lessons from real runs.
+- [[workflows/google-tasks-notion-n8n-sync-handoff|google-tasks-notion-n8n-sync-handoff]] — **SUPERSEDED 2026-08-05** by `notion-sync.timer --gtasks`.
 - [[workflows/index|workflows index]] — workflow summary list.
 
 ## Templates
@@ -44,22 +47,19 @@ Catalog of internal ops knowledge mirrored and synthesized under `system/`.
 - [[projects/n8n-order-parser|n8n-order-parser]] — order automation state.
 - [[projects/orders-dashboard|orders-dashboard]] — orders dashboard state.
 
-## Governance
-
-- [[governance/index|governance]] — read-only mirror of always-loaded instruction/memory files (CC, Codex, OC) with line-budget audit.
-
 ## Cheatsheets
 
 - [[cheatsheets/oc-cli|oc-cli]] — OpenClaw CLI quick reference.
 - [[cheatsheets/obsidian-conventions|obsidian-conventions]] — naming, linking, and frontmatter rules.
-- [[cheatsheets/operating-rules|operating-rules]] — standing operating rules from feedback.
+- [[cheatsheets/operating-rules|operating-rules]] — **canonical** standing rules for every agent.
 - [[cheatsheets/index|cheatsheets index]] — cheatsheet summary list.
 
 ## Configs
 
 - [[configs/milo-fitness|milo-fitness]] — Hermes workout/nutrition bot, Pacific-date schema, and maintenance.
-- [[configs/mnemosyne-pa|mnemosyne-pa]] — Hermes PA bot, deterministic capture, reminders, and Google Tasks.
-- [[configs/openclaw-agents|openclaw-agents]] — agent roster, models, tiers, and session keys.
+- [[configs/mnemosyne-pa|mnemosyne-pa]] — PA subsystem (bot retired 2026-08-10, machinery live under Janus).
+- [[configs/openclaw-agents|openclaw-agents]] — **canonical** agent roster *and* tier routing, review chain, dispatch policy.
+- [[configs/metis-gateway|metis-gateway]] — CC over Telegram; permission gate and roster.
 - [[configs/vault-layout|vault-layout]] — where wiki work vs system work belongs.
 - [[configs/index|configs index]] — config summary list.
 

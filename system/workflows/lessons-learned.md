@@ -2,19 +2,26 @@
 type: system-workflow
 title: Lessons Learned
 slug: lessons-learned
-source_path: /root/context/cc-oc-lessons-learned.md
-last_synced: 2026-04-21
-maintainer: cc-oc-orchestrator
-tags: [ops, workflow, lessons]
+canonical_for: [orchestration-lessons]
+last_updated: 2026-08-10
+maintainer: cc
+tags: [ops, workflow, lessons, shared-brain]
 ---
 
-## Purpose
+# Orchestration Lessons Learned
 
-Practical refinements for the CC-OC workflow, collected from real sessions. Consult this before kicking off a new project or when a workflow starts drifting into known failure modes.
+**This page is canonical.** It was previously a stale mirror of
+`/root/context/cc-oc-lessons-learned.md` (mirror stamped 2026-04-21, source modified
+2026-06-10 — the mirror was missing the entire Codex quota-burn section). The direction
+was inverted on 2026-08-10: the vault copy is now the source of truth because it is
+git-versioned and reaches all three clones, and `/root/context/cc-oc-lessons-learned.md`
+is a pointer to here.
 
-## Contents
+Practical lessons from real orchestration sessions. Consult before kicking off a new
+project, or when a workflow starts drifting into a known failure mode. Some entries below
+predate current doctrine — where one names a model, tier, or default that has since
+changed, [[system/configs/openclaw-agents]] wins; the *lesson* still stands.
 
-# CC-OC Workflow — Lessons Learned
 
 Practical lessons from real orchestration sessions. Add these refinements on top of the base workflow in `cc-oc-orchestration-workflow.md` and `cc-oc-quick-reference.md`.
 
@@ -164,6 +171,23 @@ propose whether it needs a fix task or can be patched manually.
 
 If a project is shaping up to need 15+ OC tasks, consider whether it should be split into two projects, or whether some tasks should be merged.
 
+### Codex usage guardrails after the 2026-06-01 Mission Control burn
+Codex exhausted most of a 5-hour window in about 70 minutes because the session
+combined verbose resume/status output, repeated OpenClaw GPT-5.5 provider
+timeouts, guardian approval forks, frequent polling, and direct review inside a
+large accumulated transcript. Default mitigation:
+
+- Keep resume/status output bounded once the workspace has many historical tasks.
+- Use low-output targeted reads instead of full directory and file dumps.
+- Treat the first OpenClaw GPT-5.5 provider idle-timeout on an edit task as a
+  harness signal. Retry once with a fresh task-specific session key; after a
+  second failure, switch runtime/tier or stop.
+- Batch explicit provider-risk approval by phase so each task/runtime/provider
+  does not trigger repeated approval-review turns. Codex should proactively
+  prompt the user for this batch approval when starting a dispatch-worthy phase.
+- After each major phase, write markers/reviews and start a fresh Codex session
+  for the next phase.
+
 ---
 
 ## CC ↔ OC communication
@@ -190,3 +214,11 @@ If you might need to edit or delete a sent message later, add `--json` to get th
 
 ### Session locks from `openclaw agent` are sticky
 If an agent command times out or is killed, it can leave a `.lock` file in `/root/.openclaw/agents/<id>/sessions/`. Clear it with `rm -f /root/.openclaw/agents/<id>/sessions/*.lock` before retrying.
+
+---
+
+## Finance/Plaid connector review-loop blocker bar
+
+Spec 124 Phase 3 showed the right cutoff for repeated security reviews on a finance connector. Keep blocking on issues that can expose secrets, mutate/delete operational credentials, call live/production unexpectedly, corrupt financial records, enable money movement, or make the runbook materially unsafe. Move cosmetic wording, readability, future-hardening, or hypothetical feature expansion to backlog so reviews do not become endless architecture churn.
+
+For secret-bearing systems, test suites must be proven isolated from operational secret stores. Redirect secret path globals before loading CLI modules, patch any captured function references used by the CLI, and snapshot the real secret tree before/after tests. A test that can write canary tokens into `/root/secrets/finance` is a real blocker, not overengineering.

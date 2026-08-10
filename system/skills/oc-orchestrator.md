@@ -15,6 +15,12 @@ Defines the CC orchestrator role: plan and coordinate work, never implement dire
 
 # OpenClaw Orchestrator Skill
 
+> **Tier routing is not defined here.** Route by tier *name* only; the roster, models,
+> thinking levels, and escalation policy are canonical in
+> `system/configs/openclaw-agents.md` (live truth: `openclaw agents list --json`).
+> `lead` is explicit-only — never a routine or scheduled destination.
+
+
 ## Role
 You are an orchestrator. Your job is to PLAN and COORDINATE, not implement.
 Never write implementation code directly. Always delegate to OpenClaw.

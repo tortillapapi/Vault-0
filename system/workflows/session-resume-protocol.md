@@ -2,51 +2,72 @@
 type: system-workflow
 title: Session Resume Protocol
 slug: session-resume-protocol
-last_synced: 2026-04-21
-maintainer: cc-oc-orchestrator
-derived_from:
-  - /root/CLAUDE.md
+canonical_for: [session-resume]
+last_updated: 2026-08-10
+maintainer: cc
 tags: [ops, workflow, sessions]
 ---
 
-## Purpose
+# Session Resume Protocol
 
-Use this page at the start of a CC session to recover project state before taking new work. It records the exact resume behavior defined in `CLAUDE.md`, including the wiki-specific status additions.
+**There is no box-wide resume ritual.** Resume behavior is per-harness, and for most
+harnesses the correct behavior is to do nothing and answer the user.
 
-## Base Protocol
+| Harness | At session start | Mechanism |
+|---|---|---|
+| **Hermes (Janus)** | Runs the collector, then reports | `/root/scripts/hermes-session-resume.py --mode=markdown` |
+| **CC** | **Nothing.** Greet or answer directly | Resume only in opt-in orchestrator mode (`/root/ORCHESTRATOR.md`) |
+| **Metis** (CC over Telegram) | **Nothing** — actively suppressed | Gateway system prompt forbids the sweep; Telegram is not the place for a status dump |
+| **Codex** | **Nothing.** Answer directly | Resume only in opt-in orchestrator mode |
 
-Before responding to the first user message in a session:
+## The collector is the pattern
 
-1. Run `ls specs/ tasks/ reviews/ 2>/dev/null`.
-2. For each spec in `specs/`, check whether a matching `tasks/<name>.done` exists.
-3. Identify any `tasks/<name>.blocked` files.
-4. Report status in this format:
+When a resume *is* wanted, prefer the deterministic collector over a manual directory
+walk:
 
-```text
-📋 SESSION RESUME — [current date]
-
-Active project: [infer from spec filenames, or "none detected"]
-
-Completed tasks:
-- [list each task with a .done file]
-
-Pending tasks (spec exists, no .done):
-- [list each]
-
-Blocked tasks:
-- [list each, with the blocker reason from the .blocked file]
-
-Suggested next action: [pick the next pending task in dependency order,
-or "awaiting your direction" if unclear]
+```bash
+/root/scripts/hermes-session-resume.py --mode=markdown
 ```
 
-5. Then wait for the user's actual request.
+It returns ~1.5 KB of Markdown (or ~2 KB JSON) covering active specs, pending tasks,
+blockers with a >24h flag, fresh `.progress` anti-collision markers, the last 20 vault
+log entries, and a deterministic suggested next action.
 
-## Wiki-Specific Additions
+This exists because the alternative — `ls specs/ tasks/ reviews/` and reasoning over the
+listing — costs a large multiple of the tokens for a worse answer, and gets worse every
+month as the workspace grows (154 specs / 1000 task artifacts / 400 reviews as of
+2026-08-10). Bounded, deterministic collectors are the house style for any bulk evidence:
+reduce raw listings, SQL, and history dumps to compact JSON/Markdown before they reach a
+model.
 
-When the user asks for `status`, `resume`, or `where are we` while wiki work is active, include:
+**Note:** the collector currently emits Hermes-flavored output (it labels the report
+`hermes`). Generalizing it with an `--agent` flag is a runtime change and belongs in its
+own spec, not a docs pass.
 
-- The most recent 3 ingests from `log.md`
-- Any open `.done` files without matching `.review`
-- Any open `.review` files with `FIX_TASK` recommendations not yet acted on
-- Total page count by wiki type using quick directory counts
+## Report format
+
+```text
+📋 SESSION RESUME (<agent>) — [date]
+
+Active project: [inferred, or "none detected"]
+Completed:      [tasks with a .done]
+Pending:        [spec exists, no .done]
+Blocked:        [with reason from the .blocked file, >24h flagged]
+Suggested next action: [next pending task in dependency order, or "awaiting your direction"]
+```
+
+Then wait for the user's actual request. If `specs/` and `tasks/` are both empty, skip
+the block and greet normally.
+
+## Manual fallback
+
+Only when the collector is unavailable, and only in orchestrator mode: `ls specs/ tasks/
+reviews/`, match each spec to a `tasks/<name>.done`, and surface `.blocked` files. This
+is the path the collector was built to replace — reach for it as a fallback, not a
+default.
+
+## Wiki additions
+
+When the user asks for `status` / `resume` / `where are we` while wiki work is active,
+add: the 3 most recent ingests from `log.md`; `.done` files with no matching `.review`;
+`.review` files with unacted `FIX_TASK` recommendations; and page counts by wiki type.

@@ -15,6 +15,12 @@ Mirror wiki topic pages out to Notion as a read-surface. Use this skill when the
 
 # Notion Push
 
+> **Tier routing is not defined here.** Route by tier *name* only; the roster, models,
+> thinking levels, and escalation policy are canonical in
+> `system/configs/openclaw-agents.md` (live truth: `openclaw agents list --json`).
+> `lead` is explicit-only — never a routine or scheduled destination.
+
+
 ## Role
 You are the orchestrator for mirroring wiki topic pages out to Notion.
 The wiki is always the source of truth; Notion is a read-surface for

@@ -1,5 +1,11 @@
 # oc-dispatch-preflight
 
+> **Tier routing is not defined here.** Route by tier *name* only; the roster, models,
+> thinking levels, and escalation policy are canonical in
+> `system/configs/openclaw-agents.md` (live truth: `openclaw agents list --json`).
+> `lead` is explicit-only — never a routine or scheduled destination.
+
+
 Mirror of the CC orchestrator skill `oc-dispatch-preflight` (canonical:
 `/root/.claude/skills/oc-dispatch-preflight.md`).
 

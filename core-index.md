@@ -1,14 +1,20 @@
 ---
 type: core-index
-last_updated: 2026-08-01
+last_updated: 2026-08-10
 ---
 
 # Core Index — Always-Load Pages
 
 ## System Architecture
-- [[system/workflows/peer-orchestrator-protocol]] — CC + Codex CLI shared conventions
-- [[system/workflows/orchestrator-role]] — orchestrator workflow (plan, dispatch, review)
-- [[system/workflows/tier-routing]] — OC tier dispatch matrix
+**Precedence, one line:** live runtime beats vault `system/`; vault `system/` beats any
+`/root` file; skills and per-harness files point rather than restate — and if a doc names
+a model or tier, run the CLI before trusting it.
+
+- [[system/workflows/peer-orchestrator-protocol]] — **the shared contract** for every
+  orchestrator (Hermes/Janus primary; CC/Metis and Codex on request)
+- [[system/configs/openclaw-agents]] — **canonical** agent roster + tier routing
+- [[system/cheatsheets/operating-rules]] — **canonical** standing rules
+- [[system/workflows/session-resume-protocol]] — per-harness resume behavior
 - [[system/decisions/2026-04-fallback-pipeline]] — why openclaw agent subprocess pattern
 - [[system/decisions/2026-04-tier-agents]] — tiered agent design rationale
 
@@ -28,8 +34,10 @@ last_updated: 2026-08-01
 - Vault (MacBook clone): ~/Documents/Obsidian/Vault-0/ — same GitHub remote, synced only
   through `git@github.com:tortillapapi/Vault-0.git`; the two clones never talk directly.
   Mac-session notes: ~/Documents/Obsidian/CLAUDE.md
-- CC orchestrator file: /root/CLAUDE.md
-- Codex orchestrator file: /root/AGENTS.md
+- Hermes/Janus (primary orchestrator): /root/.hermes.md
+- CC (plain by default; Metis = CC over Telegram): /root/CLAUDE.md
+- Codex CLI (dormant): /root/AGENTS.md
+- Opt-in CC/Codex orchestrator mode: /root/ORCHESTRATOR.md
 - Peer protocol: /root/obsidian-vault/system/workflows/peer-orchestrator-protocol.md
 - Specs/tasks/reviews: /root/specs/, /root/tasks/, /root/reviews/ (shared)
 - Ops helper scripts: /root/scripts/ (sheets-read.sh, gmail-orders-list.sh, verify-done-files.sh)
@@ -37,10 +45,6 @@ last_updated: 2026-08-01
 - Notion workspace: "Manuel Ramirez's Space" — Master Page `4442508b-7644-83e2-8510-01a99cf57b9a`; START SCREEN, VPS Command Center, Vault Library, Database Hub, How To Play. Contract: [[system/workflows/notion-sync-protocol]] · usage model: [[system/workflows/notion-usage-guide]]
 - Archived inventory-tracker: /root/archive/inventory-tracker-old-2026-04/
 
-## OC Agent Roster (live routing, 2026-08-01)
-- mid — openai/gpt-5.6-luna (default GPT escalation/review, xhigh)
-- lead — openai/gpt-5.6-sol (explicit-only exceptional escalation, xhigh)
-- grunt-eng — opencode-go/deepseek-v4-flash (bounded engineering, medium)
-- grunt — opencode-go/deepseek-v4-flash (mechanical/docs, medium)
-- re-review — opencode-go/glm-5.2 (first-pass QA, medium)
-- email-parser — google/gemini-2.5-flash (email parsing only)
+## OC Agent Roster
+Do not maintain a second copy here. Roster and routing:
+[[system/configs/openclaw-agents]]. Live truth: `openclaw agents list --json`.

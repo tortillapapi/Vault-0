@@ -1,52 +1,35 @@
 ---
 type: system-workflow
-title: Orchestrator Role
+title: Orchestrator Role (retired)
 slug: orchestrator-role
-last_synced: 2026-04-21
-maintainer: cc-oc-orchestrator
-derived_from:
-  - /root/CLAUDE.md
-tags: [ops, workflow, orchestration]
+status: retired
+retired: 2026-08-10
+canonical: system/workflows/peer-orchestrator-protocol
+tags: [ops, workflow, retired]
 ---
 
-## Scope
+# Orchestrator Role — retired 2026-08-10
 
-This is a **CC-specific legacy workflow** derived from `/root/CLAUDE.md`. It is not a
-shared default and does not apply to Hermes. Hermes follows `/root/.hermes.md`, where
-Routine Fast Lane work is handled directly and specs/tasks are reserved for qualifying
-complex work.
+This page described a doctrine that no longer holds: that CC is an orchestrator by
+default, "never writes implementation code", and routes deeper work to `lead` as a
+matter of course.
 
-## Purpose
+All three claims are now false:
 
-Use this page when you need the distilled statement of CC's job. It captures the orchestrator posture, the default workflow, and the non-negotiable rules that keep implementation delegated to OpenClaw.
+- CC is **plain Claude Code by default** and does the work directly
+  (`/root/CLAUDE.md`). Orchestrator mode is opt-in — just ask for it.
+- Hermes is the primary orchestrator (`/root/.hermes.md`).
+- `lead` is an **explicit-only** escalation lane, never a routine destination
+  ([[system/configs/openclaw-agents]]).
 
-## Core Role
+The page claimed `derived_from: /root/CLAUDE.md`, but the version it was derived from
+has not existed since well before 2026-07-31. It was still listed in `core-index.md`
+under "always-load pages", which put retired doctrine two hops from every CC session —
+the reason it is now a tombstone rather than a deletion.
 
-CC plans and coordinates work, but does not implement it directly. The orchestrator breaks requests into atomic tasks, writes specs and task prompts, routes work to the correct OC tier, and reviews outputs before approving the next phase.
+**Where its content went:**
 
-## Default Workflow
-
-1. Analyze the request and decompose it into atomic tasks.
-2. Write `specs/<name>.md` before any execution prompt.
-3. Write `tasks/<name>.txt` with fully inlined context.
-4. Route execution to the appropriate OC tier.
-5. Review `tasks/*.done` outputs and decide whether to accept, fix, or escalate.
-
-## Workspace Split
-
-- CC works under `/root/`.
-- OC works under `/root/.openclaw/workspace/`.
-- The vault lives at `/root/obsidian-vault/`, with a workspace symlink expected at `/root/.openclaw/workspace/vault`.
-
-## Tier Default
-
-- Use Grunt for mechanical long-context work.
-- Use Mid for review and medium-complexity edits.
-- Use Lead for deeper synthesis, architecture, and heavyweight debugging.
-
-## Non-Negotiable Rules
-
-- Never write implementation code in CC.
-- Always create the spec before the task prompt.
-- Always include completion-marker instructions.
-- Review outputs before approving the next phase.
+- Shared conventions → [[system/workflows/peer-orchestrator-protocol]]
+- Tier routing → [[system/configs/openclaw-agents]]
+- Opt-in CC/Codex orchestrator workflow → `/root/ORCHESTRATOR.md`
+- Session resume → [[system/workflows/session-resume-protocol]]

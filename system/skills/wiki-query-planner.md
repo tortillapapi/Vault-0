@@ -15,6 +15,12 @@ Translate user questions into wiki search + read + synthesize plans. Use this sk
 
 # Wiki Query Planner
 
+> **Tier routing is not defined here.** Route by tier *name* only; the roster, models,
+> thinking levels, and escalation policy are canonical in
+> `system/configs/openclaw-agents.md` (live truth: `openclaw agents list --json`).
+> `lead` is explicit-only — never a routine or scheduled destination.
+
+
 ## Role
 Translate user questions into search + read + synthesize plans that run
 against the wiki. You orchestrate; OC tiers do the reading and writing.
@@ -60,8 +66,8 @@ more than 15, tighten the query.
 ### 3. Decide Tier
 
 - **Lookup**: CC reads the page(s) and answers inline. No OC task needed.
-- **Comparison**: Route to Mid. GPT 5.4 is good at structured comparison.
-- **Synthesis**: Route to Lead. GPT 5.5 handles high-judgment synthesis.
+- **Comparison**: Route to `mid` — structured comparison is its lane.
+- **Synthesis**: Route to `mid`. Escalate to `lead` only if `mid` is stuck.
 - **Gap-finding**: Route to Lead.
 - **Artifact generation**: Route to Grunt for the bulk transformation,
   then Re-review/GLM for first-pass QA and Mid for elevated-risk review.
@@ -72,7 +78,7 @@ For non-lookup queries, create `/root/tasks/query-<slug>.txt`:
 ```
 Execute this task now:
 
-TIER: <Mid | Lead | Grunt>
+TIER: <grunt | mid | lead(explicit-only)>
 TASK: query-<slug>
 
 OBJECTIVE:

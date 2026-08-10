@@ -15,6 +15,12 @@ Periodic health-check of the wiki to surface cross-cutting issues. Use this skil
 
 # Wiki Lint
 
+> **Tier routing is not defined here.** Route by tier *name* only; the roster, models,
+> thinking levels, and escalation policy are canonical in
+> `system/configs/openclaw-agents.md` (live truth: `openclaw agents list --json`).
+> `lead` is explicit-only — never a routine or scheduled destination.
+
+
 ## Role
 Periodic health-check of the wiki. Surface problems the ingest/review
 loop can't catch — cross-cutting issues that only appear when you look
@@ -57,22 +63,23 @@ done
 Record these numbers. They go into the lint report.
 
 ### 2. Decide Scope
-Small wiki (<100 pages): full lint in one Lead task.
+Small wiki (<100 pages): full lint in one `mid` task.
 Medium wiki (100-500 pages): split by category — entities lint, concepts
 lint, topics lint as separate tasks.
 Large wiki (>500 pages): sample-based lint — pick 20% randomly plus all
 pages changed in the last 7 days.
 
 ### 3. Write the Lint Task
-Route to **Lead** (GPT 5.4). Lint requires holding many pages in mind
-and reasoning about consistency. Grunt and Mid aren't reliable here.
+Route to **`mid`**. Lint requires holding many pages in mind and reasoning about
+consistency, which is exactly the default GPT lane's job. Grunt tiers aren't reliable
+here. Escalate to `lead` only if `mid` demonstrably struggles.
 
 Create `/root/tasks/lint-<date>.txt`:
 
 ```
 Execute this task now:
 
-TIER: Lead (GPT 5.4)
+TIER: mid
 TASK: lint-<YYYY-MM-DD>
 
 OBJECTIVE:
@@ -209,7 +216,7 @@ Append to `log.md`:
 ## Rules
 
 - Lint is read-only. Nothing gets edited during a lint task.
-- Always route lint to Lead. It's the one place where cheaper tiers
+- Always route lint to `mid` (not a grunt tier). It's the one place where cheaper tiers
   reliably underperform.
 - Don't auto-act on findings. Lint produces a report; the user drives
   which findings become work.

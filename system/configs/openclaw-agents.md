@@ -1,57 +1,120 @@
 ---
 type: system-config
-title: OpenClaw Agents
+title: OpenClaw Agents & Tier Routing
 slug: openclaw-agents
-last_synced: 2026-07-24
-maintainer: cc-oc-orchestrator
-derived_from:
-  - /root/.claude/projects/-root/memory/reference_oc_cli_cheatsheet.md
-  - /root/.claude/projects/-root/memory/reference_agent_dispatch.md
-tags: [ops, config, agents]
+canonical_for: [agent-roster, tier-routing, review-chain, dispatch-policy]
+last_verified: 2026-08-10
+maintainer: cc
+tags: [ops, config, agents, routing]
 ---
 
-## Purpose
+# OpenClaw Agents & Tier Routing
 
-Use this table to choose the right OpenClaw agent before dispatching work. It summarizes the tier split, default thinking level, session key, and the intended use of each configured agent.
+**This page is the single authority for which tier gets which work.** It absorbed
+`workflows/tier-routing.md` on 2026-08-10.
 
-## Agent Table
+> **The live CLI is authoritative for the roster itself.** Run
+> `openclaw agents list --json` before trusting any model name or flag below — the table
+> is a convenience cache, last verified **2026-08-10 UTC** against `openclaw.json`.
+> What this page uniquely owns, and the CLI cannot tell you, is the **routing policy**:
+> the "when to use" column, the escalation rules, and the review chain.
 
-| Agent ID | Model | Thinking level | Session key | Tier | When to use |
-|---|---|---|---|---|---|
-| `lead` | `openai/gpt-5.6-sol` | high | `agent:lead:main` | lead | **Explicit-only** escalation lane for genuinely hard tasks, architecture/strategy with unusually high uncertainty, or when grunt/re-review/mid are stuck. Not for routine use. |
-| `mid` | `openai/gpt-5.6-luna` | xhigh | `agent:mid:main` | mid | Default/normal GPT escalation and judgment-heavy review lane. First GPT tier for review and synthesis. |
-| `grunt-eng` | `opencode-go/deepseek-v4-flash` | medium | `agent:grunt-eng:main` | grunt-eng | Bounded code/config/parser work and low-risk implementation slices; deliberately kept on DSv4 Flash for now. |
-| `grunt` | `opencode-go/deepseek-v4-flash` | medium | `agent:grunt:main` | grunt | Basic mechanical work, document transforms, formatting, ingest prep, and low-risk file churn. |
-| `re-review` | `opencode-go/glm-5.2` | medium | `agent:re-review:main` | specialist | First-pass QA re-review over grunt/grunt-eng output. |
-| `email-parser` | `google/gemini-2.5-flash` | default | `agent:email-parser:main` | specialist | Email parsing only. |
+## Agent table
 
-## Dispatch Notes
+| Agent ID | Model | Thinking | Session key | When to use |
+|---|---|---|---|---|
+| `mid` | `openai/gpt-5.6-luna` | xhigh | `agent:mid:main` | **Default GPT lane** (`isDefault=true`). Judgment-heavy work, structured review, synthesis, multi-phase specs. First escalation from grunt tier. |
+| `lead` | `openai/gpt-5.6-sol` | xhigh | `agent:lead:main` | **Explicit-only** escalation (`isDefault=false`). Exceptionally hard tasks, architecture/strategy with unusually high uncertainty, or when grunt/re-review/mid are stuck. **Never** routine or scheduled work. |
+| `grunt-eng` | `opencode-go/deepseek-v4-flash` | medium | `agent:grunt-eng:main` | Tightly bounded code/config/parser work and low-risk implementation slices. |
+| `grunt` | `opencode-go/deepseek-v4-flash` | medium | `agent:grunt:main` | Mechanical, non-code, large-context work: document transforms, formatting, mirroring, ingest prep, log entries. |
+| `re-review` | `opencode-go/glm-5.2` | medium | `agent:re-review:main` | First-pass QA over grunt/grunt-eng output. |
+| `email-parser` | `google/gemini-2.5-flash` | default | `agent:email-parser:main` | Email parsing only. |
 
-- **Live roster is authoritative via `openclaw agents list --json`; this table last verified 2026-07-24 UTC.**
-- Both GPT lanes run `openai/gpt-5.6-luna` (`mid`, `xhigh`) and `openai/gpt-5.6-sol` (`lead`, `high`). `mid` is the default agent (`isDefault=true`); `lead` is explicit-only (`isDefault=false`).
-- `main` is no longer a configured lane. `lead` is no longer the default — `mid` fills that role.
-- `sonnet-review` and the old OpenClaw `pa` lane are no longer configured lanes. Hermes profile `papipa` (Mnemosyne/Nemo) continues separately and remains active, unaffected by OpenClaw changes.
-- `grunt` and `grunt-eng` both run DSv4 Flash. Keep tasks tightly bounded, and escalate to `mid` (or `lead` only if mid is stuck) if DSv4 Flash misses code/config details.
-- `re-review`/GLM 5.2 is the first-pass QA lane over grunt output.
-- Use `message send` instead of `agent --deliver` when the job is simple message relay.
+`main`, `sonnet-review`, and the old OpenClaw `pa` lane are **no longer configured**.
+Ignore any doc, skill, or memory entry that routes to them.
 
-## Review Chain
-**Match review depth to task risk — do NOT run the full ladder on routine/low-risk work.**
-Most routine data edits (e.g. a one-line Sheet/DB update) need zero review beyond the
-executor's own verification: apply, verify, done. Escalate ONLY when risk warrants:
-1. **`re-review` / GLM 5.2 (medium)** — first-pass QA, for non-trivial grunt work.
-2. **`mid` / GPT-5.6-luna (xhigh)** — judgment-heavy or elevated-risk review, ONLY if `re-review` is insufficient.
-3. **`lead` / GPT-5.6-sol (high)** — **exceptional only**: when grunt/re-review/mid are stuck, or for architecture/strategy with unusually high uncertainty.
-Do NOT add extra review passes or a mandatory Hermes self-checkpoint for routine changes;
-reserve an independent Hermes verification for genuinely high-risk or user-facing-critical work.
+## Routing rule
 
-## OpenAI Subscription Binding
+- Mechanical / formatting / bulk transforms → **grunt**
+- Bounded implementation → **grunt-eng** (keep the prompt tight and verify aggressively;
+  it shares DSv4 Flash with grunt)
+- First-pass QA over grunt output → **re-review**
+- Judgment, review, synthesis, anything ambiguous → **mid**
+- Genuinely stuck, or architecture with unusual uncertainty → **lead**, explicitly, once
 
-All VPS OpenAI agents are unified under `themetalman13@gmail.com` ChatGPT Business workspace.
+**No automatic or scheduled job may target `lead`.** Any recurring `openclaw cron` or
+systemd job that wakes an OpenAI agent runs at the lowest tier that does the job —
+default recurring audits to `mid` or `re-review`, and re-audit periodically.
+
+## Worked examples
+
+- Mirror a directory of skill docs into `system/` → **grunt**
+- Review a smoke-test ingest against a spec → **re-review**, then **mid** if risk warrants
+- Append a log close-out entry → **grunt**
+- Rewrite a topic thesis across many pages → **mid**; **lead** only if mid would struggle
+- Wiki lint / cross-page consistency → **mid** (was routed to lead under retired doctrine)
+- Cross-spec decision summary → **mid**
+
+## Review chain
+
+**Match review depth to task risk — do NOT run the full ladder on routine work.** Most
+routine data edits (a one-line Sheet/DB update) need zero review beyond the executor's own
+verification: apply, verify, done. Escalate only when risk warrants:
+
+1. **`re-review`** (GLM 5.2, medium) — first-pass QA for non-trivial grunt work.
+2. **`mid`** (GPT-5.6-luna, xhigh) — judgment-heavy or elevated-risk review, only if
+   `re-review` is insufficient.
+3. **`lead`** (GPT-5.6-sol, xhigh) — exceptional only.
+
+Do not add extra passes or a mandatory orchestrator self-checkpoint for routine changes;
+reserve independent peer verification for genuinely high-risk or user-facing-critical work.
+Bound every review prompt to the spec, the changed files/diff, test output, and the `.done`
+marker — never broad session history. Inherited context is the main review-cost leak.
+
+## Dispatch pattern
+
+```bash
+openclaw agent --agent <id> --local --thinking <level> --message "prompt" --json
+```
+
+Full command reference: [[system/cheatsheets/oc-cli]]. Use `openclaw message send`, never
+`agent --deliver`, when the job is simple message relay.
+
+## Cost discipline
+
+Quota and dispatch-cost rules are canonical in
+[[system/cheatsheets/operating-rules]] (§ Dispatch & verification). The short version:
+OpenClaw's OpenAI pool (`mid`/`lead`) is the scarce one and is separate from Hermes's
+account; DeepSeek and GLM are separate pools; one project is one pre-approved dispatch,
+not a fresh GPT session per phase.
+
+## OpenAI subscription binding
+
+All VPS OpenAI agents are unified under the `themetalman13@gmail.com` ChatGPT Business
+workspace.
 
 - **Account**: `8c334dd3-05ab-4d1d-b862-6a7743b46bcd`, plan claim `chatgpt_plan_type=team`
-- **OpenClaw `lead`/`mid`**: per-agent auth order restricted to `openai:themetalman13@gmail.com` only. Legacy Plus profiles in the non-configured `main` store are archived and unreachable from effective selection.
-- **Codex CLI**: standalone, migrated to `themetalman13@gmail.com` Business workspace.
-- **Hermes/default**: uses `themetalman13@gmail.com` Business workspace.
-- **Hermes/milo**: has no own OpenAI credential; remains `opencode-go/DeepSeek`. Inherited CLI display may show default Business, but milo's own configured pool is empty.
-- **Verification**: use JWT workspace/plan claims and `effectiveProfiles` from `/v1/accounts` / `/v1/dashboard`. Email address alone is insufficient. Never include OAuth tokens, device codes, or secrets.
+- **OpenClaw `lead`/`mid`**: per-agent auth order restricted to
+  `openai:themetalman13@gmail.com` only. Legacy Plus profiles in the non-configured `main`
+  store are archived and unreachable from effective selection.
+- **Codex CLI**: standalone, migrated to the same Business workspace.
+- **Hermes/default (Janus)**: uses the same Business workspace.
+- **Verification**: use JWT workspace/plan claims and `effectiveProfiles` from
+  `/v1/accounts` / `/v1/dashboard`. Email address alone is insufficient. Never include
+  OAuth tokens, device codes, or secrets.
+
+## Data residency
+
+OpenCode Go serves the current `deepseek-v4-flash` route from China-hosted infrastructure
+and requires the workspace's China-hosted-model opt-in. Papi explicitly enabled it on
+2026-08-01 for the Milo and `grunt`/`grunt-eng` lanes. Treat this as an explicit
+data-residency decision; do not enable it for another workspace or profile without user
+consent. Run explicit and saved-default probes after changing the route.
+
+## Known model quirks
+
+- **OpenCode-Go agents have a weak clock** (provider-wide). Always inject exact dates into
+  task prompts, require `date -u` for completion markers, and verify `.done` times with
+  `stat -c %y` when audit accuracy matters. OpenAI agents are unaffected.
+- **Grunt-tier agents echo secrets into artifacts.** Instruct "confirm properties only,
+  never print values", and grep the artifact for the secret afterward.

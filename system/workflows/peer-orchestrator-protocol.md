@@ -1,73 +1,117 @@
+---
+type: system-workflow
+title: Peer Orchestrator Protocol
+slug: peer-orchestrator-protocol
+canonical_for: [shared-orchestration-conventions, owner-frontmatter, review-format, log-tags, anti-collision, workspace-hygiene]
+last_updated: 2026-08-10
+maintainer: cc
+tags: [ops, workflow, orchestration, shared-brain]
+---
+
 # Peer Orchestrator Protocol
 
-_Last updated: 2026-06-02_
+**This page is the single source of truth for the conventions every orchestrator on
+this VPS shares.** If a `/root` guidance file disagrees with this page, this page wins
+and the `/root` pointer should be re-synced.
 
-## Overview
+## Who the peers are
 
-A peer orchestrator is an operator CLI that can author specs, dispatch work to OpenClaw, and review completion markers using the same shared conventions. On this VPS, the peer orchestrators are Claude Code (CC), Codex CLI, and **Hermes** (Nous Hermes harness, added 2026-06-02). All three share the conventions in this protocol.
+An orchestrator is any harness that can author specs, dispatch work to OpenClaw, and
+review completion markers using the conventions below. OpenClaw itself is **not** a
+peer — it is the executor tier.
 
-Each orchestrator loads its own guidance file from `/root`: CC → `CLAUDE.md`, Codex → `AGENTS.md`, Hermes → `.hermes.md`. (Hermes prioritizes `.hermes.md` and does **not** load `AGENTS.md` when it is present, so Hermes does not inherit Codex's identity.)
+| Peer | Guidance file | Posture | Notes |
+|---|---|---|---|
+| **Hermes** (Janus, Nous harness) | `/root/.hermes.md` | orchestrator by design | The primary orchestrator. Loads **only** `.hermes.md` — it does not read `CLAUDE.md` or `AGENTS.md`, by design, so shared rules it must obey are restated there with a pointer back here. |
+| **Claude Code (CC)** | `/root/CLAUDE.md` | plain by default | Orchestrates only when the user asks (`/root/ORCHESTRATOR.md`). Usually a tmux session on the VPS, reached remotely from the Claude app. |
+| **Metis** | `/root/CLAUDE.md` + gateway prompt | plain by default | **A surface of CC, not a separate peer** — CC driven over Telegram by `/root/metis-gateway/gateway.py` (`cwd=/root`). Signs work as `metis` so Telegram-origin work is traceable. |
+| **Codex CLI** | `/root/AGENTS.md` | plain by default | Retained as a peer but effectively dormant — it has never owned a spec and no longer dispatches. Do not assume it is running. |
 
-## Shared Resources
+Mnemosyne / "Nemo" (Hermes profile `papipa`) was **retired 2026-08-10**. Its PA duties
+were folded into Janus with a separate Telegram chat for personal-assistant work; the
+`papipa` cron jobs still run under Janus's name. It is not an orchestrator and is no
+longer a live bot. See [[system/configs/mnemosyne-pa]].
 
-The following paths are shared working surfaces. Both orchestrators MAY read and write them according to the rules in this protocol:
+## Shared resources
 
-- `/root/specs/` — specifications authored by either orchestrator.
-- `/root/tasks/` — task prompts and `.done`, `.blocked`, `.progress`, and `.review` markers.
-- `/root/reviews/` — review files produced by either orchestrator.
-- `/root/obsidian-vault/system/` — shared operations knowledge, including skills mirror pages, workflows, decisions, glossary entries, cheatsheets, templates, and configs.
-- `/root/context/` — shared session-resume context, including operational lessons such as `cc-oc-lessons-learned.md`.
+Working surfaces every peer MAY read and write, subject to the rules below:
 
-## Private Resources
+- `/root/specs/` — specifications. **Audit trail; never deleted.**
+- `/root/tasks/` — task prompts and `.done` / `.blocked` / `.progress` / `.review` markers.
+- `/root/reviews/` — review outputs. **Audit trail; never deleted.**
+- `/root/obsidian-vault/system/` — shared ops knowledge and governance (this tree).
+- `/root/context/` — session handoffs and cross-session lessons.
 
-The following paths are private sidecars. Orchestrators MUST NOT read each other's private resources unless the user explicitly instructs them to do so for a one-off recovery task.
+## Private resources
 
-- CC private state: `/root/.claude/projects/-root/memory/` and `~/.claude.json`.
-- Codex private state: `/root/.codex/memories/`, `/root/.codex/sessions/`, and `/root/.codex/history.jsonl`.
-- Hermes private state: `/root/.hermes/` (config, `kanban.db`, `state.db`, `sessions/`, `memories/`). Hermes's kanban is private working memory only — project state must live in the shared `/root/specs`, `/root/tasks`, `/root/reviews`.
-- Rule: shared knowledge belongs in `/root/obsidian-vault/system/`, not in another orchestrator's private directory.
+Peers MUST NOT read each other's private sidecars, except where a rule below carves
+out an explicit exception. Shared knowledge belongs in `system/`, never in another
+peer's private directory.
 
-## Spec Frontmatter
+- CC: `/root/.claude/` (including `projects/*/memory/`).
+- Codex: `/root/.codex/` (`memories/`, `sessions/`, `history.jsonl`).
+- Hermes: `/root/.hermes/` (config, `kanban.db`, `state.db`, `sessions/`, `memories/`).
+  Hermes's kanban is private working memory only — project state lives in the shared
+  files above, never solely in the kanban.
 
-Specs MAY include an optional `owner:` field to indicate which orchestrator should run the spec. Valid values are `cc`, `codex`, and `hermes`; omit the field when the spec is unowned.
+**Carve-out (user-approved 2026-06-04):** the Mission Control usage tracker may read
+ONLY the `rate_limits` field from the newest Codex session rollout under `/root/.codex/`
+and under `/root/.openclaw/agents/{main,lead,mid,pa}/agent/codex-home/sessions/`
+(used_percent, window minutes, reset timing) — never prompt/response text, transcripts,
+auth, or anything else. This carve-out binds all peers equally.
+
+## Spec frontmatter
+
+Specs MAY carry an `owner:` field naming the orchestrator that should run them.
 
 ```yaml
 ---
-spec: 39-foo
-owner: codex   # cc | codex | hermes; omit for unowned
+spec: 226-example
+owner: hermes   # hermes | cc | metis | codex; omit for unowned
 ---
 ```
 
-Valid `owner:` values are `cc`, `codex`, and `hermes`. Before starting a spec, an orchestrator MUST check frontmatter. If the owner is another orchestrator, do not start work unless the user explicitly reassigns it.
+Valid values: `hermes`, `cc`, `metis` (CC's Telegram surface), `codex`. Before starting
+a spec, check the frontmatter. If it is owned by another peer, do not start without
+explicit user reassignment.
 
-## Log Discipline
+## Log discipline
 
-Every new entry in `/root/obsidian-vault/log.md` MUST tag the writing orchestrator immediately after the `## [date] type |` header.
-
-Examples:
+Every new entry in `/root/obsidian-vault/log.md` MUST tag the writing orchestrator
+immediately after the `## [date] type |` header: `[hermes]`, `[cc]`, `[metis]`, `[codex]`.
 
 ```markdown
 ## 2026-04-27 ingest | [cc] Added Foo source
-## 2026-04-27 decision | [codex] Adopted peer owner frontmatter
 ## 2026-06-02 config | [hermes] Tuned fallback providers
 ```
 
-Existing untagged entries are historical and SHOULD be treated as CC-authored unless evidence says otherwise. Do not rewrite old log entries just to add tags.
+Untagged historical entries are treated as CC-authored. Do not rewrite old entries to
+add tags.
 
-## Session Start Protocol
+## Session start
 
-At the start of a session, both orchestrators MUST:
+Each peer runs the resume behavior defined for it in
+[[system/workflows/session-resume-protocol]] — which for CC and Codex means **no resume
+routine at all** unless orchestrator mode was requested. There is no protocol-level
+requirement to run a status sweep at session start.
 
-1. Run the resume protocol defined in their local guidance file: CC uses `/root/CLAUDE.md`; Codex uses `/root/AGENTS.md`; Hermes uses `/root/.hermes.md`.
-2. Check `/root/tasks/` for `.blocked` files older than 24 hours and surface them in the resume/status block.
-3. Read the last 20 entries of `/root/obsidian-vault/log.md` for cross-orchestrator awareness before planning shared work.
-4. Apply `/root/context/` lessons when starting new orchestration work.
+When picking up shared work mid-stream (any peer, any mode):
 
-## Dispatch Parity
+1. Check `/root/tasks/` for `.blocked` files older than 24h and surface them.
+2. Read the last 20 entries of `log.md` for cross-peer awareness before planning.
+3. Apply `/root/context/` lessons before starting new orchestration work.
 
-Both orchestrators dispatch implementation or review work through the `openclaw` CLI as documented in `/root/obsidian-vault/system/cheatsheets/oc-cli-cheatsheet.md`. Both orchestrators MUST write task prompts with enough context for the receiving OpenClaw tier to execute without relying on private CC or Codex memory.
+## Dispatch
 
-Both orchestrators MUST use the same completion marker style:
+Dispatch through the `openclaw` CLI as documented in
+[[system/cheatsheets/oc-cli]]. Choose the tier per
+[[system/configs/openclaw-agents]] — that page is the only routing authority; the live
+CLI (`openclaw agents list --json`) is authoritative for which agents exist.
+
+Task prompts MUST inline all context the receiving tier needs. OpenClaw has no memory
+between tasks and cannot read any peer's private state.
+
+Completion markers use exactly this format:
 
 ```text
 STATUS: COMPLETE
@@ -77,14 +121,18 @@ FILES_CHANGED:
 ISSUES: none
 ```
 
-## Review Parity
+Never trust `STATUS` alone — verify the real artifact. OpenCode-Go models have a weak
+clock; verify `.done` times with `stat -c %y` when audit accuracy matters.
 
-Both orchestrators MAY write `.review` files in `/root/reviews/` or `/root/tasks/` when reviewing OpenClaw output. Review files SHOULD use this format:
+## Review format
+
+Reviews live in `/root/reviews/` (or alongside the task) and use this format:
 
 ```text
 STATUS: ACCEPT | REJECT
+REVIEW_TYPE: orchestrator | executor-qa
 TIMESTAMP: 2026-04-27T<HH:MM:SS>Z
-REVIEWER: cc | codex
+REVIEWER: hermes | cc | metis | codex | <oc-agent-id>
 TARGET: /root/tasks/<task>.done
 FINDINGS:
   - none | specific issue
@@ -92,23 +140,41 @@ REQUIRED_FIXES:
   - none | specific fix task
 ```
 
-An ACCEPT review means the corresponding `.done` file satisfies the spec. A REJECT review MUST include concrete fixes and the exact file paths affected.
+`REVIEW_TYPE` distinguishes accountability from instrumentation, and both are legitimate:
 
-## Anti-Collision Rules
+- **`orchestrator`** — a peer signing off. Only a peer may write this, and only a peer's
+  ACCEPT closes a spec.
+- **`executor-qa`** — a dispatched OpenClaw agent (`re-review`, `mid`, …) reporting a QA
+  pass. Informs the orchestrator's decision; never substitutes for it.
 
-The user SHOULD run only one orchestrator at a time per project, or ensure CC, Codex, and Hermes are working on different specs.
+An ACCEPT means the `.done` satisfies the spec. A REJECT MUST name concrete fixes and
+exact file paths. Reviews written before 2026-08-10 predate `REVIEW_TYPE`; read the
+`REVIEWER` value to infer which kind they are, and do not backfill old files.
 
-Before dispatching work for a spec, an orchestrator MUST check for a corresponding `.progress` file. If that file has recent activity (mtime less than 30 minutes old), assume the other orchestrator is mid-flight and do not start duplicate dispatch on the same spec.
+## Anti-collision
 
-If a collision is discovered after work begins, stop new dispatches, append a `.blocked` marker explaining the overlap, and wait for user direction. Do not resolve collisions by editing the other orchestrator's private state.
+Run one orchestrator at a time per project, or keep peers on different specs.
 
-## When To Use Which Orchestrator
+Before dispatching for a spec, check for a `.progress` file. If its mtime is under 30
+minutes old, assume another peer is mid-flight and do not duplicate the dispatch.
 
-Use whichever orchestrator has enough remaining quota and the right modality for the job. Codex is generally strong for code-heavy execution and mechanical engineering; CC is generally strong for workflow design, spec authorship, and skill-rich orchestration. These are preferences, not hard rules: owner frontmatter and explicit user instructions take priority.
+If a collision surfaces after work begins: stop new dispatches, append a `.blocked`
+marker explaining the overlap, and wait for user direction. Never resolve a collision by
+editing another peer's private state.
 
 ## Workspace hygiene
 
-- Task artifacts for terminal specs (frontmatter status exactly `complete`, `completed`, `superseded`, or `cancelled_by_user`) are archived under `/root/tasks/archive/<spec-range>/` (e.g. `spec122-211/`).
-- `.progress` markers are moved to `/root/tasks/archive/hygiene-<UTC>-<description>/` at spec closeout — but only after verifying the matching `.done` exists or the spec status is terminal.
-- Specs (`/root/specs/*.md`) and reviews (`/root/reviews/*`) are the audit trail and are never archived.
-- Move, never delete: everything stays under `/root/tasks/archive/`. Active work (specs 213+) is not archived.
+- Task artifacts for terminal specs (frontmatter status exactly `complete`, `completed`,
+  `superseded`, or `cancelled_by_user`) are archived under
+  `/root/tasks/archive/<spec-range>/` (e.g. `spec122-211/`).
+- `.progress` markers move to `/root/tasks/archive/hygiene-<UTC>-<description>/` at spec
+  closeout — **only** after verifying the matching `.done` exists or the spec status is
+  terminal.
+- Specs and reviews are the audit trail and are never archived or deleted.
+- Move, never delete: everything stays under `/root/tasks/archive/`.
+
+## Vault discipline
+
+Any change that writes to `/root/obsidian-vault` ends with
+`git pull --rebase && git add -A && git commit && git push`. Never force-push. Work
+touching only `specs/`, `tasks/`, or `reviews/` skips git — those are not in the vault.

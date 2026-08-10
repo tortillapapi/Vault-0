@@ -1,34 +1,46 @@
 ---
 type: system-config
-title: Mnemosyne PA Bot
+title: PA Subsystem (formerly Mnemosyne)
 slug: mnemosyne-pa
 owner: hermes
-last_updated: 2026-06-18
+status: bot-retired-machinery-live
+last_updated: 2026-08-10
 ---
 
-# Mnemosyne PA Bot
+# PA Subsystem — formerly the Mnemosyne bot
+
+> **Status as of 2026-08-10: Mnemosyne/Nemo the *bot* is retired.** Its PA duties were
+> folded into **Janus** (Hermes default profile), with a separate Telegram chat used for
+> personal-assistant work instead of a separate bot identity.
+>
+> **The machinery below is still live and still matters.** The `papipa` profile's
+> quick-capture kernel, state files, and cron jobs continue to run — the two cron jobs
+> were renamed to "Janus …" and deliver to Janus's chat. Read this page as documentation
+> of the **PA subsystem Janus drives**, not of a separate assistant.
+>
+> Verified live 2026-08-10: `hermes-gateway-papipa.service` is a **user** unit and is
+> **disabled/dead**; no papipa gateway process is running. Cron jobs `0d108b2bb0c2`
+> (Daily Command Stack) and `cbcef468213a` (Due Reminder Dispatcher) are **active** on
+> profile `papipa`. Mnemosyne is not an orchestrator and never was — see
+> [[system/workflows/peer-orchestrator-protocol]].
 
 ## Purpose
-Mnemosyne (short names Mnemo/Nemo) is Papi's lightweight ADHD executive-function assistant. It is separate from Janus/Hermes default so Janus can stay focused on complex orchestration, development, and debugging.
 
-Mnemo handles:
+The PA layer is Papi's lightweight ADHD executive-function support: quick capture,
+reminders, waiting-on tracking, the daily command stack, overwhelm triage, and small
+life-admin follow-through. Janus now runs this alongside orchestration.
 
-- quick capture,
-- reminders,
-- waiting-on tracking,
-- daily command stack,
-- overwhelm triage,
-- small life-admin follow-through.
-
-## Hermes profile
+## Hermes profile (still the home of the PA state)
 
 - Profile: `papipa`
 - Path: `/root/.hermes/profiles/papipa`
 - Model: `opencode-go/deepseek-v4-pro`
 - Reasoning: medium
-- Gateway service: `hermes-gateway-papipa.service`
-- Telegram bot: `@RareForce_mnemosyne_bot`
-- State dir: `/root/.hermes/profiles/papipa/pa-state/`
+- Gateway service: `hermes-gateway-papipa.service` — **user unit, disabled 2026-08-10**
+- Telegram bot: `@RareForce_mnemosyne_bot` — **retired**; PA traffic goes to Janus's
+  dedicated PA chat
+- State dir: `/root/.hermes/profiles/papipa/pa-state/` — **live**, read/written by the
+  active cron jobs
 
 State files:
 
@@ -149,10 +161,10 @@ Behavior:
 - Prints Telegram-ready text when due reminders/waiting nudges exist.
 - Exits non-zero with stderr diagnostics on helper/JSON failures.
 
-Hermes cron job:
+Hermes cron job (verified active 2026-08-10):
 
 - Job ID: `cbcef468213a`
-- Name: `Mnemosyne Due Reminder Dispatcher`
+- Name: `Janus Due Reminder Dispatcher` (renamed from "Mnemosyne …")
 - Profile: `papipa`
 - Schedule: `every 5m`
 - Delivery: `telegram`
@@ -191,12 +203,13 @@ If the daily command stack shows "Google Tasks unavailable" or the API returns 4
 
 ## Daily command stack
 
-Hermes cron job:
+Hermes cron job (verified active 2026-08-10):
 
 - Job ID: `0d108b2bb0c2`
-- Name: `Mnemosyne Daily Command Stack`
+- Name: `Janus Daily Command Stack` (renamed from "Mnemosyne …")
 - Profile: `papipa`
-- Schedule: `5 16 * * *` (9:05 AM Pacific during PDT)
+- Schedule: `5 9 * * *` in the profile's local timezone (America/Los_Angeles) — the
+  earlier `5 16 * * *` UTC notation is stale
 - Delivery: `telegram`
 - Data sources: Google Calendar, Google Tasks (read-only), parser-run-status, PA state files
 

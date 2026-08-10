@@ -15,6 +15,12 @@ Plan and orchestrate ingestion of new sources into the wiki. Use this skill when
 
 # Wiki Ingest Orchestrator
 
+> **Tier routing is not defined here.** Route by tier *name* only; the roster, models,
+> thinking levels, and escalation policy are canonical in
+> `system/configs/openclaw-agents.md` (live truth: `openclaw agents list --json`).
+> `lead` is explicit-only — never a routine or scheduled destination.
+
+
 ## Role
 You are the orchestrator for wiki ingestion. When a new source arrives in
 `vault/raw/`, you plan the work, create spec and task files, and route each
@@ -86,7 +92,7 @@ Create `/root/specs/ingest-<source-slug>.md`:
 ## Tier Assignments
 - Task 01 (read + summary + updates): Grunt / DSv4 Flash
 - Task 02 (first-pass reviewer): Re-review / GLM 5.2
-- Task 03 (elevated-risk reviewer, if needed): Mid / GPT 5.4
+- Task 03 (elevated-risk reviewer, if needed): `mid`
 - Task 04 (fix pass, if needed): Grunt / DSv4 Flash
 - Task 05 (final sign-off): CC self-review
 

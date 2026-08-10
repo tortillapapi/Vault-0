@@ -39,7 +39,19 @@ Every tool call passes through a **PreToolUse hook**:
 - After editing the token or code: `systemctl restart metis-gateway`.
 - If Telegram shows `Command failed with exit code 143`, the Claude Code subprocess was SIGTERM'd while the Python gateway survived. Current gateway code resets that chat client and asks the user to resend the last request; restart `metis-gateway` only if it remains wedged.
 
-## Roster
-Add/confirm a line wherever the agent/orchestrator roster is noted: **Metis** =
-Telegram-reachable CC orchestrator (`@RareForce_Metis_Bot`), alongside Janus
-(Hermes/GPT-5.6-sol), Mnemosyne (PA), Milo (fitness).
+## What Metis is, in protocol terms
+Metis is **a surface of CC, not a separate peer** — the same `/root/CLAUDE.md`
+behavior reached over Telegram, with `cwd=/root` pinned by the gateway. It signs specs
+and reviews as `metis` so Telegram-origin work stays traceable. See
+[[system/workflows/peer-orchestrator-protocol]].
+
+The gateway system prompt deliberately suppresses the session-resume sweep — Telegram is
+not the place for a status dump. That is intended behavior, not drift; see
+[[system/workflows/session-resume-protocol]].
+
+## Roster (verified 2026-08-10)
+- **Metis** — Telegram-reachable CC (`@RareForce_Metis_Bot`), this gateway
+- **Janus** — Hermes default profile, `gpt-5.6-luna` via `openai-codex`; the primary
+  orchestrator, and now also the PA (Mnemosyne retired 2026-08-10 — see
+  [[system/configs/mnemosyne-pa]])
+- **Milo** — Hermes `milo` profile, fitness bot (`hermes-gateway-milo.service`)

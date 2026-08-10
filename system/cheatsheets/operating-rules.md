@@ -10,8 +10,14 @@ tags: [ops, rules, feedback, shared-brain]
 
 # Operating Rules
 
-Standing rules distilled from real sessions. Apply by default — they bind CC,
-Codex, and OpenClaw equally (and Hermes once installed).
+Standing rules distilled from real sessions. **This page is the single source of truth
+for standing behavioral rules** and binds every agent on this box equally — Hermes,
+CC/Metis, Codex, and the OpenClaw fleet. The per-harness files in `/root` point here
+rather than restating these rules.
+
+Adjacent authorities: which tier gets the work → [[system/configs/openclaw-agents]];
+shared spec/review conventions → [[system/workflows/peer-orchestrator-protocol]];
+command syntax → [[system/cheatsheets/oc-cli]].
 
 ## Messaging & OC interaction
 - **Telegram: use `openclaw message send`, never `agent --deliver`.** `agent`
@@ -32,32 +38,23 @@ Codex, and OpenClaw equally (and Hermes once installed).
   or the check fails. Manual rotation command: `/root/bin/openclaw-grunt-session-maintenance.py --rotate --all --json`.
   It refuses rotation when targeted OpenClaw tasks are running or fresh
   `/root/tasks/*.progress` markers exist.
-- **OpenCode-Go agents have a weak clock (provider-wide, not just Kimi).** `grunt`
-  and `grunt-eng` now run DeepSeek V4 Flash by default and `re-review` runs GLM 5.2,
-  but hosted models can still misread current date/time. Always inject exact dates
-  in task prompts and require `date -u` for completion markers; verify `.done`
-  times with `stat -c %y` when audit accuracy matters. OpenAI agents
-  (`mid` on openai/gpt-5.6-luna xhigh and `lead` on openai/gpt-5.6-sol xhigh) are unaffected.
-- **DeepSeek V4 Flash residency gate:** OpenCode Go serves the current
-  `deepseek-v4-flash` route from China-hosted infrastructure and requires the
-  workspace's China-hosted-model opt-in. Papi explicitly enabled it on
-  2026-08-01 for the Milo and `grunt`/`grunt-eng` lanes. Treat this as an
-  explicit data-residency decision; do not enable it for another workspace or
-  profile without user consent. Always run explicit and saved-default probes
-  after changing the route.
+- **Model quirks (weak clock, secret echo) and the DeepSeek residency gate** are
+  canonical in [[system/configs/openclaw-agents]] § Known model quirks / Data residency.
+  Both still bind: inject exact dates and verify `.done` times with `stat -c %y`; never
+  extend the China-hosted-model opt-in to another workspace without user consent.
 - **Verification checks must match unique content text**, not numeric prefixes or
   assumed file/process structure. Use `pgrep -af <name>` not `systemctl is-active`
   unless the target is confirmed a systemd unit (OpenClaw runs many plain
   processes). Prefer `>= N` over `== N` for counts that can grow.
 - **Check systemd state before dispatching run-type tasks** on any project with a
   `systemd/` dir — a live timer can silently race your work.
-- **Review chain over grunt work.** Grunt-tier output (`grunt`,
-  `grunt-eng`) goes through `re-review` (GLM 5.2, medium) for first-pass QA, then `mid`
-  (GPT-5.6-luna, xhigh) as the default GPT escalation when risk warrants it, before the orchestrator approves. `lead`
-  (GPT-5.6-sol, xhigh) is only for exceptionally hard tasks or when other agents
-  are stuck — never route routine review directly to lead. **Bound every review prompt to the
-  spec, the changed files/diff, test output, and the `.done` marker** — never broad
-  project/session history; inherited context is the main review-cost leak.
+- **Review chain over grunt work.** The ladder and its escalation rules are canonical in
+  [[system/configs/openclaw-agents]] § Review chain. The standing rule here: **match
+  review depth to task risk** — most routine edits need zero review beyond the executor's
+  own verification, and routine review never goes straight to `lead`. **Bound every
+  review prompt to the spec, the changed files/diff, test output, and the `.done`
+  marker** — never broad project/session history; inherited context is the main
+  review-cost leak.
 
 - **Dispatch cost discipline — keep OpenAI for judgment.** OpenClaw's connected
   OpenAI/ChatGPT account is separate from Hermes/Janus's OpenAI account, so an

@@ -1671,3 +1671,32 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - The delegated `mid` worker stalled after applying the change; Hermes independently verified the live state and archived the self-created collision artifacts under `/root/tasks/archive/hygiene-20260809T024500Z-phase2-self-collision/`.
 - Next session: monitor the first real proposal; do not reinstall or rerun Phase 2. Handoff: `/root/context/notion-router-production-handoff-20260809.md`.
 - Tier: hermes (production activation verification + closeout)
+
+## [2026-08-10] [cc] maint | Spec 226 — orchestration layer audit & consolidation
+- Established an explicit authority model: live runtime > vault `system/` > `/root` files;
+  skills and per-harness files point rather than restate. `derived_from:` retired in favor
+  of `canonical:` / `canonical_for:`.
+- Rewrote `system/workflows/peer-orchestrator-protocol.md` (peers + gateways, `owner: metis`
+  legalized, new `REVIEW_TYPE: orchestrator | executor-qa`, session-start MUST removed,
+  dead `oc-cli-cheatsheet` link fixed).
+- Merged `workflows/tier-routing.md` into `configs/openclaw-agents.md`; tombstoned
+  `workflows/orchestrator-role.md` (retired doctrine that was reachable from core-index).
+- Corrected `lead` thinking level to **xhigh** in the roster and `.hermes.md` (live
+  `openclaw.json` is authoritative; two docs said `high`).
+- Purged dead model names (Kimi K2.5, GPT 5.3/5.4, Qwen3.6) and routine `lead` routing from
+  9 skills in `/root/.claude/skills/` and their vault mirrors. **Wiki lint/synthesis now
+  routes to `mid`.**
+- `workflows/lessons-learned.md` is now canonical; `/root/context/cc-oc-lessons-learned.md`
+  is a pointer (the mirror had been 2 months stale, missing the Codex quota-burn section).
+- Deleted `system/governance/` — a hand-maintained mirror of hand-maintained files, stale
+  since 2026-05-26 and wrong on every line count.
+- Corrected verified-live state: `profit-refresh.timer` is ENABLED (Papi approved
+  2026-08-03 per Spec 215 closeout; registry still said "deliberately DISABLED");
+  Mnemosyne bot retired with PA duties folded into Janus (papipa gateway disabled, crons
+  renamed, capture kernel still live); hermes/openclaw gateways are **user** units.
+- `/root`: CLAUDE.md, AGENTS.md, ORCHESTRATOR.md, .hermes.md rewritten to identity +
+  canonical pointers (dated `.bak` for each). Removed the unexpanded `{a,b,c}` brace
+  directory from `/root/.codex/skills/`; archived 3 stale `.bak` skills. Symlinked
+  `-root-obsidian-vault/memory` → `-root/memory` so CC memory follows the agent.
+- No runtime config changed: no `openclaw.json`, `config.yaml`, `config.toml`, systemd
+  unit, or agent definition was touched.

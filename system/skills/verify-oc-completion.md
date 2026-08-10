@@ -6,7 +6,7 @@ Mirror of the CC orchestrator skill `verify-oc-completion` (canonical:
 Use when OpenClaw reports a spec/task done and you need to confirm it's ACTUALLY
 done. Generates a PASS/PARTIAL/FAIL verdict and **verifies every claim against
 ground truth** — `stat`/`git log` for files, content `grep` for criteria,
-derived timestamps (never the `.done` field — Kimi gotcha), `git log
+derived timestamps (never the `.done` field — weak-clock gotcha), `git log
 origin/main..HEAD` to confirm vault work was pushed not just committed, and live
 Sheet/workflow/dashboard checks for observable effects. A `.done` marker is a
 claim, not evidence. Sibling of [[review-oc-work]] (which reviews quality

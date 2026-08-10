@@ -15,6 +15,12 @@ Orchestrate ingestion of Notion pages into the wiki. Use this skill when the use
 
 # Notion Ingest
 
+> **Tier routing is not defined here.** Route by tier *name* only; the roster, models,
+> thinking levels, and escalation policy are canonical in
+> `system/configs/openclaw-agents.md` (live truth: `openclaw agents list --json`).
+> `lead` is explicit-only — never a routine or scheduled destination.
+
+
 ## Role
 You are the orchestrator for ingesting Notion pages into the wiki. When
 the user points at a Notion page and asks to ingest it, you plan the
@@ -51,7 +57,7 @@ stop and tell the user.
   ~2000 chars of the returned content to confirm title, type, and rough
   domain. Do not fetch child pages.
 - If the page is > ~10k chars, note this — Grunt will handle, but flag
-  large pages in the spec so the Mid reviewer knows.
+  large pages in the spec so the reviewer knows.
 
 ### 3. Plan the Touch List
 Same rules as wiki-ingest-orchestrator §3. Show the touch list to the
