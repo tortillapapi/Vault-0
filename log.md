@@ -1706,3 +1706,9 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
   `-root-obsidian-vault/memory` → `-root/memory` so CC memory follows the agent.
 - No runtime config changed: no `openclaw.json`, `config.yaml`, `config.toml`, systemd
   unit, or agent definition was touched.
+
+## [2026-08-10T21:46:58Z] ops | [hermes] Created guarded nightly full-OC roster rotation
+- Added cron job `572c4dc18aed` (`OpenClaw Nightly Full Roster Rotation`) on `0 * * * *`; the script gates execution to 4:00-4:09 AM America/Los_Angeles for DST-safe 4 AM Pacific behavior.
+- Script: `/root/.hermes/scripts/openclaw-nightly-rotation.py`; current explicit roster: `mid`, `lead`, `grunt-eng`, `grunt`, `re-review`, `email-parser`.
+- Safeguards: active OC task check, fresh shared `.progress` collision check, live-roster drift fail-closed, maintenance preflight `safe_to_rotate`, guarded forced rotation, and post-check of empty sessions/reset caches/`would_rotate=false`.
+- Normal no-op nights are silent. Blocked or failed rotations alert this chat; the existing 6-hour alert-only grunt watchdog remains in place as an independent fallback.
