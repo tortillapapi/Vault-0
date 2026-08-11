@@ -3,6 +3,12 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-08-11T17:45:45Z] ops | [hermes] Spec 227 B4 verifier fix staged for next rotation
+- Root cause confirmed: `/root/.hermes/scripts/openclaw-nightly-rotation.py` passed `--force` to the post-rotation dry-run, making the maintenance helper report `would_rotate=true` regardless of actual threshold reasons.
+- Fix applied with rollback backup `/root/.hermes/scripts/openclaw-nightly-rotation.py.bak-20260811T174414Z`: `maintenance_cmd(mode, force=True)` now supports explicit force control; preflight and rotate remain forced, while only the post-rotation dry-run calls `force=False`.
+- Verification passed: Python compilation; forced command retains `--force`; post-check command omits it; real six-agent non-mutating dry-run returned `ok=true`, zero threshold reasons, and no `would_rotate` agents.
+- Original B4 blocker remains preserved at `/root/tasks/227-phase-b4-observation.blocked`. A single corrected post-window observer is scheduled for 2026-08-12 11:15 UTC / 04:15 PT; Spec 227 remains open until that real rotation passes.
+
 ## [2026-08-11T11:15:34Z] ops | [hermes] Spec 227 B4 first-window rotation observation blocked
 - Post-window observation at 2026-08-11T04:15:34-0700 (PDT) found `/root/.hermes/state/openclaw-nightly-rotation.json` for local date `2026-08-11` with `status: skipped`, updated at `2026-08-11T04:00:57.334947-07:00`.
 - The first scheduled run output (`/root/.hermes/cron/output/572c4dc18aed/2026-08-11_04-00-57.md`) reported `post-rotation verification found problems`; all six roster lanes reported `would_rotate=true after reset` (mid, lead, grunt-eng, grunt, re-review, email-parser).
