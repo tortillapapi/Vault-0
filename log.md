@@ -1770,3 +1770,52 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - **Scheduling constraint flagged to Janus:** the rotation aborts if any
   `/root/tasks/*.progress` marker is fresh, so OC work in flight across 10:50-11:15 UTC
   would make the first-ever run fail closed and destroy the B4 observation.
+
+## [2026-08-11] [cc] audit | Post-scan closeout — parallel track while Spec 227 runs
+Four residual items from the deep scan, all outside Spec 227's file scope (no collision).
+
+- **NEW: `system/configs/hermes-profiles.md`** — all six Hermes profiles documented for the
+  first time. Only `papipa` and `milo` had ever been written up; `hermesbuild`,
+  `hermesreview`, and `hermesparser` existed nowhere in `system/`.
+  - **`hermesparser` self-describes as having no production role — it has a daily one.**
+    Its `profile.yaml` says "Isolated future parser-audit canaries; no schedule or
+    production role yet", but `/root/scripts/hermes-parser-audit-runner.sh:65` invokes it
+    and `hermes-parser-audit.timer` (enabled, daily 16:20 UTC) drives that runner. Last run
+    2026-08-10 16:20 UTC, succeeded, 31.8s CPU. Anyone trusting the description would think
+    the profile was safe to retire. Fix belongs to Hermes — `/root/.hermes/` is its private
+    state, so CC logged it rather than editing it.
+  - Its model binding lives in the **runner script**, not the profile (`config.yaml` sets no
+    default; the runner passes `-m gpt-5.6-luna`). Editing the profile's model would be a
+    no-op.
+  - **Two executor fleets exist**: `hermesbuild` (DSv4 Flash) and `hermesreview` (GLM 5.2)
+    mirror OpenClaw's `grunt-eng`/`re-review` models. Not a defect, but "delegate this" has
+    two valid answers and specs must be explicit about which fleet they mean.
+  - All three carry the unmodified stock Nous `SOUL.md`.
+- **Identity shadowing (runtime — flagged, not changed).** `openclaw.json` defines distinct
+  per-agent identities (Mid GPT ⚡, Lead 🧠, Grunt Flash 🧹, GLM Re-Review 🔍, Email Parser
+  📧), but every agent reports as **Alfred 🔧** with `identitySource: identity` — the shared
+  workspace `IDENTITY.md` overrides per-agent config. Effect: tier attribution is
+  indistinguishable in agent-authored output.
+- **`cheatsheets/oc-cli.md`** — removed the last duplicate agent roster on the box. It was
+  *correct*, which is precisely why it went: a correct copy is the one that drifts next, the
+  way the `lead` thinking level did across three pages.
+- **`core-index.md`** — Active Services verified line-by-line against `systemctl`. One stale
+  claim: `cleanup-inventory-tracker.timer` is listed as scheduled but is
+  disabled/inactive; marked as done rather than missing. All other timers confirmed
+  enabled+active. `openclaw-gateway` noted as a **user** unit.
+- **CC memory store audited end-to-end** (41 entries; previously only 4 were corrected).
+  - `user_role_orchestrator.md` still declared CC the "exclusive orchestrator brain" that
+    must "never implement directly" — the memory twin of the tombstoned
+    `orchestrator-role.md`, and the last place that doctrine survived. Rewritten.
+  - `project_hermes_third_orchestrator.md` still described Janus as the *third* peer on
+    gpt-5.5 with an unsupervised hand-started gateway and zero owned specs. Rewritten to
+    primary orchestrator, gpt-5.6-luna + deepseek fallback, systemd user unit, ~107 specs.
+  - `project_fable5_orchestration_audit.md` was Metis's own anti-collision note telling VPS
+    sessions not to touch orchestration files during this audit. Marked COMPLETE so it stops
+    blocking work, with Spec 227's open file list carried over.
+  - Staleness banners added to 7 more entries: three referencing the retired `main` lane,
+    two describing the parser-review timers masked under Spec 214, one naming gpt-5.5, and
+    the OC CLI cheatsheet copy reduced to a pointer.
+  - Dated `.bak` for every edited entry; MEMORY.md index lines re-synced.
+- **`/root/.openclaw/workspace/MEMORY.md`** — PARK/parked-ideas note still credited
+  Mnemosyne; corrected to Janus with the kernel unchanged.

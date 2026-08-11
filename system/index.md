@@ -59,6 +59,7 @@ Catalog of internal ops knowledge mirrored and synthesized under `system/`.
 - [[configs/milo-fitness|milo-fitness]] — Hermes workout/nutrition bot, Pacific-date schema, and maintenance.
 - [[configs/mnemosyne-pa|mnemosyne-pa]] — PA subsystem (bot retired 2026-08-10, machinery live under Janus).
 - [[configs/openclaw-agents|openclaw-agents]] — **canonical** agent roster *and* tier routing, review chain, dispatch policy.
+- [[configs/hermes-profiles|hermes-profiles]] — **all six Hermes profiles**, what drives each, and which are live.
 - [[configs/metis-gateway|metis-gateway]] — CC over Telegram; permission gate and roster.
 - [[configs/vault-layout|vault-layout]] — where wiki work vs system work belongs.
 - [[configs/index|configs index]] — config summary list.

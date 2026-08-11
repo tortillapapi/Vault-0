@@ -72,20 +72,24 @@ openclaw message send --channel telegram --target 1207164084 -m "text" --silent
 openclaw agent --agent <id> --local --message "prompt" --json
 ```
 
-### Available agents
-- `mid` — openai/gpt-5.6-luna (`--thinking xhigh`; **default** GPT escalation and judgment-heavy review lane; `isDefault=true`)
-- `lead` — openai/gpt-5.6-sol (`--thinking xhigh`; **explicit-only** escalation lane for exceptionally hard tasks; `isDefault=false`)
-- `grunt-eng` — opencode-go/deepseek-v4-flash (`--thinking medium`; bounded code/config/parser work and low-risk implementation slices)
-- `grunt` — opencode-go/deepseek-v4-flash (`--thinking medium`; basic execution: non-code grunt work, log edits, doc updates, formatting, ingest prep; sessionKey `agent:grunt:main`)
-- `re-review` — opencode-go/glm-5.2 (`--thinking medium`; first-pass QA over all grunt/grunt-eng output)
-- `email-parser` — google/gemini-2.5-flash (email parsing only)
+### Which agent to use
+**Not decided here.** Roster, models, thinking levels, and escalation policy are canonical
+in [[system/configs/openclaw-agents]]; the live list is `openclaw agents list --json`.
+
+This page previously carried a full roster table. It was the last surviving duplicate of
+that data on the box (Spec 226 removed the others) and was left in place only long enough
+to confirm it was correct. It was correct — which is exactly why it was removed: a correct
+copy is the one that drifts next, silently, the way the `lead` thinking level did across
+three pages.
 
 ### Current review chain
 ```bash
-openclaw agent --agent re-review --local --thinking medium --message "..." --json   # GLM 5.2 first-pass review
-openclaw agent --agent mid --local --thinking xhigh --message "..." --json         # GPT-5.6-luna default review escalation
-openclaw agent --agent lead --local --thinking xhigh --message "..." --json        # GPT-5.6-sol explicit-only exceptional escalation
+openclaw agent --agent re-review --local --thinking <level> --message "..." --json  # first-pass QA
+openclaw agent --agent mid       --local --thinking <level> --message "..." --json  # default escalation
+openclaw agent --agent lead      --local --thinking <level> --message "..." --json  # explicit-only
 ```
+Per-agent `--thinking` defaults come from `openclaw.json`; pass one explicitly only to
+override. Escalation policy: [[system/configs/openclaw-agents]].
 `mid` (isDefault=true) is the default GPT lane; `lead` (isDefault=false) is explicit-only. `main`, `sonnet-review`, and the old OpenClaw `pa` lane are no longer configured. Hermes/Janus independently verifies only mission-critical, high-blast-radius, or user-facing-critical delegated work; routine work ends after the executor's direct verification. Mnemosyne/Nemo (Hermes profile `papipa`) lives separately and remains active.
 
 ### NEVER use `openclaw agent --deliver` for simple message relay. Use `message send`.
