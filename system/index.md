@@ -49,7 +49,7 @@ Catalog of internal ops knowledge mirrored and synthesized under `system/`.
 
 ## Runbooks
 
-- [[runbooks/cloud-session-vps-bootstrap|cloud-session-vps-bootstrap]] — set up a Claude Code cloud session with VPS SSH access alongside its git access to this vault.
+- [[runbooks/cloud-session-vps-bootstrap|cloud-session-vps-bootstrap]] — **blocked at Phase 0**: a standard Claude Code cloud session cannot reach the VPS over SSH at all (proxied, domain-allowlisted egress only). Vault-via-git remains its only VPS-adjacent access.
 - [[runbooks/index|runbooks index]] — all operational runbooks.
 
 ## Cheatsheets

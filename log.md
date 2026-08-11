@@ -1844,3 +1844,30 @@ Four residual items from the deep scan, all outside Spec 227's file scope (no co
 - The repo itself was left untouched — committing 24 files that include live scripts is an
   operational decision, not a docs one, and 15 of 35 scripts match secret-ish patterns so
   any future remote needs a real secret scan first (`/root/scripts/secret-scan.sh` exists).
+
+## [2026-08-11] [cc] infra | Cloud-session VPS access: blocked at Phase 0, diagnosed
+- Ran `system/runbooks/cloud-session-vps-bootstrap.md` from an actual Claude Code cloud
+  session, at Papi's request, to test whether a cloud session could get SSH-equivalent
+  access to the VPS (the original goal: a single-chat, multi-device replacement for the
+  Metis Telegram gateway with full tmux-session-equivalent capability).
+- **Result: not possible from a standard Anthropic-hosted cloud session.** No `ssh`
+  client in the sandbox image; TCP 22 to both hostname and IP times out; only 80/443
+  connect and both are TLS-terminated by Anthropic's own egress gateway (cert `CN =
+  Egress Gateway SDS Issuing CA (production)`); `CONNECT host:22` gets a `200` from the
+  local proxy but no SSH banner follows — the proxy accepts the verb but doesn't forward
+  raw TCP for a non-HTTP protocol. Confirmed by Anthropic's own docs: cloud-session
+  egress is a domain-allowlist HTTP/HTTPS proxy, not a port/protocol-level firewall — no
+  port choice or allowlist entry opens this.
+- Nothing was created on the VPS — no account, no keypair, no sudoers entry. Phase 0
+  failing meant Phase 2 never ran.
+- **Knock-on effect: Metis is now the only device-independent path to live VPS
+  state/action.** The retirement plan floated earlier this session is reversed — do not
+  retire or archive `metis-gateway.service` until one of four options replaces that
+  capability (self-hosted runner with real egress; an authenticated HTTPS control
+  surface on the VPS — effectively a second Metis; periodic vault snapshots of live
+  state for read-only context; or accepting the split: cloud sessions for vault work,
+  tmux/Mac/Metis for live ops). No option was chosen — flagged for Papi.
+- Runbook updated in place (`status: blocked-at-phase-0`) with full diagnostic evidence,
+  the four options, and the reversed Metis decision. Phases 1–5 kept as-written — they
+  remain correct for any environment with genuine SSH egress, only Phase 0's premise
+  (a standard cloud session has that) turned out false.

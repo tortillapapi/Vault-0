@@ -5,11 +5,19 @@ slug: cloud-session-vps-bootstrap
 canonical_for: [cloud-session-vps-access]
 created: 2026-08-11
 maintainer: cc
-status: not-yet-executed
+status: blocked-at-phase-0
 tags: [ops, runbook, infra, ssh, cloud-session]
 ---
 
 # Cloud Session → VPS Access Bootstrap
+
+> **RESULT (2026-08-11, run by an actual cloud session): SSH access from an
+> Anthropic-hosted cloud session to this VPS is not possible.** Not a misconfiguration on
+> either side — a structural property of the cloud sandbox's network egress. Read the
+> **Phase 0 result** section below before attempting this again; do not re-run Phase 0
+> expecting a different outcome without a real change on the sandbox side. Phases 1–5
+> below are kept as-written because they remain correct for any environment that *does*
+> have real SSH egress (a self-hosted runner, most of all) — see § What's next.
 
 **You are reading this because Papi pointed a brand-new Claude Code cloud session at
 this repo and asked it to gain the same VPS capability the local Mac session and the VPS
@@ -74,6 +82,39 @@ Read the result:
 
 If the hostname doesn't resolve for some reason, the VPS's IP is `187.124.88.165` — same
 test applies with the IP in place of the hostname.
+
+## Phase 0 result — SSH egress is categorically blocked (2026-08-11)
+
+A real cloud session ran this. Findings, in order of how they were discovered:
+
+- **No `ssh` client in the sandbox image at all.** Phase 3's `ssh-keygen`/`ssh` commands
+  can't even run as written, independent of network access.
+- **TCP 22 to both `srv1535917.hstgr.cloud` and `187.124.88.165` times out.** DNS
+  resolves correctly, so it's the connection being blocked, not the lookup failing.
+- **Ports 80 and 443 connect; 22, 2222, and 8443 all time out.** Only the two standard
+  web ports are reachable.
+- **The certificate served on :443 is issued by `O = Anthropic, CN = Egress Gateway SDS
+  Issuing CA (production)`.** Egress is transparently TLS-terminated by Anthropic's own
+  gateway — port 443 from a cloud session does not reach the VPS's actual TLS endpoint
+  either; it terminates at the gateway first.
+- **`CONNECT host:22` through the local proxy returns an optimistic `200 Connection
+  Established`, then no SSH banner follows.** The proxy accepts the CONNECT verb but
+  doesn't actually forward the raw TCP stream for a non-HTTP protocol.
+- **Anthropic's own docs confirm this is by design**: all cloud-session egress routes
+  through an HTTP/HTTPS security proxy, and the network access levels (Trusted / Custom /
+  None) are **domain allowlists**, not port or protocol rules. Moving `sshd` to 443
+  wouldn't help — the gateway terminates TLS and speaks HTTP; SSH is neither, regardless
+  of which port it's bound to.
+
+**Conclusion: there is no port, protocol trick, or domain-allowlist entry that opens raw
+SSH from a standard Anthropic-hosted cloud session.** This is a platform boundary, not a
+VPS-side firewall setting — `ufw` on the VPS already allows `22/tcp` from `Anywhere`, and
+that was never the constraint.
+
+**Nothing was created on the VPS.** No `cloud-cc` account, no keypair, no `authorized_keys`
+entry, no sudoers file. Phase 0 failing means Phase 2 never had a reason to run. If you're
+reading this and considering re-running Phase 2 anyway "just in case," don't — there's
+nothing on the sandbox side that could use it.
 
 ## Phase 1 — the account model (Papi decides — do not default silently)
 
@@ -193,29 +234,65 @@ cloud"; it's the same peer, a different launch environment.
   other session — this runbook doesn't grant you anything beyond what your own harness
   permissions allow. Destructive or high-blast-radius commands should still prompt.
 
+## What's next, now that Phase 0 is closed
+
+Four options were on the table when this was diagnosed. None were chosen as of
+2026-08-11 — this is Papi's call, not something to build speculatively:
+
+1. **A self-hosted execution environment** (not a standard Anthropic cloud session) —
+   the only option that restores real SSH and lets Phases 1–5 above run as written. What
+   this actually takes depends on Claude Code's self-hosted/remote-runner deployment
+   model at the time you're reading this — verify current mechanics before assuming
+   anything here is still accurate, don't take this runbook's word for it.
+2. **An authenticated HTTPS control surface on the VPS** — expose specific operations
+   (status queries, maybe scoped writes) over a web API a cloud session *can* reach
+   through the domain-allowlist proxy. Smallest-looking change; largest new attack
+   surface. Functionally a second Metis, with all the same design questions (auth,
+   approval gating, what it's allowed to touch) — do not build this as a quick add-on.
+3. **Widen the git path with periodic snapshots** — e.g. a VPS-side timer that commits a
+   compact live-state digest (timer states, agent roster, recent log tail) into the
+   vault, symmetric to how `vault-pull.timer` already pulls the other direction. Gives a
+   cloud session fresher read-only context without giving it any execution path. Cheap,
+   additive, doesn't require a decision about the harder options first.
+4. **Accept the split.** Cloud sessions handle vault-based reasoning and writing (which
+   is most of what actually happened across this whole consolidation) directly against
+   GitHub. Live VPS operations — anything needing `systemctl`, `openclaw`, `hermes`, or a
+   database query — stay on the tmux session, the Mac session, or Metis.
+
+**Recommendation carried over from the diagnosing session:** option 1 if
+device-independent live access to the VPS genuinely matters enough to invest in;
+otherwise option 4, plus the cheap parts of option 3, is the pragmatic default.
+
+**One knock-on effect this forces:** Metis is now the *only* device-independent path to
+live VPS state and action — the entire reason a cloud-session replacement was being
+explored. **Do not retire or archive the Metis gateway until one of the options above
+actually replaces that capability.** This reverses the "later, once proven" framing this
+runbook originally carried for that decision.
+
 ## Open decisions for Papi
 
-Resolve these before or during first real use — don't guess on his behalf:
+Resolve these when you're ready — don't guess on his behalf:
 
-1. **Tier A vs Tier B** (Phase 1). This runbook assumes A.
-2. **Username** — `cloud-cc` is a placeholder suggestion, not a requirement.
-3. **`PermitRootLogin`** is currently `yes` on the box. Now that a non-root path exists,
-   tightening it is a real option — but it's a separate, deliberate security change
-   with its own blast radius (it would affect every other session using the root key,
-   including the tmux session and Metis's assumptions). Don't bundle it into this
-   bootstrap; raise it as its own decision once this path is proven.
-4. **Retiring Metis** — not resource-motivated (it costs ~35 MB RSS on a box with several
-   GB free). Purely a UX call, and only after this path has run trouble-free for a
-   while.
-5. **Giving `/root/scripts` a GitHub remote** — a real fix for the "no remote, no rollback
-   beyond `.bak`" trap documented in `operating-rules.md`, and it would let a future cloud
-   session reach it via git too. Independent of this bootstrap; tracked separately. Gate:
-   15 of 35 scripts there match secret-ish grep patterns, so run
-   `/root/scripts/secret-scan.sh` before any push.
+1. ~~Tier A vs Tier B~~ — moot until Phase 0 is unblocked by one of the options above.
+2. ~~Username~~ — same; `cloud-cc` remains a placeholder for if/when this becomes live.
+3. **`PermitRootLogin`** is currently `yes` on the box. This was contingent on a non-root
+   SSH path existing to migrate toward; it doesn't yet. No change needed now.
+4. **Do not retire Metis.** See knock-on effect above — this flips from "later, once
+   proven" to "not until something replaces it."
+5. **Giving `/root/scripts` a GitHub remote** — still independently worth doing (fixes the
+   "no remote, no rollback beyond `.bak`" trap in `operating-rules.md`), but it no longer
+   also serves as a stepping-stone toward cloud-session VPS access, since that path is
+   closed regardless of which repos have remotes. Gate unchanged: run
+   `/root/scripts/secret-scan.sh` before any push — 15 of 35 scripts match secret-ish
+   patterns.
+6. **Which of options 1–4 above, if any, to pursue** — the actual open question now.
 
 ## Status of this runbook
 
-**Not yet executed as of 2026-08-11.** No VPS-side account exists yet. Phase 0 has not
-been run from an actual cloud sandbox — the reachability question is genuinely open.
-Update this file's `status:` frontmatter once Phase 4 passes, and note whichever
-username and tier were actually chosen so the next reader doesn't have to guess.
+**Blocked at Phase 0 as of 2026-08-11.** Diagnosed by an actual Claude Code cloud session
+attempting this exact runbook. No VPS-side account was created; nothing needs to be
+unwound. Phases 1–5 remain accurate for any environment with genuine SSH egress and
+should not be rewritten because of this finding — only Phase 0's premise (a standard
+cloud session can reach the VPS) is what broke. If this is reopened later against a
+different environment (e.g. a self-hosted runner), start again at Phase 0 to confirm
+that environment's egress before assuming these phases will just work.

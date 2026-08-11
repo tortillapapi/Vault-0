@@ -32,9 +32,12 @@ _Timer states verified against `systemctl` 2026-08-11._
 - [[system/decisions/2026-04-inventory-pipeline-ops]] — historical context
 
 ## If you are a new Claude Code cloud session
-Read [[system/runbooks/cloud-session-vps-bootstrap]] before anything else — it covers
-what you have (git access to this vault) versus what you don't yet (VPS SSH/systemctl/
-openclaw/hermes), and the setup steps to close that gap.
+**You cannot reach the VPS directly — confirmed 2026-08-11.** Your egress is a
+domain-allowlisted HTTP/HTTPS proxy; raw TCP/SSH times out categorically, this is not
+fixable from your side. You have full read/write access to **this vault via git** and
+nothing else on the VPS — no `systemctl`, no `openclaw`/`hermes` CLI, no live specs/
+tasks/reviews, no databases. Read [[system/runbooks/cloud-session-vps-bootstrap]] for the
+full diagnosis before assuming otherwise or re-attempting SSH.
 
 ## Key Paths
 - Vault (VPS clone): /root/obsidian-vault/
