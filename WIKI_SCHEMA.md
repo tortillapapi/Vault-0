@@ -229,7 +229,7 @@ Hard rules for `system/`:
 - Mirrored pages MUST record `source_path` and `last_synced`.
 - Upstream-change detection is by comparing `last_synced` to the source file's mtime.
 - Never hand-edit mirrored pages. Re-sync via a fresh task.
-- Synthesized pages (decision logs, workflows) record `derived_from:`.
+- Synthesized pages (decision logs, workflows) record `sources_at_time:  # historical provenance — NOT an authority pointer`.
 
 ## Wikilink Conventions
 

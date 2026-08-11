@@ -4,11 +4,7 @@ title: Wiki Operations
 slug: wiki-operations
 last_synced: 2026-04-21
 maintainer: cc-oc-orchestrator
-derived_from:
-  - /root/CLAUDE.md
-  - /root/.claude/skills/wiki-ingest-orchestrator.md
-  - /root/.claude/skills/wiki-query-planner.md
-  - /root/.claude/skills/wiki-lint.md
+canonical_for: [wiki-ingest-query-lint-loop]
 tags: [ops, workflow, wiki]
 ---
 

@@ -3,7 +3,7 @@
 Mirrored reference documentation for the orchestrator skills. **These are documentation
 copies, not the loadable files.** The live sets are:
 
-- CC: `/root/.claude/skills/*.md` (15 skills, verified 2026-08-10)
+- CC: `/root/.claude/skills/*.md` (16 skills, verified 2026-08-10)
 - Codex: `/root/.codex/skills/<name>/SKILL.md` — real symlinks into CC's files, so content
   cannot drift; membership deliberately excludes dispatch-safety skills since Codex no
   longer dispatches (2026-08-10 decision).
@@ -28,4 +28,4 @@ Skills route by tier *name* only. Roster, models, and escalation policy are cano
 - [[wiki-ingest-orchestrator]] — Plan and orchestrate ingestion of new sources into the wiki.
 - [[wiki-lint]] — Periodic health-check of the wiki to surface cross-cutting issues.
 - [[wiki-query-planner]] — Translate user questions into wiki search + read + synthesize plans.
-- [[wiki-fast-ingest]] — **not installed** (documentation only): low-ceremony direct ingest by CC, no spec or dispatch.
+- [[wiki-fast-ingest]] — low-ceremony direct ingest by CC in one turn, no spec or dispatch. **Installed 2026-08-10.**

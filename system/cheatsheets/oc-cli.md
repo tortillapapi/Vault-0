@@ -2,24 +2,21 @@
 type: system-cheatsheet
 title: OpenClaw CLI Cheatsheet
 slug: oc-cli
-source_path: /root/.claude/projects/-root/memory/reference_oc_cli_cheatsheet.md
-last_synced: 2026-07-24
-maintainer: cc-oc-orchestrator
+canonical_for: [openclaw-cli-syntax]
+last_verified: 2026-08-10
+maintainer: cc
 tags: [ops, cheatsheet, cli]
 ---
 
 ## Purpose
-Quick-reference for OpenClaw CLI commands used by the CC orchestrator — messaging, agents, tasks, cron, and diagnostics.
+Quick-reference for the `openclaw` CLI — messaging, agents, tasks, cron, diagnostics.
+Applies to every orchestrator, not just CC. **Read this before any `openclaw` command**
+(hard gate, per [[system/cheatsheets/operating-rules]]).
 
-## Contents
+Which agent to dispatch to is **not** decided here — see
+[[system/configs/openclaw-agents]].
 
----
-name: OC CLI cheatsheet for CC orchestrator
-description: Complete quick-reference for all OpenClaw CLI commands CC uses — messaging, agents, tasks, cron, files. Avoids re-exploring the CLI each session.
-type: reference
-originSessionId: a238ce87-1da8-45a0-bbab-7159be6a51a6
----
-# OpenClaw CLI — CC Orchestrator Cheatsheet
+# OpenClaw CLI — Cheatsheet
 
 ## Telegram Messaging (user chat ID: 1207164084)
 

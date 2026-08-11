@@ -5,11 +5,7 @@ slug: milo-fitness
 owner: hermes
 created: 2026-06-10
 last_updated: 2026-07-14
-derived_from:
-  - /root/.hermes/profiles/milo/SOUL.md
-  - /root/.hermes/profiles/milo/profile.yaml
-  - /root/.hermes/profiles/milo/workout/milo_workout.py
-  - /root/.hermes/profiles/milo/skills/milo/milo-nutrition/SKILL.md
+canonical_for: [milo-fitness-bot]
 tags: [ops, config, hermes, milo, fitness, workout, nutrition]
 ---
 

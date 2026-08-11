@@ -4,7 +4,7 @@ title: April 2026 Fallback Pipeline Decisions
 slug: 2026-04-fallback-pipeline
 last_synced: 2026-04-21
 maintainer: cc-oc-orchestrator
-derived_from:
+sources_at_time:  # historical provenance — NOT an authority pointer
   - /root/specs/01-gemini-client.md
   - /root/specs/02-llm-fallback-parser.md
   - /root/specs/03-wire-fallback-pipeline.md

@@ -2,68 +2,73 @@
 type: system-template
 title: Review Template
 slug: review-template
-last_synced: 2026-04-21
-maintainer: cc-oc-orchestrator
-derived_from:
-  - /root/tasks/archive/smoke-test-2026-04-21/ingest-test-source.review
-  - /root/tasks/archive/smoke-test-2026-04-21/ingest-test-source-review.done
-  - /root/reviews/ingest-test-source-signoff.md
+canonical: system/workflows/peer-orchestrator-protocol
+last_updated: 2026-08-10
+maintainer: cc
 tags: [ops, template, review]
 ---
 
-## Purpose
+# Review Template
 
-Use this template for Mid-tier review outputs and their companion `.done` markers. It preserves a consistent review surface for CC sign-off and follow-up fix routing.
+The **envelope is canonical in**
+[[system/workflows/peer-orchestrator-protocol]] § Review format. Do not invent a second
+review grammar — this page supplies the optional *payload* that goes inside it for wiki
+and multi-file reviews.
 
-## Review Report Template
+## The envelope (required)
 
-```text
-=====================================
-WIKI REVIEW REPORT
-=====================================
-Task: <task-name>
-Reviewer: agent:re-review (GLM 5.2 medium) or agent:mid (GPT 5.6-luna xhigh) or agent:lead (GPT 5.6-sol xhigh)
-Reviewed: <ISO timestamp>
-Grunt completion: <path to grunt done marker>
-
-OVERALL_STATUS: PASS | FAIL | PARTIAL
-
-=== FORMAT_CHECKS ===
-frontmatter: PASS | FAIL (<count> files with issues)
-wikilinks: PASS | FAIL (<count> broken links)
-template_sections: PASS | FAIL (<count> files with structural issues)
-placeholder_leftovers: PASS | FAIL (<count> files with unresolved TODOs)
-
-=== CONSISTENCY_CHECKS ===
-cross_references: PASS | PARTIAL | FAIL
-  <details>
-intra_batch_contradictions: PASS | FAIL
-  <details>
-
-=== COMPLETENESS_CHECKS ===
-spec_pages_updated: <actual>/<expected> (missing: <list or "none">)
-index_updated: PASS | FAIL
-log_updated: PASS | FAIL
-done_marker_format: PASS | FAIL
-
-=== ISSUES ===
-<numbered list or "none">
-
-=== RECOMMENDATION ===
-ACCEPT | FIX_TASK_GRUNT | FIX_TASK_LEAD | SCHEMA_ATTENTION
-
-=====================================
-```
-
-## Companion Review Done Marker
+Every `.review` marker uses exactly this, per the protocol:
 
 ```text
-STATUS: COMPLETE
-TIMESTAMP: <ISO 8601 UTC>
-REVIEW_PATH: <absolute path to review report>
-RECOMMENDATION: ACCEPT | FIX_TASK_GRUNT | FIX_TASK_LEAD | SCHEMA_ATTENTION
+STATUS: ACCEPT | REJECT
+REVIEW_TYPE: orchestrator | executor-qa
+TIMESTAMP: <ISO 8601 UTC — generate with `date -u +%Y-%m-%dT%H:%M:%SZ`>
+REVIEWER: hermes | cc | metis | codex | <oc-agent-id>
+TARGET: /root/tasks/<task>.done
+FINDINGS:
+  - none | specific issue
+REQUIRED_FIXES:
+  - none | specific fix task
 ```
 
-## Sign-off Pattern
+A longer narrative review may accompany it as a `.md` file in `/root/reviews/` — that is
+common and fine — but it must carry `STATUS:` and `REVIEWER:` in its first few lines so
+the audit trail stays greppable.
 
-After Mid completes the review, CC writes a separate sign-off note that records the basis for acceptance, any loose ends, and the final outcome.
+`REVIEW_TYPE` is what separates accountability from instrumentation: only a peer
+orchestrator's `orchestrator` ACCEPT closes a spec. A dispatched OC agent's review is
+`executor-qa` — it informs the decision, it never replaces it.
+
+## Optional payload — wiki / multi-file checklist
+
+For batch wiki work or any review spanning many files, append this inside `FINDINGS:`.
+It is a **checklist, not a format** — the value is the questions, not the ASCII banners.
+
+```text
+FORMAT
+  frontmatter          PASS | FAIL (<n> files)
+  wikilinks            PASS | FAIL (<n> broken)
+  template_sections    PASS | FAIL (<n> structural)
+  placeholder_leftovers PASS | FAIL (<n> unresolved TODOs)
+
+CONSISTENCY
+  cross_references          PASS | PARTIAL | FAIL
+  intra_batch_contradictions PASS | FAIL
+
+COMPLETENESS
+  spec_pages_updated  <actual>/<expected> (missing: <list | none>)
+  index_updated       PASS | FAIL
+  log_updated         PASS | FAIL
+  done_marker_format  PASS | FAIL
+```
+
+## History — why this page shrank
+
+Until 2026-08-10 this page carried a full `WIKI REVIEW REPORT` block with its own
+`OVERALL_STATUS` and `RECOMMENDATION: ACCEPT | FIX_TASK_GRUNT | FIX_TASK_LEAD |
+SCHEMA_ATTENTION` vocabulary — a third review grammar competing with the protocol's.
+
+Checked against practice: of **401** files in `/root/reviews/`, that format appeared in
+**2**, and `FIX_TASK_LEAD` in **0**. It also routed fixes to `lead`, which has been an
+explicit-only lane since well before this page was last touched. The format was retired
+rather than maintained; the genuinely useful part — the checklist above — was kept.

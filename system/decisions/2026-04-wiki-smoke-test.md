@@ -4,7 +4,7 @@ title: April 2026 Wiki Smoke Test Decisions
 slug: 2026-04-wiki-smoke-test
 last_synced: 2026-04-21
 maintainer: cc-oc-orchestrator
-derived_from:
+sources_at_time:  # historical provenance — NOT an authority pointer
   - /root/specs/add-gitignore.md
   - /root/specs/ingest-test-source.md
   - /root/specs/close-out-smoke-test-log.md

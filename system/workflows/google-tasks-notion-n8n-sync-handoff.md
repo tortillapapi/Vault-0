@@ -5,10 +5,7 @@ slug: google-tasks-notion-n8n-sync-handoff
 created: 2026-04-27
 last_updated: 2026-08-05
 maintainer: codex
-derived_from:
-  - /root/n8n/local-files/google-tasks-notion-sync/README.md
-  - /root/n8n/local-files/google-tasks-notion-sync/sync.js
-  - /root/n8n/compose.yaml
+canonical: system/workflows/notion-sync-protocol
 tags: [ops, workflow, n8n, notion, google-tasks]
 priority: reference
 domain_tags: [oc-system, wiki-ops]

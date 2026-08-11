@@ -4,8 +4,7 @@ title: Vault Layout
 slug: vault-layout
 last_synced: 2026-04-21
 maintainer: cc-oc-orchestrator
-derived_from:
-  - /root/obsidian-vault/WIKI_SCHEMA.md
+canonical_for: [vault-layout]
 tags: [ops, config, vault]
 ---
 

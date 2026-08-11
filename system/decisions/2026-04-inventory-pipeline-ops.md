@@ -4,7 +4,7 @@ title: April 2026 Inventory Pipeline Operations Decisions
 slug: 2026-04-inventory-pipeline-ops
 last_synced: 2026-04-22
 maintainer: cc-oc-orchestrator
-derived_from:
+sources_at_time:  # historical provenance — NOT an authority pointer
   - /root/specs/24-inventory-dashboard.md
   - /root/specs/25-tiered-parser.md
   - /root/specs/26-parser-intelligence.md

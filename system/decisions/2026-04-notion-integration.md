@@ -4,7 +4,7 @@ title: April 2026 Notion Integration Decisions
 slug: 2026-04-notion-integration
 last_synced: 2026-04-21
 maintainer: cc-oc-orchestrator
-derived_from:
+sources_at_time:  # historical provenance — NOT an authority pointer
   - /root/specs/13-notion-skills.md
   - /root/specs/14-claude-md-notion-skills.md
   - /root/specs/15-fix-grunt-agent-refs.md

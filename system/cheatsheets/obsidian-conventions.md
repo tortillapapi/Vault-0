@@ -4,8 +4,7 @@ title: Obsidian Conventions
 slug: obsidian-conventions
 last_synced: 2026-04-21
 maintainer: cc-oc-orchestrator
-derived_from:
-  - /root/obsidian-vault/WIKI_SCHEMA.md
+canonical_for: [vault-frontmatter-and-linking-conventions]
 tags: [ops, cheatsheet, obsidian, vault]
 ---
 
@@ -36,7 +35,14 @@ Use this page as the quick reference for naming, linking, and frontmatter rules 
 ## System Frontmatter Basics
 
 - Mirrored `system/` pages record `type`, `title`, `slug`, `source_path`, `last_synced`, `maintainer`, and `tags`.
-- Synthesized `system/` pages omit `source_path` and record `derived_from:` instead.
+- Synthesized `system/` pages declare authority, not provenance:
+  - `canonical_for: [topic, ...]` — this page IS the source of truth for those topics.
+  - `canonical: <page>` — this page defers to that one; if they disagree, that one wins.
+  - `sources_at_time:` — historical provenance on decision records only. **Never** an
+    authority pointer.
+  - `derived_from:` is **retired** (2026-08-10). Nearly every instance pointed at a file
+    version that no longer existed, and several inverted authority by making the vault
+    appear derived from an agent's private memory cache.
 - `README.md` and directory `index.md` pages are the only `system/` pages that skip frontmatter.
 
 ## Editing Discipline

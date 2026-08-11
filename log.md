@@ -1712,3 +1712,30 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - Script: `/root/.hermes/scripts/openclaw-nightly-rotation.py`; current explicit roster: `mid`, `lead`, `grunt-eng`, `grunt`, `re-review`, `email-parser`.
 - Safeguards: active OC task check, fresh shared `.progress` collision check, live-roster drift fail-closed, maintenance preflight `safe_to_rotate`, guarded forced rotation, and post-check of empty sessions/reset caches/`would_rotate=false`.
 - Normal no-op nights are silent. Blocked or failed rotations alert this chat; the existing 6-hour alert-only grunt watchdog remains in place as an independent fallback.
+## [2026-08-10] [cc] maint | Spec 226 follow-up — closed remaining consolidation gaps
+- **Review templates reconciled with the protocol.** `templates/review-template.md`
+  carried a third review grammar (`WIKI REVIEW REPORT` / `OVERALL_STATUS` /
+  `FIX_TASK_LEAD`). Checked against practice: that format appears in 2 of 401 files in
+  `/root/reviews/`, and `FIX_TASK_LEAD` in 0. Retired the format, kept its checklist as an
+  optional payload inside the protocol envelope, added `REVIEW_TYPE`.
+- **OC fleet instruction file audited** (`/root/.openclaw/workspace/AGENTS.md`) — the
+  executor tier's own guidance, never covered by the original audit. Added the precedence
+  rule, a pointer to the peer protocol (which defines the `.done`/`.review` formats OC
+  writes), an explicit "you are the executor tier, not an orchestrator" boundary, and a
+  hard rule to generate timestamps with `date -u` rather than from the model's own sense
+  of the date — this tier's most common defect. Corrected "lead/default agent" wording.
+- **`derived_from:` sweep completed.** Live config/workflow pages now use `canonical_for:`
+  (this page is authoritative) or `canonical:` (defers to another). Decision records and
+  `WIKI_SCHEMA.md` keep provenance under `sources_at_time:`, explicitly labelled as not an
+  authority pointer. `cheatsheets/obsidian-conventions.md` now teaches the new convention.
+- **CC memory bodies corrected** (index lines were fixed earlier, bodies were not):
+  `project_order_dashboard` still described a live dashboard on port 5002 six weeks after
+  decommissioning; `project_metis_identity` still had Janus on GPT-5.5, Mnemosyne live, and
+  the `[cc]`-vs-`[metis]` tag question open. Both rewritten.
+- **`oc-cli.md`**: removed the second stacked frontmatter block inherited from its
+  memory-file origin; scoped it to all orchestrators, not just CC.
+- **`wiki-fast-ingest` installed** to `/root/.claude/skills/` (16 live CC skills). It had
+  been documented in the vault since 2026-06-23 but never existed as a loadable file.
+- **`settings.json`**: removed `context.include: ["../obsidian-vault/core-index.md"]` — the
+  relative path does not resolve from `/root` (verified), so the "always-load" claim on
+  core-index was never true from CC's normal cwd. `context.exclude` retained. Backed up.

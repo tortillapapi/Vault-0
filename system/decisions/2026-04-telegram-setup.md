@@ -4,7 +4,7 @@ title: April 2026 Telegram Setup Delivery Decision
 slug: 2026-04-telegram-setup
 last_synced: 2026-04-21
 maintainer: cc-oc-orchestrator
-derived_from:
+sources_at_time:  # historical provenance — NOT an authority pointer
   - /root/specs/06-telegram-send-setup-guide.md
   - /root/tasks/06-telegram-send-setup-guide.done
 dates: 2026-04-19 to 2026-04-19

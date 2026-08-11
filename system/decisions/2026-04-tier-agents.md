@@ -4,7 +4,7 @@ title: April 2026 Tiered Agent Decisions
 slug: 2026-04-tier-agents
 last_synced: 2026-04-21
 maintainer: cc-oc-orchestrator
-derived_from:
+sources_at_time:  # historical provenance — NOT an authority pointer
   - /root/specs/10-create-lead-agent.md
   - /root/specs/11-create-mid-agent.md
   - /root/specs/12-configure-grunt-main.md

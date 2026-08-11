@@ -8,11 +8,10 @@ last_updated: 2026-06-23
 
 # Wiki Fast Ingest
 
-> **Documentation only — this skill is not installed.** It exists in the vault mirror but
-> has no counterpart in `/root/.claude/skills/`, so no harness can load it. Its doctrine
-> (CC ingests low-stakes sources directly, no spec/dispatch) matches current CC posture,
-> so it is kept rather than deleted — but installing it is a behavior change and needs a
-> deliberate decision. Verified 2026-08-10.
+> **Installed 2026-08-10** at `/root/.claude/skills/wiki-fast-ingest.md`. It had existed
+> only as this vault mirror since 2026-06-23 — documented but unloadable. Its doctrine
+> (CC ingests low-stakes sources directly, no spec or dispatch) matches current CC
+> posture, so it was installed rather than deleted.
 
 ## Role
 This is the **low-ceremony** counterpart to [[wiki-ingest-orchestrator]]. CC
