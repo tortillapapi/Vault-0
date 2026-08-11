@@ -3,6 +3,11 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-08-11T11:15:34Z] ops | [hermes] Spec 227 B4 first-window rotation observation blocked
+- Post-window observation at 2026-08-11T04:15:34-0700 (PDT) found `/root/.hermes/state/openclaw-nightly-rotation.json` for local date `2026-08-11` with `status: skipped`, updated at `2026-08-11T04:00:57.334947-07:00`.
+- The first scheduled run output (`/root/.hermes/cron/output/572c4dc18aed/2026-08-11_04-00-57.md`) reported `post-rotation verification found problems`; all six roster lanes reported `would_rotate=true after reset` (mid, lead, grunt-eng, grunt, re-review, email-parser).
+- Successful full-roster rotation is therefore not proven. Exact evidence and blocker are recorded at `/root/tasks/227-phase-b4-observation.blocked`; Spec 227 remains open for orchestrator review.
+
 ## [2026-08-10T21:39:00Z] ops | [cc] notion-sync.service sandbox fix — Daily Brief panel Orders/Money/roster errors resolved
 - Root-caused three long-standing Notion Daily Brief errors ("Orders: n/a (script error)", "Money: n/a (script error)", recurring "agent roster unavailable (openclaw timed out?)") to `notion-sync.service`'s systemd sandbox (`ProtectSystem=strict` + `ProtectHome=read-only`) missing directives that its sibling `papi-daily-brief.service` already has. `notion_sync.collect.daily_brief()` shells out to the same `papi-daily-brief.py` collectors, which inherit `notion-sync.service`'s (stricter) sandbox rather than their own unit's.
 - Confirmed each failure by reproducing under identical restrictions via `systemd-run`: (1) no `PrivateTmp=yes` → real `/tmp` read-only → `parser-run-status.sh`'s `mktemp` fails → Orders n/a; (2) no `ReadWritePaths=/root/finance-data/db` → `finance summary`'s SQLite WAL mode can't open → Money n/a; (3) `openclaw` CLI refuses to start at all without a safe temp dir, and once `PrivateTmp` fixes that it still needs `ReadWritePaths=/root/.openclaw` for its state DB — explaining the "roster unavailable" note (not actually a timeout, despite the comment in `collect.py`).
