@@ -1739,3 +1739,34 @@ finance-data/tests/test_gate_before_client.py::test_sandbox_allowed
 - **`settings.json`**: removed `context.include: ["../obsidian-vault/core-index.md"]` — the
   relative path does not resolve from `/root` (verified), so the "always-load" claim on
   core-index was never true from CC's normal cwd. `context.exclude` retained. Backed up.
+
+## [2026-08-11] [cc] spec | Spec 227 authored and handed to Janus
+- New spec `227-shared-resume-collector-and-rotation-reconciliation` — two independent
+  phases deferred out of Spec 226. Authored by cc, **reassigned `owner: hermes`** at
+  Papi's direction for orchestration and subagent dispatch. Handoff note:
+  `/root/context/cc-handoff-spec-227-2026-08-11.md`.
+- **Phase A** — generalize `/root/scripts/hermes-session-resume.py` with `--agent`. The
+  collector is ~90% agent-neutral; only `collect_hermes_state()` is Hermes-specific, and
+  it reads `/root/.hermes/state.db` — which CC and Codex must never read. `--agent` is
+  therefore a privacy gate, not a label, and must fail closed. Runs at every Hermes
+  session start, so the spec requires a byte-identical baseline diff for `--agent=hermes`.
+- **Phase B** — reconcile the two OpenClaw session-hygiene jobs. Findings:
+  - B1: `openclaw-nightly-rotation.py` docstring says the window is `00:00-00:09` Pacific;
+    the code and inline comment say 4 AM. Code is correct — fix the docstring.
+  - `/root/bin/openclaw-grunt-session-maintenance.py` is **not** grunt-only as
+    `operating-rules.md` claims: it defaults to `grunt`/`grunt-eng` and requires an
+    explicit `--allow-agent` for anything else. The guard works as designed and the
+    nightly rotation satisfies it; the doc is what is wrong.
+  - B2 (**APPROVED by Papi 2026-08-11**): the 6-hour grunt watchdog is no longer a
+    staleness alarm — with nightly rotation resetting sessions, it has become the
+    rotation's failure detector. At `MAX_AGE_HOURS=72` that takes three nights to fire.
+    Tighten to `30` and reword the alert to name rotation failure + cron `572c4dc18aed`.
+    Old values for rollback: `MAX_AGE_HOURS=72`, `MAX_SESSION_COUNT=25`,
+    `MAX_STORE_BYTES=26214400`. The latter two are unchanged.
+  - B3: neither job appears in `system/resources/registry.md` — both need rows.
+  - B4: the nightly rotation has **never run** (created 2026-08-10T21:46Z; state file
+    absent; first window 11:00-11:09 UTC 2026-08-11). Both docs must say "unproven — first
+    run pending" until a live run is observed.
+- **Scheduling constraint flagged to Janus:** the rotation aborts if any
+  `/root/tasks/*.progress` marker is fresh, so OC work in flight across 10:50-11:15 UTC
+  would make the first-ever run fail closed and destroy the B4 observation.
