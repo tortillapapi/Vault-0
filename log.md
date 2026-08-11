@@ -1819,3 +1819,9 @@ Four residual items from the deep scan, all outside Spec 227's file scope (no co
   - Dated `.bak` for every edited entry; MEMORY.md index lines re-synced.
 - **`/root/.openclaw/workspace/MEMORY.md`** — PARK/parked-ideas note still credited
   Mnemosyne; corrected to Janus with the kernel unchanged.
+
+## [2026-08-11] [hermes] spec | Spec 227 execution update — Phases A/B1/B2/B3 verified; B4 pending
+- **Phase A verified:** `/root/scripts/session-resume.py` now accepts the allow-listed `--agent` flag with a fail-closed privacy gate; the legacy path remains a symlink. Frozen-state regression checks passed for JSON, Markdown, and status output; non-Hermes agents omitted `hermes_state`; invalid agents exited 2 without opening `/root/.hermes/state.db`.
+- **B1/B3 verified:** the rotation docstring now states the 04:00–04:09 America/Los_Angeles window; registry and operating-rules documentation describe both jobs, the shared maintenance tool, thresholds, and alert-only behavior. The live CLI currently reports zero OpenClaw cron jobs, so the historical handles remain explicitly unverified and no schedule was created or repaired.
+- **B2 applied by Hermes:** `/root/.hermes/scripts/openclaw-grunt-session-watchdog.py` changed `MAX_AGE_HOURS` from `72` to `30`; alert now names nightly rotation failure and cron handle `572c4dc18aed`. A dated rollback backup was created; compile and dry-run verification passed. Unchanged rollback values: `MAX_SESSION_COUNT=25`, `MAX_STORE_BYTES=26214400`.
+- **B4 remains pending:** the first live rotation window is 11:00–11:09 UTC today. The state file is absent before that window; completion must wait for a real post-window observation. No cron mutation was performed under Spec 227.
