@@ -3,7 +3,7 @@ type: system-workflow
 title: Session Resume Protocol
 slug: session-resume-protocol
 canonical_for: [session-resume]
-last_updated: 2026-08-10
+last_updated: 2026-08-11
 maintainer: cc
 tags: [ops, workflow, sessions]
 ---
@@ -15,10 +15,10 @@ harnesses the correct behavior is to do nothing and answer the user.
 
 | Harness | At session start | Mechanism |
 |---|---|---|
-| **Hermes (Janus)** | Runs the collector, then reports | `/root/scripts/hermes-session-resume.py --mode=markdown` |
-| **CC** | **Nothing.** Greet or answer directly | Resume only in opt-in orchestrator mode (`/root/ORCHESTRATOR.md`) |
+| **Hermes (Janus)** | Runs the collector, then reports | `/root/scripts/session-resume.py --agent=hermes --mode=markdown` |
+| **CC** | **Nothing.** Greet or answer directly | In opt-in orchestrator mode: `/root/scripts/session-resume.py --agent=cc --mode=markdown` |
 | **Metis** (CC over Telegram) | **Nothing** — actively suppressed | Gateway system prompt forbids the sweep; Telegram is not the place for a status dump |
-| **Codex** | **Nothing.** Answer directly | Resume only in opt-in orchestrator mode |
+| **Codex** | **Nothing.** Answer directly | In opt-in orchestrator mode: `/root/scripts/session-resume.py --agent=codex --mode=markdown` |
 
 ## The collector is the pattern
 
@@ -26,7 +26,7 @@ When a resume *is* wanted, prefer the deterministic collector over a manual dire
 walk:
 
 ```bash
-/root/scripts/hermes-session-resume.py --mode=markdown
+/root/scripts/session-resume.py --agent=hermes --mode=markdown
 ```
 
 It returns ~1.5 KB of Markdown (or ~2 KB JSON) covering active specs, pending tasks,
@@ -40,9 +40,11 @@ month as the workspace grows (154 specs / 1000 task artifacts / 400 reviews as o
 reduce raw listings, SQL, and history dumps to compact JSON/Markdown before they reach a
 model.
 
-**Note:** the collector currently emits Hermes-flavored output (it labels the report
-`hermes`). Generalizing it with an `--agent` flag is a runtime change and belongs in its
-own spec, not a docs pass.
+**Privacy gate:** the `--agent` flag selects the report identity and gates private
+state. Only `--agent=hermes` may read Hermes's private state DB; every other value
+(`cc`, `metis`, `codex`, `generic`) omits the `hermes_state` block entirely — a peer
+running the collector never reads another peer's private state, and unrecognized values
+fail closed with usage before reading anything.
 
 ## Report format
 
