@@ -31,6 +31,11 @@ _Timer states verified against `systemctl` 2026-08-11._
 - [[wiki/topics/inventory-tracker-pipeline]] — ARCHIVED 2026-04-27 (pipeline shut down per spec 36, code archived per spec 37)
 - [[system/decisions/2026-04-inventory-pipeline-ops]] — historical context
 
+## If you are a new Claude Code cloud session
+Read [[system/runbooks/cloud-session-vps-bootstrap]] before anything else — it covers
+what you have (git access to this vault) versus what you don't yet (VPS SSH/systemctl/
+openclaw/hermes), and the setup steps to close that gap.
+
 ## Key Paths
 - Vault (VPS clone): /root/obsidian-vault/
 - Vault (MacBook clone): ~/Documents/Obsidian/Vault-0/ — same GitHub remote, synced only

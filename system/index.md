@@ -47,6 +47,11 @@ Catalog of internal ops knowledge mirrored and synthesized under `system/`.
 - [[projects/n8n-order-parser|n8n-order-parser]] — order automation state.
 - [[projects/orders-dashboard|orders-dashboard]] — orders dashboard state.
 
+## Runbooks
+
+- [[runbooks/cloud-session-vps-bootstrap|cloud-session-vps-bootstrap]] — set up a Claude Code cloud session with VPS SSH access alongside its git access to this vault.
+- [[runbooks/index|runbooks index]] — all operational runbooks.
+
 ## Cheatsheets
 
 - [[cheatsheets/oc-cli|oc-cli]] — OpenClaw CLI quick reference.
