@@ -31,11 +31,17 @@ command syntax → [[system/cheatsheets/oc-cli]].
   + a `.progress` file, not CC driving each phase. `lead` is explicit-only for
   exceptionally hard architecture/strategy or when grunt/re-review/mid are stuck.
   Not for single-phase work or phases needing CC judgment between them.
-- **OpenClaw grunt session watchdog is installed.** `/root/bin/openclaw-grunt-session-maintenance.py`
-  is the guarded manual dry-run/rotate tool for `grunt` and `grunt-eng` only;
-  `/root/.hermes/scripts/openclaw-grunt-session-watchdog.py` runs every 6h via
-  Hermes cron job `eac51421f32b` and stays silent unless thresholds are exceeded
-  or the check fails. Manual rotation command: `/root/bin/openclaw-grunt-session-maintenance.py --rotate --all --json`.
+- **OpenClaw grunt session watchdog + nightly rotation are installed.** `/root/bin/openclaw-grunt-session-maintenance.py`
+  is the guarded manual dry-run/rotate tool. It is **not** grunt-only: it **defaults** to `grunt`/`grunt-eng`
+  but accepts an explicit `--allow-agent` allow-list for the rest of the roster (any non-default
+  agent errors without a matching `--allow-agent`). The nightly rotation drives it across the
+  **full roster** (`mid`, `lead`, `grunt-eng`, `grunt`, `re-review`, `email-parser`) via
+  `/root/.hermes/scripts/openclaw-nightly-rotation.py` (Hermes cron `572c4dc18aed`, active only
+  04:00–04:09 America/Los_Angeles). `/root/.hermes/scripts/openclaw-grunt-session-watchdog.py`
+  runs every 6h via Hermes cron `eac51421f32b` and stays silent unless thresholds are exceeded
+  or the check fails — alert-only, never kills; it is the failure detector for the nightly
+  rotation (thresholds: 25 sessions, 25 MB store, 30h age). Manual rotation command:
+  `/root/bin/openclaw-grunt-session-maintenance.py --rotate --all --json`.
   It refuses rotation when targeted OpenClaw tasks are running or fresh
   `/root/tasks/*.progress` markers exist.
 - **Model quirks (weak clock, secret echo) and the DeepSeek residency gate** are
