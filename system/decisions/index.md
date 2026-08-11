@@ -21,3 +21,4 @@ Chronological decision summaries grouped by project cluster.
 Spec numbers 07–09 were never assigned. Numbering jumped from 06 to 10 when
 the tier-agent work began, to visually separate the two project clusters.
 There are no missing artifacts.
+- [[decisions/2026-08-orchestration-authority-model|2026-08-orchestration-authority-model]] — **doc precedence**: live runtime > vault `system/` > `/root` files; skills and per-harness files point rather than restate. Closes the 2026-08 orchestration deep scan.

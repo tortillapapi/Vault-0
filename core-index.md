@@ -15,6 +15,7 @@ a model or tier, run the CLI before trusting it.
 - [[system/configs/openclaw-agents]] — **canonical** agent roster + tier routing
 - [[system/cheatsheets/operating-rules]] — **canonical** standing rules
 - [[system/workflows/session-resume-protocol]] — per-harness resume behavior
+- [[system/decisions/2026-08-orchestration-authority-model]] — **why** the precedence rule above exists, and what it replaced
 - [[system/decisions/2026-04-fallback-pipeline]] — why openclaw agent subprocess pattern
 - [[system/decisions/2026-04-tier-agents]] — tiered agent design rationale
 

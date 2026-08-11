@@ -69,14 +69,14 @@ command syntax → [[system/cheatsheets/oc-cli]].
   DeepSeek (`grunt`/`grunt-eng`) and GLM (`re-review`) are separate pools. Default
   mechanical/coding work to `grunt-eng` and docs/formatting to `grunt`; use `mid`
   for review and judgment work; reserve `lead` only for genuinely exceptional
-  problems when mid is stuck. `mid` runs `openai/gpt-5.6-luna` with
-  `xhigh` thinking; `lead` runs `openai/gpt-5.6-sol` with `xhigh` thinking. If OpenClaw GPT is burned but GPT is still needed
+  problems when mid is stuck. (Models and thinking levels: [[system/configs/openclaw-agents]] — do not
+  restate them here.) If OpenClaw GPT is burned but GPT is still needed
   for low/medium work, Janus may use Hermes delegation/subagents on the Hermes
   account with lower reasoning while keeping Janus itself on the high-reasoning
   orchestration lane. Do
   feasibility/investigation (`ls`/`grep`/`curl`) on the orchestrator side directly;
   don't spend an OpenAI agent on greppy work, and skip costly liveness probes (a
-  PONG to `main` is ~60k tokens). Watch the Mission Control Usage tab to stay ahead
+  PONG to a GPT lane is ~60k tokens). Watch the Mission Control Usage tab to stay ahead
   of the OpenAI 5h rolling window.
 - **Judge cost by quota %, not raw token counts.** Per-session counters are
   context-processing volume; with ~95% prompt caching, raw totals are dominated by
@@ -101,8 +101,8 @@ command syntax → [[system/cheatsheets/oc-cli]].
   instead; if a narrative report is genuinely needed, run it on a cheaper agent.
 
 ## Session hygiene
-- **Manage OC lead's context proactively.** Don't ask every session, but check
-  OC lead's context % before a heavy/multi-phase dispatch, and recommend `/clear`
+- **Manage the target agent's context proactively.** Don't ask every session, but check
+  the receiving agent's context % before a heavy/multi-phase dispatch, and recommend `/clear`
   (not `/compact`) after a multi-phase spec completes — disk state is canonical.
 
 - **Never restart `metis-gateway` as the last unreported step of a turn.** That

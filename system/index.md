@@ -71,6 +71,7 @@ Catalog of internal ops knowledge mirrored and synthesized under `system/`.
 - [[decisions/2026-04-tier-agents|2026-04-tier-agents]] — lead, mid, and grunt-tier formation.
 - [[decisions/2026-04-notion-integration|2026-04-notion-integration]] — Notion skill rollout and routing cleanup.
 - [[decisions/2026-04-wiki-smoke-test|2026-04-wiki-smoke-test]] — vault hygiene and smoke-test outcomes.
+- [[decisions/2026-08-orchestration-authority-model|2026-08-orchestration-authority-model]] — the authority/precedence model for all orchestration docs.
 - [[decisions/index|decisions index]] — chronological decision summary list.
 
 ## Glossary
