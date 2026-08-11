@@ -1825,3 +1825,22 @@ Four residual items from the deep scan, all outside Spec 227's file scope (no co
 - **B1/B3 verified:** the rotation docstring now states the 04:00–04:09 America/Los_Angeles window; registry and operating-rules documentation describe both jobs, the shared maintenance tool, thresholds, and alert-only behavior. The live CLI currently reports zero OpenClaw cron jobs, so the historical handles remain explicitly unverified and no schedule was created or repaired.
 - **B2 applied by Hermes:** `/root/.hermes/scripts/openclaw-grunt-session-watchdog.py` changed `MAX_AGE_HOURS` from `72` to `30`; alert now names nightly rotation failure and cron handle `572c4dc18aed`. A dated rollback backup was created; compile and dry-run verification passed. Unchanged rollback values: `MAX_SESSION_COUNT=25`, `MAX_STORE_BYTES=26214400`.
 - **B4 remains pending:** the first live rotation window is 11:00–11:09 UTC today. The state file is absent before that window; completion must wait for a real post-window observation. No cron mutation was performed under Spec 227.
+
+## [2026-08-11] [cc] audit | `/root/scripts` has a misleading `.git` — recorded as a trap
+- `/root/scripts/` **is** a git repo, contradicting the standing "`/root` is not
+  git-versioned" rule. In practice the rule's conclusion is right and its reasoning was
+  wrong, which is the dangerous combination.
+- State: **no remote**, 6 commits, last `d97f2a5`, and **24 uncommitted/untracked files** —
+  including live production scripts (`hermes-loop-sentinel.sh`,
+  `hermes-parser-audit-runner.sh`, `create-google-templates.py`) and modifications to
+  `filter-parser-excluded.js`, `parser-run-status.sh`, `refresh-master.sh`, `sheets-read.sh`.
+- Risk: someone seeing `.git` could reasonably run `git checkout <file>` expecting recovery
+  and instead get a failure or a months-old version. Dated `.bak` remains the only real
+  rollback there. Recorded in `system/cheatsheets/operating-rules.md`.
+- Corollary now documented: `/root/scripts/` has no remote, so it is unreachable from any
+  off-box clone (e.g. a Claude Code cloud session). Only `obsidian-vault` and
+  `command-center` have GitHub remotes. `/root/specs`, `/root/tasks`, `/root/reviews`,
+  `/root/.claude`, `/root/.hermes`, `/root/.openclaw` are not repos at all.
+- The repo itself was left untouched — committing 24 files that include live scripts is an
+  operational decision, not a docs one, and 15 of 35 scripts match secret-ish patterns so
+  any future remote needs a real secret scan first (`/root/scripts/secret-scan.sh` exists).

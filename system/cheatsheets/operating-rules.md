@@ -135,6 +135,17 @@ command syntax → [[system/cheatsheets/oc-cli]].
 - **Every vault-touching spec ends with git commit + push** (`git pull --rebase`
   first; never force-push / reset --hard / checkout --theirs). Local-only edits
   drift the VPS/GitHub/Mac trio apart.
+- **`/root/scripts/` has a `.git` directory. Do not trust it.** It is a local-only repo:
+  **no remote**, 6 commits, and 24 uncommitted/untracked files as of 2026-08-11 —
+  including live production scripts (`hermes-loop-sentinel.sh`,
+  `hermes-parser-audit-runner.sh`) and modifications to four tracked ones. `git checkout
+  <file>` there will either fail or restore a months-old version, which is a worse outcome
+  than knowing there is no version control at all. **The dated `.bak` is the only real
+  rollback for anything under `/root/scripts/`.** The same applies to `/root/bin/`.
+  Consequence for remote work: because there is no remote, `/root/scripts/` cannot be
+  reached by a Claude Code cloud session or any other off-box clone — there is nothing to
+  clone. Only `/root/obsidian-vault` (→ `tortillapapi/Vault-0`) and `/root/command-center`
+  (→ `tortillapapi/command-center`) have GitHub remotes.
 - **Back up `/root` config files before hand-editing — they are not
   git-versioned.** Before editing/trimming any non-vault config or instruction
   file under `/root` (`/root/CLAUDE.md`, `/root/AGENTS.md`,
