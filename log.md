@@ -1871,3 +1871,24 @@ Four residual items from the deep scan, all outside Spec 227's file scope (no co
   the four options, and the reversed Metis decision. Phases 1–5 kept as-written — they
   remain correct for any environment with genuine SSH egress, only Phase 0's premise
   (a standard cloud session has that) turned out false.
+
+## [2026-08-11] [cc] observation | Spec 227 B4 — first rotation ran; false-positive verification bug found, handed to Janus
+- First-ever run of `OpenClaw Nightly Full Roster Rotation` (cron `572c4dc18aed`) fired
+  2026-08-11 04:00 PT / 11:00 UTC. Cron reports `status: skipped, reason: "post-rotation
+  verification found problems"` for all 6 agents — reads as a failure.
+- **It is not a failure.** Verified independently: all 6
+  `/root/.openclaw/agents/<id>/sessions/sessions.json` files were rewritten at 11:00:51 UTC
+  with genuinely empty content (`{}`). Rotation worked correctly.
+- **Root cause: the post-rotation verification is structurally broken, not the rotation.**
+  `openclaw-nightly-rotation.py`'s `maintenance_cmd()` (line 42-43) unconditionally appends
+  `--force` to every invocation, including the post-rotation `--dry-run` sanity check at
+  line 163. `openclaw-grunt-session-maintenance.py` line 322 computes
+  `would_rotate = bool(args.force or reasons)` — so `--force` alone makes `would_rotate`
+  true regardless of actual state. This will reproduce **every night** until fixed:
+  rotation quietly succeeds, verification perpetually false-alarms, training the alert to
+  be ignored.
+- Suggested fix (not applied — CC does not edit `/root/.hermes/scripts/`, this is Hermes's
+  spec and script): give `maintenance_cmd()` a `force` parameter, call the post-rotation
+  `--dry-run` at line 163 with `force=False`.
+- Full diagnosis sent to Janus via Telegram. B4's acceptance criterion (record outcome +
+  update registry) remains Hermes's to close once resolved.
