@@ -3,6 +3,12 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-08-12T11:17:17Z] ops | [hermes] Spec 227 B4 corrected rotation verifier passed
+- Post-window observation at 2026-08-12T04:15:30-0700 (PDT) found `/root/.hermes/state/openclaw-nightly-rotation.json` with `local_date: 2026-08-12`, `status: rotated`, and `updated_at: 2026-08-12T04:00:56.098787-07:00`; state mtime was 2026-08-12 11:00:56.098494785 UTC, during the 04:00–04:09 PDT window and before observation.
+- Owning cron `572c4dc18aed` output `/root/.hermes/cron/output/572c4dc18aed/2026-08-12_04-00-56.md` recorded the 04:00:56 run as silent/empty output. Live running-task guard returned count 0, and the live roster matched all six targets.
+- Verified all six target session indexes (`mid`, `lead`, `grunt-eng`, `grunt`, `re-review`, `email-parser`) contain exactly `{}`. Present usage caches for `mid`, `lead`, `grunt-eng`, `grunt`, and `re-review` contain the reset form `{"version":4,"updatedAt":0,"files":{}}`; `email-parser` has no cache present.
+- Corrected verifier rerun passed with no non-empty agent, skipped/failed state, or non-reset present cache. Exact completion evidence: `/root/tasks/227-phase-b4-verifier-rerun.done`.
+
 ## [2026-08-11T17:45:45Z] ops | [hermes] Spec 227 B4 verifier fix staged for next rotation
 - Root cause confirmed: `/root/.hermes/scripts/openclaw-nightly-rotation.py` passed `--force` to the post-rotation dry-run, making the maintenance helper report `would_rotate=true` regardless of actual threshold reasons.
 - Fix applied with rollback backup `/root/.hermes/scripts/openclaw-nightly-rotation.py.bak-20260811T174414Z`: `maintenance_cmd(mode, force=True)` now supports explicit force control; preflight and rotate remain forced, while only the post-rotation dry-run calls `force=False`.
