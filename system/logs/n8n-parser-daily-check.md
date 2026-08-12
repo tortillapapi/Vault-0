@@ -450,3 +450,9 @@
 - Recall: 0 order emails | 0 matched | MISSES: none
 - Precision: 0 in-window rows | 0 confirmed | 96 not evaluable (email outside window) | FALSE POSITIVES: none
 - Verdict: OK
+
+## 2026-08-12
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 2 order emails | 1 matched | MISSES: Target order-last4 unavailable 2026-08-12
+- Precision: 1 in-window rows | 1 confirmed | 96 not evaluable (email outside window) | FALSE POSITIVES: none
+- Verdict: ANOMALIES
