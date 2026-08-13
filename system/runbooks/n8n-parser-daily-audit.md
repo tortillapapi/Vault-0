@@ -111,11 +111,25 @@ customer data.
 
 ## 5. Alert on ANY anomaly (Telegram)
 If any workflow `error`, OR any MISS, OR any in-window FALSE POSITIVE (not-evaluable
-rows alone do NOT alert):
+rows alone do NOT alert), send one human-readable alert. Do not send a generic
+one-line anomaly message or expose raw pipe-delimited counters without explaining
+the impact.
+
+Use this bounded format:
 ```
-hermes send --to telegram:1207164084 -m "n8n parser audit <date> — ANOMALY: <one-line summary>. See system/logs/n8n-parser-daily-check.md"
+📦 Order parser audit — <date>
+Status: REVIEW NEEDED
+What happened:
+• Pipeline: <✅ all three workflows completed | ⚠️ name the failed workflow>
+• Orders checked: <N> likely order emails; <M> matched to sheet rows.
+• Issue: <retailer + date + order-last4 when available; say "order number unavailable" when not>
+Why it matters: <missed order, likely duplicate notification, parser false positive, or pipeline failure>
+Next step: <one specific action for Papi>
+Details: /root/obsidian-vault/system/logs/n8n-parser-daily-check.md
 ```
-If everything is clean, do NOT send a message (log only).
+Keep it under 1,500 characters, redact full order/tracking numbers to last-4 only,
+and omit clean sections. If evidence is ambiguous, say "needs confirmation" rather
+than asserting a miss. If everything is clean, do not send a message (log only).
 
 ## 6. Commit the log to the vault (rule #6)
 ```
