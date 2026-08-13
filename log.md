@@ -1909,3 +1909,30 @@ Four residual items from the deep scan, all outside Spec 227's file scope (no co
   `--dry-run` at line 163 with `force=False`.
 - Full diagnosis sent to Janus via Telegram. B4's acceptance criterion (record outcome +
   update registry) remains Hermes's to close once resolved.
+
+## [2026-08-13] [cc] audit | Spec 227 B4 closed out — rotation fix verified holding, registry corrected
+- Checked back after two days. Janus's fix to `openclaw-nightly-rotation.py` (the
+  `maintenance_cmd()` `--force` bug from 2026-08-11) is applied correctly at the exact
+  site: `force: bool = True` parameter added, the post-rotation `--dry-run` call at line
+  166 now passes `force=False`. Verified against source, not taken on faith.
+- **Rotation ran clean the following night (2026-08-12).** `227-phase-b4-verifier-rerun.done`
+  shows `state.status=rotated`, all 6 `sessions.json` verified `{}` with matching mtimes,
+  usage caches reset, zero problems reported. Janus correctly withheld declaring success
+  after the first ambiguous night and waited for one clean run before closing B4 —
+  the `.blocked` marker from 2026-08-11 was left in place honestly rather than
+  overwritten, and the `.done` was written only once real evidence existed.
+- `hermesparser` profile description also fixed, close to verbatim to the 2026-08-11
+  suggestion, correctly attributing the model binding to the runner script.
+- **Corrected `system/resources/registry.md`'s rotation/watchdog row**, which still said
+  "B4: unproven — first run pending" and carried a confusing "not found in live `openclaw
+  cron list`" caveat. That caveat was checking the wrong CLI — these are Hermes-scheduled
+  jobs (`hermes cron list`), not OpenClaw's own cron; `openclaw cron list` correctly
+  returns empty for them, and whoever wrote the original line hedged appropriately rather
+  than asserting wrongly, just against the wrong tool. Row now reflects the proven state
+  and the full root-cause/fix summary.
+- **Not yet done**: Spec 227's `status:` frontmatter is still `active`, and no
+  `REVIEW_TYPE: orchestrator` ACCEPT review has been filed for it in `/root/reviews/`.
+  Per `peer-orchestrator-protocol.md`, only a peer's orchestrator ACCEPT closes a spec —
+  the `.done`/`.blocked`/`.done` task markers are executor-level records, not that
+  sign-off. This is Hermes's to close (`owner: hermes`); CC did not write it or flip the
+  status field.
