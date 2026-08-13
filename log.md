@@ -3,6 +3,12 @@
 *Chronological append-only record of wiki activity. Each entry starts with*
 *a line matching `^## \\[` for grep-friendly parsing.*
 
+## [2026-08-13T05:59:51Z] ops | [hermes] Notion Specs Database lifecycle reconciliation complete
+- Reconciled all 156 Notion Spec rows against canonical `/root/specs` after independent read-only lifecycle audits. Historical backfill created 83 missing rows; the final all-specs dry run reported 156 unchanged and zero pending spec writes.
+- Corrected stale Blocked/Proposed/Ready/Superseded bookkeeping. Final Notion counts: 129 Complete, 11 Active, 14 Superseded, 2 Parked; zero Ready and zero Proposed. `Superseded` now means a historical approach replaced by a newer path, not a live failure.
+- Added the missing sync normalization for literal `status: active` in `/root/scripts/notion_sync/config.py`, so Spec 171 Bookmark Hell Pipeline appears Active rather than Proposed. Its remaining Notion-dependent phase requires Papi's target page/integration sharing.
+- Durable acceptance record: `/root/reviews/2026-08-13-notion-spec-database-lifecycle-reconciliation.md`; next-session handoff: `/root/context/hermes-handoff-post-notion-spec-reconciliation-2026-08-13.md`.
+
 ## [2026-08-12T11:17:17Z] ops | [hermes] Spec 227 B4 corrected rotation verifier passed
 - Post-window observation at 2026-08-12T04:15:30-0700 (PDT) found `/root/.hermes/state/openclaw-nightly-rotation.json` with `local_date: 2026-08-12`, `status: rotated`, and `updated_at: 2026-08-12T04:00:56.098787-07:00`; state mtime was 2026-08-12 11:00:56.098494785 UTC, during the 04:00–04:09 PDT window and before observation.
 - Owning cron `572c4dc18aed` output `/root/.hermes/cron/output/572c4dc18aed/2026-08-12_04-00-56.md` recorded the 04:00:56 run as silent/empty output. Live running-task guard returned count 0, and the live roster matched all six targets.
