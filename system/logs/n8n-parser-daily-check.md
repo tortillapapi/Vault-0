@@ -457,3 +457,9 @@
 - Precision: 1 in-window rows | 1 confirmed | 96 not evaluable (email outside window) | FALSE POSITIVES: none
 - Verdict: ANOMALIES
 - Clarification 2026-08-13: Papi confirmed this was one legitimate business-inventory Target order. The two PayPal confirmations were duplicate notifications for that order; it was placed through a separate Target account/email not currently connected to the parser. The finding remains a source-coverage gap, not a false-positive purchase, and no parser configuration change was authorized.
+
+## 2026-08-13
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 0 order emails | 0 matched | MISSES: none
+- Precision: 1 in-window rows | 0 confirmed | 96 not evaluable (email outside window) | FALSE POSITIVES: mail.refractbot.com no-order# 2026-08-12
+- Verdict: ANOMALIES

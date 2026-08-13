@@ -13,3 +13,4 @@ or the parked backlog; delete the line once it has a home.
 - Random Business Ideas *(Thoughts)* — captured 2026-08-04
 - Ideas *(Thoughts)* — captured 2026-08-04
 - 🎯 Resource: Finding Your Purpose (Robert Greene x Andrew Huberman) *(Resource)* — captured 2026-08-04
+- Test — captured 2026-08-13
