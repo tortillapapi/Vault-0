@@ -3,6 +3,7 @@
 Step-by-step operational procedures — the "how to do the thing," as opposed to
 `workflows/` (standing process) or `decisions/` (why something is the way it is).
 
+- [[runbooks/chatgpt-desktop-vps|ChatGPT Desktop VPS Front Door]] — Mac-first ChatGPT/Codex/Voice access to the live VPS through the guarded localhost MCP bridge.
 - [[runbooks/cloud-session-vps-bootstrap|cloud-session-vps-bootstrap]] — set up SSH access
   from a Claude Code cloud session to the VPS. **Blocked at Phase 0 (2026-08-11): a
   standard cloud session's egress cannot reach raw TCP/SSH at all — proxied,
