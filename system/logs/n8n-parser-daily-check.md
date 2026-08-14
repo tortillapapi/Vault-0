@@ -464,3 +464,8 @@
 - Precision: 1 in-window rows | 0 confirmed | 96 not evaluable (email outside window) | FALSE POSITIVES: mail.refractbot.com no-order# 2026-08-12
 - Verdict: ANOMALIES
 - Resolution: Papi selected “Remove + exclude Alma.” Confirmed the Alma row was a $35 appointment payment receipt, removed it from account_a, added a `helloalma.com` parser exclusion, rebuilt Master, and verified the health check is CLEAN.
+## 2026-08-14
+- Workflows: account_a=completed | account_b=completed | master=completed
+- Recall: 0 order emails | 0 matched | MISSES: none
+- Precision: 0 in-window rows | 0 confirmed | 96 not evaluable (email outside window) | FALSE POSITIVES: none
+- Verdict: OK
