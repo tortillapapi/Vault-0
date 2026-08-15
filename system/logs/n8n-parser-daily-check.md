@@ -469,3 +469,9 @@
 - Recall: 0 order emails | 0 matched | MISSES: none
 - Precision: 0 in-window rows | 0 confirmed | 96 not evaluable (email outside window) | FALSE POSITIVES: none
 - Verdict: OK
+
+## 2026-08-15
+- Workflows: account_a=success | account_b=success | master=success
+- Recall: 0 order emails | 0 matched | MISSES: none
+- Precision: 0 in-window rows | 0 confirmed | 95 not evaluable (email outside window) | FALSE POSITIVES: none
+- Verdict: OK
