@@ -511,3 +511,9 @@
 - Recall: 0 order emails | 0 matched | MISSES: none
 - Precision: 1 in-window rows | 0 confirmed | 96 not evaluable (email outside window) | FALSE POSITIVES: Mattel Creations + order number unavailable + 2026-08-20
 - Verdict: ANOMALIES
+
+## 2026-08-22
+- Workflows: account_a=completed | account_b=completed | master=completed
+- Recall: 2 order emails | 1 matched | MISSES: Mercari + order number unavailable + 2026-08-21
+- Precision: 1 in-window rows | 1 confirmed | 97 not evaluable (email outside window) | FALSE POSITIVES: none
+- Verdict: ANOMALIES
